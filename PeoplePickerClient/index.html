@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html ng-app="page">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>PeoplePicker</title>
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+            width: 200px;
+        }
+    </style>
+</head>
+<body ng-controller="PageController">
+    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+
+    <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
+    <script type="text/javascript" src="DataProvider.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.controls.firstpartyappssandbox.oappseperate.com/controls/0.9.1/peoplepicker/Office.Controls.PeoplePicker.css">
+    <link rel="stylesheet" type="text/css" href="AlchemyFabric.css">
+    <link rel="stylesheet" type="text/css" href="fabric.controls.css">
+    <script type="text/javascript" src="PeoplePickerInit.js"></script>
+    <h1>PeoplePicker</h1>
+
+    <div>
+        <h3>Search:</h3>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td><div id='PeoplePickerContainer'></div></td>
+            </tr>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        InitPeoplePicker();
+        var dataProvider = InitMockDataProvider();
+        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), {}, dataProvider);
+    </script>
+</body>
+</html>
