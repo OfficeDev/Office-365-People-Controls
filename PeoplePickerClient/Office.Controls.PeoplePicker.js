@@ -936,8 +936,8 @@ Office.Controls.PeoplePicker._internalPeoplePickerRecord.prototype = {
     
     _remove$i$0: function() {
         this._removeAndNotTriggerUserListener$i$0();
-        this._parent$i$0._textInput$p$0.focus();
         this._parent$i$0._onDataRemoved$p$0(this._$$pf_Record$p$0);
+        this._parent$i$0._textInput$p$0.focus();
     },
     
     _removeAndNotTriggerUserListener$i$0: function() {
@@ -1968,7 +1968,6 @@ Office.Controls.PeoplePicker._internalPeoplePickerRecord.registerClass('Office.C
 Office.Controls.PeoplePicker._autofillContainer.registerClass('Office.Controls.PeoplePicker._autofillContainer');
 Office.Controls.PeoplePicker.Parameters.registerClass('Office.Controls.PeoplePicker.Parameters');
 Office.Controls.PeoplePicker._cancelToken.registerClass('Office.Controls.PeoplePicker._cancelToken');
-//Office.Controls.PeoplePicker._searchPrincipalServerDataProvider.registerClass('Office.Controls.PeoplePicker._searchPrincipalServerDataProvider', null, Office.Controls.PeoplePicker.ISearchPrincipalDataProvider);
 Office.Controls.PeoplePicker.ValidationError.registerClass('Office.Controls.PeoplePicker.ValidationError');
 Office.Controls.PeoplePicker._mruCache.registerClass('Office.Controls.PeoplePicker._mruCache');
 Office.Controls.PeoplePicker._mruCache._mruData.registerClass('Office.Controls.PeoplePicker._mruCache._mruData');

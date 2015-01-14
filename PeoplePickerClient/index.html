@@ -35,7 +35,8 @@
 
     <script type="text/javascript">
         InitPeoplePicker();
-        var dataProvider = InitMockDataProvider();
+        //var dataProvider = InitMockDataProvider();
+        var dataProvider = Object.create(MockDataProvider);
         new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), {}, dataProvider);
     </script>
 </body>
