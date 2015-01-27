@@ -17,9 +17,9 @@
 
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://cdn.controls.firstpartyappssandbox.oappseperate.com/controls/0.9.1/peoplepicker/Office.Controls.PeoplePicker.css">
-    <link rel="stylesheet" type="text/css" href="AlchemyFabric.css">
-    <link rel="stylesheet" type="text/css" href="fabric.controls.css">
+    
+
+    <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
     <script type="text/javascript" src="PeoplePickerInit.js"></script>
     <h1>PeoplePicker</h1>
 
@@ -27,17 +27,28 @@
         <h3>Search:</h3>
         <table>
             <tr>
-                <td>Name</td>
+                <td>Name1</td>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <td>Name1</td>
                 <td><div id='PeoplePickerContainer'></div></td>
             </tr>
         </table>
     </div>
+    
 
     <script type="text/javascript">
         InitPeoplePicker();
         //var dataProvider = InitMockDataProvider();
         var dataProvider = Object.create(MockDataProvider);
-        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), {}, dataProvider);
+        params = new Object();
+        params.allowMultipleSelections = false;
+        params.startSearchCharLength = 3;
+        params.enableCache = true;
+        params.inputHint = "test input hint";
+        params.showValidationErrors = true;
+        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);
     </script>
 </body>
 </html>

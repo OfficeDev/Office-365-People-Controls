@@ -4,7 +4,7 @@ function InitPeoplePicker(element, options) {
 	if (!initialized) {
 		var access = {};
 		window.Access = access;
-		access.ControlTelemetryAdapter = function () {
+		/*access.ControlTelemetryAdapter = function () {
 			this.writeDiagnosticLog = function () {
 			};
 			this.writeCustomerActionLog = function () {
@@ -39,7 +39,7 @@ function InitPeoplePicker(element, options) {
 				getCrossScopeCorrelationId: function () {
 				},
 			};
-		};
+		};*/
 		window.SP = {};
 		Office.Controls.Runtime.initialize({ sharePointHostUrl: "", appWebUrl: "" });
 		initialized = true;
