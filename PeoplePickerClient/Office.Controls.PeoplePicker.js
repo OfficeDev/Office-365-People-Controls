@@ -1383,7 +1383,6 @@
     Office.Controls.PeoplePicker.mruCache.mruData = function () {
         this.cacheMapping = {};
         this.cacheVersion = 0;
-        this.sharePointHost = Office.Controls.Runtime.context.sharePointHostUrl;
     }
 
     Office.Controls.PeoplePickerResourcesDefaults = function () {
@@ -1553,44 +1552,9 @@
             this.sharePointHostUrl = sharepointHost;
         }
         this.sharePointHostUrl = this.sharePointHostUrl.toLocaleLowerCase();
-        var appWeb = parameterObject.appWebUrl;
-        if (Office.Controls.Utils.isNullOrUndefined(appWeb)) {
-            var param = Office.Controls.Utils.getQueryStringParameter('SPAppWebUrl');
-            if (!Office.Controls.Utils.isNullOrEmptyString(param)) {
-                param = decodeURIComponent(param);
-            }
-            this.appWebUrl = param;
-        }
-        else {
-            this.appWebUrl = appWeb;
-        }
-        this.appWebUrl = this.appWebUrl.toLocaleLowerCase();
-        this.requestViaUrl = parameterObject.requestsViaUrl;
     }
     Office.Controls.Context.prototype = {
-        _re: null,
         sharePointHostUrl: null,
-        appWebUrl: null,
-        requestViaUrl: null,
-
-        getRequestExecutor: function () {
-            if (!this.re) {
-                if (!Office.Controls.Utils.isNullOrEmptyString(Office.Controls.Runtime.context.appWebUrl)) {
-                    if (!Office.Controls.Utils.isNullOrEmptyString(Office.Controls.Runtime.context.requestViaUrl)) {
-                        var options = new SP.RequestExecutorOptions();
-                        options.viaUrl = Office.Controls.Runtime.context.requestViaUrl;
-                        this.re = new SP.RequestExecutor(Office.Controls.Runtime.context.sharePointHostUrl, options);
-                    }
-                    else {
-                        this.re = new SP.RequestExecutor(Office.Controls.Runtime.context.appWebUrl);
-                    }
-                }
-                else {
-                    Office.Controls.Utils.errorConsole('Missing authentication informations.');
-                }
-            }
-            return this.re;
-        }
     }
 
 
@@ -1659,14 +1623,6 @@
         var resourceObjectName = 'Office.Controls.' + controlName + 'Resources';
         var res;
         var nonPreserveCase = stringName.charAt(0).toString().toLowerCase() + stringName.substr(1);
-        res = SP.RuntimeRes;
-        var str;
-        if (!Office.Controls.Utils.isNullOrUndefined(res)) {
-            str = res[nonPreserveCase];
-            if (!Office.Controls.Utils.isNullOrEmptyString(str)) {
-                return str;
-            }
-        }
         resourceObjectName += 'Defaults';
         res = Office.Controls.Utils.getObjectFromFullyQualifiedName(resourceObjectName);
         if (!Office.Controls.Utils.isNullOrUndefined(res)) {
