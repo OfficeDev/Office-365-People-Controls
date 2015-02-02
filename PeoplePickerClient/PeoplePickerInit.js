@@ -3,7 +3,7 @@ function InitPeoplePicker(element, options) {
 	if (options === void 0) { options = {}; }
 	if (!initialized) {
 		var access = {};
-		window.Access = access;
+		//window.Access = access;
 		/*access.ControlTelemetryAdapter = function () {
 			this.writeDiagnosticLog = function () {
 			};
@@ -40,8 +40,8 @@ function InitPeoplePicker(element, options) {
 				},
 			};
 		};*/
-		window.SP = {};
-		Office.Controls.Runtime.initialize({ sharePointHostUrl: "", appWebUrl: "" });
+		//window.SP = {};
+		//Office.Controls.Runtime.initialize({ HostUrl: "", appWebUrl: "" });
 		initialized = true;
 	}
 }

@@ -19,11 +19,6 @@
 
 
     Office.Controls.PeoplePicker = function (root, dataProvider, parameterObject) {
-        this.currentTimerId = -1;
-        this.selectedItems = new Array(0);
-        this.internalSelectedItems = new Array(0);
-        this.errors = new Array(0);
-        this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
         try {
             if (typeof (root) !== 'object' || typeof (dataProvider) !== 'object' || typeof (parameterObject) !== 'object') {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
@@ -78,6 +73,12 @@
                 Office.Controls.PeoplePicker.res = {};
             }
 
+            Office.Controls.Runtime.initialize({ HostUrl: "3rdPartyHost" });
+            this.currentTimerId = -1;
+            this.selectedItems = new Array(0);
+            this.internalSelectedItems = new Array(0);
+            this.errors = new Array(0);
+            this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
             this.renderControl();
             this.autofill = new Office.Controls.PeoplePicker.autofillContainer(this);
         }
@@ -1275,7 +1276,7 @@
             }
             var numberOfResults = 0;
             var results = new Array(0);
-            var cache = this.dataObject.cacheMapping[Office.Controls.Runtime.context.sharePointHostUrl];
+            var cache = this.dataObject.cacheMapping[Office.Controls.Runtime.context.HostUrl];
             var cacheLength = cache.length;
             for (var i = cacheLength; i > 0 && numberOfResults < maxResults; i--) {
                 var candidate = cache[i - 1];
@@ -1288,7 +1289,7 @@
         },
 
         set: function (entry) {
-            var cache = this.dataObject.cacheMapping[Office.Controls.Runtime.context.sharePointHostUrl];
+            var cache = this.dataObject.cacheMapping[Office.Controls.Runtime.context.HostUrl];
             var cacheSize = cache.length;
             var alreadyThere = false;
             for (var i = 0; i < cacheSize; i++) {
@@ -1353,8 +1354,8 @@
                     this.dataObject = datas;
                 }
             }
-            if (Office.Controls.Utils.isNullOrUndefined(this.dataObject.cacheMapping[Office.Controls.Runtime.context.sharePointHostUrl])) {
-                this.dataObject.cacheMapping[Office.Controls.Runtime.context.sharePointHostUrl] = new Array(0);
+            if (Office.Controls.Utils.isNullOrUndefined(this.dataObject.cacheMapping[Office.Controls.Runtime.context.HostUrl])) {
+                this.dataObject.cacheMapping[Office.Controls.Runtime.context.HostUrl] = new Array(0);
             }
         },
 
@@ -1540,21 +1541,21 @@
             Office.Controls.Utils.errorConsole('Invalid parameters type');
             return;
         }
-        var sharepointHost = parameterObject.sharePointHostUrl;
+        var sharepointHost = parameterObject.HostUrl;
         if (Office.Controls.Utils.isNullOrUndefined(sharepointHost)) {
             var param = Office.Controls.Utils.getQueryStringParameter('SPHostUrl');
             if (!Office.Controls.Utils.isNullOrEmptyString(param)) {
                 param = decodeURIComponent(param);
             }
-            this.sharePointHostUrl = param;
+            this.HostUrl = param;
         }
         else {
-            this.sharePointHostUrl = sharepointHost;
+            this.HostUrl = sharepointHost;
         }
-        this.sharePointHostUrl = this.sharePointHostUrl.toLocaleLowerCase();
+        this.HostUrl = this.HostUrl.toLocaleLowerCase();
     }
     Office.Controls.Context.prototype = {
-        sharePointHostUrl: null,
+        HostUrl: null,
     }
 
 

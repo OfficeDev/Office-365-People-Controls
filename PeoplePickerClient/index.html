@@ -11,25 +11,19 @@
     </style>
 </head>
 <body ng-controller="PageController">
+
     <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
-
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
-    
-
     <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
-    <script type="text/javascript" src="PeoplePickerInit.js"></script>
+
     <h1>PeoplePicker</h1>
 
     <div>
         <h3>Search:</h3>
         <table>
-            <tr>
-                <td>Name1</td>
-                <td><input type="text"/></td>
-            </tr>
             <tr>
                 <td>Name1</td>
                 <td><div id='PeoplePickerContainer'></div></td>
@@ -39,8 +33,6 @@
     
 
     <script type="text/javascript">
-        InitPeoplePicker();
-        //var dataProvider = InitMockDataProvider();
         var dataProvider = Object.create(MockDataProvider);
         params = new Object();
         params.allowMultipleSelections = false;
