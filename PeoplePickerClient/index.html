@@ -14,8 +14,9 @@
 
     <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+<!--    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>-->
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
+    <script type="text/javascript" src="PeoplePickerInit.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
 
@@ -23,6 +24,7 @@
 
     <div>
         <h3>Search:</h3>
+        <a id="login_link">Login</a>
         <table>
             <tr>
                 <td>Name1</td>
@@ -33,11 +35,47 @@
     
 
     <script type="text/javascript">
-        var dataProvider = Object.create(MockDataProvider);
+        //var dataProvider = Object.create(MockDataProvider);
+        var serverHost = '***REMOVED***';
+        var pageUri = window.location;
+
+        document.getElementById('login_link').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+
+        var dataProvider = {};
+        dataProvider.getPrincipals = function (input, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://' + serverHost + '/api?keyword=' + encodeURIComponent(input), true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.withCredentials = true;
+            xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
+                callback('Error', null);
+            };
+            xhr.onload = function () {
+                if (xhr.statusCode == 401) {
+                    callback('Unauthorized', null);
+                    return;
+                }
+                var result = JSON.parse(xhr.responseText);
+                console.log(' result:' + xhr.responseText);
+                var persons = new Array();
+                result["value"].forEach(
+					function (e) {
+					    var person = {};
+					    person.DisplayName = e.displayName;
+					    person.Description = e.department;
+					    person.PersonId = e.objectId;
+					    persons.push(person);
+					});
+                callback(null, persons);
+            };
+            xhr.send('');
+        };
+
+        InitPeoplePicker();
         params = new Object();
         params.allowMultipleSelections = false;
         params.startSearchCharLength = 3;
-        params.enableCache = true;
+        params.enableCache = false;
         params.inputHint = "test input hint";
         params.showValidationErrors = true;
         new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);

@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -25,6 +25,7 @@
     <Content Include="index.html" />
     <Content Include="Office.Controls.PeoplePicker.js" />
     <Content Include="PeoplePickerInit.js" />
+    <Content Include="PeoplePickerWholeStyle.css" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="peoplePicker3rdParty.pubxml" />
+    <None Include="peoplepickertest.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
