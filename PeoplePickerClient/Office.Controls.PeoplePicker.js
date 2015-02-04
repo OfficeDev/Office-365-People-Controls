@@ -1360,7 +1360,7 @@
         },
 
         checkCacheAvailability: function () {
-            this.localStorage = window.self.localStorage;
+            //this.localStorage = window.self.localStorage;
             if (Office.Controls.Utils.isNullOrUndefined(this.localStorage)) {
                 return false;
             }
