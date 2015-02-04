@@ -25,6 +25,7 @@
     <Content Include="index.html" />
     <Content Include="Office.Controls.PeoplePicker.js" />
     <Content Include="PeoplePickerInit.js" />
+    <Content Include="PeoplePickerWholeStyle.css" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

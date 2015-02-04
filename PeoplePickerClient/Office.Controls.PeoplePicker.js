@@ -78,7 +78,7 @@
             this.internalSelectedItems = new Array(0);
             this.errors = new Array(0);
             if (this.enableCache == true) {
-                Office.Controls.Runtime.initialize({ HostUrl: "3rdPartyHost" });
+                Office.Controls.Runtime.initialize({ HostUrl: window.location.host });
                 this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
             }
             
@@ -1265,6 +1265,7 @@
         if (!this.isCacheAvailable) {
             return;
         }
+
         this.initializeCache();
     }
     Office.Controls.PeoplePicker.mruCache.getInstance = function () {
@@ -1368,11 +1369,19 @@
         },
 
         checkCacheAvailability: function () {
-            this.localStorage = window.self.localStorage;
-            if (Office.Controls.Utils.isNullOrUndefined(this.localStorage)) {
+            if (typeof window.self.localStorage == 'undefined') {
                 return false;
             }
-            return true;
+            else {
+                this.localStorage = window.self.localStorage;
+                return true;
+            }
+
+            //this.localStorage = window.self.localStorage;
+            //if (Office.Controls.Utils.isNullOrUndefined(this.localStorage)) {
+             //   return false;
+            //}
+            //return true;
         },
 
         cacheRetreive: function (key) {
