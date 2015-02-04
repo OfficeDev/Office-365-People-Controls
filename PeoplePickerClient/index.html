@@ -55,9 +55,9 @@
 
         InitPeoplePicker();
         params = new Object();
-        params.allowMultipleSelections = false;
-        params.startSearchCharLength = 3;
-        params.enableCache = false;
+        params.allowMultipleSelections = true;
+        params.startSearchCharLength = 0;
+        params.enableCache = true;
         params.inputHint = "test input hint";
         params.showValidationErrors = true;
         new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), aadDataProvider, params);

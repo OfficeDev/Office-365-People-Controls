@@ -73,12 +73,15 @@
                 Office.Controls.PeoplePicker.res = {};
             }
 
-            Office.Controls.Runtime.initialize({ HostUrl: "3rdPartyHost" });
             this.currentTimerId = -1;
             this.selectedItems = new Array(0);
             this.internalSelectedItems = new Array(0);
             this.errors = new Array(0);
+            if (this.enableCache == true) {
+                Office.Controls.Runtime.initialize({ HostUrl: window.location.host });
             this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
+            }
+            
             this.renderControl();
             this.autofill = new Office.Controls.PeoplePicker.autofillContainer(this);
         }
@@ -407,7 +410,7 @@
             var currentValue = this.textInput.value;
             var $$t_7 = this;
             this.currentTimerId = window.setTimeout(function () {
-                if (currentValue !== $$t_7.lastSearchQuery) {
+                if (currentValue !== $$t_7.lastSearchQuery || $$t_7.startSearchCharLength == 0) {
                     $$t_7.lastSearchQuery = currentValue;
                     if (currentValue.length >= $$t_7.startSearchCharLength) {
                         $$t_7.searchingTimes++;
@@ -496,6 +499,11 @@
             }
             this.toggleDefaultText();
             this.onFocus(this);
+            
+            var $$_9 = this;
+            if (this.startSearchCharLength == 0 && (this.allowMultiple == true || this.internalSelectedItems.length == 0)) {
+                this.startQueryAfterDelay();
+            }
             return true;
         },
 
@@ -1257,6 +1265,7 @@
         if (!this.isCacheAvailable) {
             return;
         }
+
         this.initializeCache();
     }
     Office.Controls.PeoplePicker.mruCache.getInstance = function () {
@@ -1360,11 +1369,13 @@
         },
 
         checkCacheAvailability: function () {
-            //this.localStorage = window.self.localStorage;
-            if (Office.Controls.Utils.isNullOrUndefined(this.localStorage)) {
+            if (typeof window.self.localStorage == 'undefined') {
                 return false;
             }
-            return true;
+            else {
+                this.localStorage = window.self.localStorage;
+                return true;
+            }
         },
 
         cacheRetreive: function (key) {
