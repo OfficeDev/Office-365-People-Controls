@@ -15,28 +15,43 @@
     <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
-    <script type="text/javascript" src="PeoplePickerInit.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <script type="text/javascript" src="AadDataProvider.js"></script>
     <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
 
     <h1>PeoplePicker</h1>
 
+    <!-- Links -->
     <div>
         <h3>Links</h3>
         <p><a href="devex.html">Instructions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="testcases.html">Test Cases</a></p>
     </div>
+
+    <!-- Known Issues -->
+    <div>
+        <h3>Known Issues</h3>
+        <ul>
+            <li>Icons are not final.</li>
+            <li>Need login first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
+        </ul>
+    </div>
+
+    <!-- Playground -->
     <div>
         <h3>Playground</h3>
         <a id="login_link">Login</a>
         <table>
             <tr>
                 <td>Single Selection</td>
-                <td><div id='PeoplePickerContainer'></div></td>
+                <td><div id='ppc_single'></div></td>
             </tr>
             <tr>
                 <td>Multiple Selection</td>
-                <td><div id='PeoplePickerContainer2'></div></td>
+                <td>
+                    <div id='ppc_multiple'></div>
+                    <div id='ppc_multiple_error' style="color: red"></div>
+                    <div id='ppc_multiple_people' style="color: blue"></div>
+                </td>
             </tr>
         </table>
     </div>
@@ -44,26 +59,41 @@
 
     <script type="text/javascript">
         //var dataProvider = Object.create(MockDataProvider);
-        var serverHost = '***REMOVED***';
-        //var serverHost = 'yihcaow1001:3000';
+        //var serverHost = '***REMOVED***';
+        var serverHost = 'yihcaow1001:3000';
         var pageUri = window.location;
 
         document.getElementById('login_link').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
 
-        var aadDataProvider = Object.create(AadDataProvider);
+        var aadDataProvider = new AadDataProvider();
         aadDataProvider.serverHost = serverHost;
 
-        InitPeoplePicker();
         params = new Object();
         params.allowMultipleSelections = true;
-        params.startSearchCharLength = 0;
         params.enableCache = true;
-        params.inputHint = "test input hint";
         params.showValidationErrors = true;
-        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), aadDataProvider, params);
+        new Office.Controls.PeoplePicker(document.getElementById('ppc_single'), aadDataProvider, params);
 
         params.allowMultipleSelections = true;
-        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer2'), aadDataProvider, params);
+        params.startSearchCharLength = 0;
+        params.inputHint = "Enter text here and try to select multiple records...";
+        params.showValidationErrors = false;
+        params.onError = function (control, validationError) {
+            if (validationError.errorName == 'ServerProblem') {
+                document.getElementById('ppc_multiple_error').innerHTML = "<pre>" + aadDataProvider.lastErrorMessage + "</pre>";
+            } else {
+                document.getElementById('ppc_multiple_error').innerHTML = "<pre>" + validationError.localizedErrorMessage + "</pre>";
+            }
+        };
+        params.onAdded = params.onRemoved = function (control) {
+            var people = 'Added people: ';
+            control.getAddedPeople().forEach(
+                function (e) {
+                    people += '<p>{' + e.DisplayName + ', id=' + e.PersonId + '}</p>';
+                });
+            document.getElementById('ppc_multiple_people').innerHTML = "<pre>" + people + "</pre>";
+        }
+        new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
     </script>
 </body>
 </html>

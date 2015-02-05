@@ -93,7 +93,7 @@
         record.displayName = info.DisplayName;
         record.Description = info.Description;
         record.PersonId = info.PersonId;
-        record.principal = info;
+        record.principalInfo = info;
     }
 
     Office.Controls.PeoplePicker.parseUserPaste = function (content) {
@@ -197,9 +197,9 @@
 
         getAddedPeople: function () {
             var record = this.internalSelectedItems;
-            var addedPeople = {}
+            var addedPeople = [];
             for (var i = 0; i < record.length; i++) {
-                addedPeople[i] = record[i].record.info;
+                addedPeople[i] = record[i].Record.principalInfo;
             }
             return addedPeople;
         },
@@ -539,7 +539,7 @@
             this.validateMultipleMatchError();
             this.validateMultipleEntryAllowed();
             this.validateNoMatchError();
-            this.onRemoved(this, selectedPrincipal.info);
+            this.onRemoved(this, selectedPrincipal.principalInfo);
             this.onChange(this);
         },
 
@@ -628,7 +628,7 @@
             this.currentPrincipalsChoices = null;
             this.autofill.close();
             this.textInput.focus();
-            this.onAdded(this, record.info);
+            this.onAdded(this, record.principalInfo);
             this.onChange(this);
         },
 
@@ -638,7 +638,7 @@
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
             this.onDataSelected(record);
-            this.onAdded(this, record.info);
+            this.onAdded(this, record.principalInfo);
             this.currentPrincipalsChoices = null;
         },
 
@@ -693,7 +693,7 @@
             this.errors.push(err);
             this.displayValidationErrors();
             if (!Office.Controls.Utils.isNullOrUndefined(this.onError)) {
-                this.onError(this, error);
+                this.onError(this, err);
             }
         },
 
