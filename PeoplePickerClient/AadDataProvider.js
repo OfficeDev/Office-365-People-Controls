@@ -16,13 +16,13 @@
                 callback('Error', null);
             };
             xhr.onload = function () {
-                if (xhr.statusCode == 401) {
+                if (xhr.status == 401) {
                     self.lastErrorMessage = 'Unauthorized. You need login first.';
                     callback('Unauthorized', null);
                     return;
                 }
-                else if (xhr.statusCode != 200) {
-                    self.lastErrorMessage = 'Unknown error.';
+                else if (xhr.status != 200) {
+                    self.lastErrorMessage = 'Unknown error. Status code: ' + xhr.statusCode;
                     callback('Unknown error', null);
                 }
                 var result = JSON.parse(xhr.responseText);

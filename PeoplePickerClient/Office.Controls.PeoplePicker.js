@@ -1369,12 +1369,16 @@
         },
 
         checkCacheAvailability: function () {
-            if (typeof window.self.localStorage == 'undefined') {
+            try {
+                if (typeof window.self.localStorage == 'undefined') {
+                    return false;
+                }
+                else {
+                    this.localStorage = window.self.localStorage;
+                    return true;
+                }
+            } catch (e) {
                 return false;
-            }
-            else {
-                this.localStorage = window.self.localStorage;
-                return true;
             }
         },
 

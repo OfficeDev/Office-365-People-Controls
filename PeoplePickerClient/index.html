@@ -58,10 +58,11 @@
     
 
     <script type="text/javascript">
-        //var dataProvider = Object.create(MockDataProvider);
-        //var serverHost = '***REMOVED***';
         var serverHost = 'yihcaow1001:3000';
-        var pageUri = window.location;
+        if (window.location.href.indexOf('azurewebsites.net') != -1) {
+            serverHost = '***REMOVED***';
+        }
+        var pageUri = window.location.href;
 
         document.getElementById('login_link').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
 
