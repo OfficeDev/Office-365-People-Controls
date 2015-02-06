@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
+    <!--    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>-->
+    <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
+    <script type="text/javascript" src="DataProvider.js"></script>
+    <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
+    <script>
+        var PeoplePicker;
+        function createPP()
+        {
+            params = new Object();
+            if (document.getElementById("1").value != "") {
+                params.allowMultipleSelections = document.getElementById("1").value;
+            }
+            if (document.getElementById("2").value != "") {
+                params.startSearchCharLength = document.getElementById("2").value;
+            }
+            if (document.getElementById("3").value != "") {
+                params.enableCache = document.getElementById("3").value;
+            }
+            
+            if (document.getElementById("4").value != "") {
+                params.delaySearchInterval = document.getElementById("4").value;
+            }
+            
+            if (document.getElementById("5").value != "") {
+                params.inputHint = document.getElementById("5").value;
+            }
+            
+            if (document.getElementById("6").value != "") {
+                params.showValidationErrors = document.getElementById("6").value;
+            }
+
+            if (document.getElementById("7").checked == true) {
+                params.onAdded = listeneAdded;
+            }
+            if (document.getElementById("8").checked == true) {
+                params.onRemoved = listeneRemoved;
+            }
+            if (document.getElementById("9").checked == true) {
+                params.onFocus = listeneFocus;
+            }
+            if (document.getElementById("10").checked == true) {
+                params.onBlur = listeneBlur;
+            }
+            if (document.getElementById("11").checked == true) {
+                params.onError = listeneError;
+            }
+            var dataProvider = Object.create(MockDataProvider);
+            document.getElementById('PeoplePickerContainer').innerHTML = "";
+            PeoplePicker= new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);
+        }
+        function deletePP()
+        {
+            PeoplePicker = null;
+            document.getElementById('PeoplePickerContainer').innerHTML = "";
+        }
+        function listeneAdded(control, person) {
+            document.getElementById("ListenOutput").innerHTML = "Get OnAdded event:"+ JSON.stringify(person);
+        }
+        function listeneRemoved(control, person) {
+            document.getElementById("ListenOutput").innerHTML = "Get OnRemoved event:" + JSON.stringify(person);
+        }
+        function listeneFocus(control, person) {
+            document.getElementById("ListenOutput").innerHTML = "Get Onfocus event";
+        }
+        function listeneBlur(control, person) {
+            document.getElementById("ListenOutput").innerHTML = "Get OnBlur event";
+        }
+        function listeneError(control, validationError) {
+            document.getElementById("ListenOutput").innerHTML = "Get OnError event" + JSON.stringify(validationError);
+        }
+        function clearOutput() {
+            document.getElementById("ListenOutput").innerHTML = "";
+        }
+        function getErrorDisplayed() {
+            var error = PeoplePicker.getErrorDisplayed();
+            document.getElementById("getErrorDisplayed").innerHTML = JSON.stringify(error);
+        }
+        function getAddedPerson() {
+            var people = PeoplePicker.getAddedPeople();
+            document.getElementById("getAddedPerson").innerHTML = JSON.stringify(people);
+        }
+        function clearCacheData() {
+            PeoplePicker.clearCacheData();
+        }
+        function resetPeoplePicker() {
+            PeoplePicker.reset();
+        }
+        function removePerson() {
+            var index = document.getElementById("removePerson").value;
+            var people = PeoplePicker.getAddedPeople();
+            PeoplePicker.remove(people[index]);
+        }
+        function addPerson() {
+            if (document.getElementById("personIsName").checked == true) {
+                var personName = document.getElementById("personName").value;
+                PeoplePicker.add(personName);
+            }
+            else {
+                var resolved = document.getElementById("resolved").checked;
+                var person = new Object();
+                person.PersonId = "fyan";
+                person.DisplayName = "Brenda";
+                person.Description = "SE";
+                PeoplePicker.add(person, resolved);
+            }
+        }
+    </script>
+    <h2>Input following parmas to create a PeoplePicker</h2>
+    <table>
+        <tr>
+            <td>Allow mutiple selection:</td>
+            <td><input type="text" id="1" /></td>
+            <td>Start search Char length:</td>
+            <td><input type="text" id="2" /></td>
+        </tr>
+        <tr>
+            <td>Delay search interval:</td>
+            <td><input type="text" id="3" /></td>
+            <td>Enable cache:</td>
+            <td><input type="text" id="4" /></td>
+        </tr>
+        <tr>
+            <td>Input hint:</td>
+            <td><input type="text" id="5" /></td>
+            <td>Show validation Errors:</td>
+            <td><input type="text" id="6" /></td>
+        </tr>
+        <tr>
+            <td>OnAdded listener:</td>
+            <td><input type="checkbox" id="7" /></td>
+            <td>OnRemoved listener:</td>
+            <td><input type="checkbox" id="8" /></td>
+        </tr>
+        <tr>
+            <td>OnFocus listener:</td>
+            <td><input type="checkbox" id="9" /></td>
+            <td>OnBlur listener:</td>
+            <td><input type="checkbox" id="10" /></td>
+        </tr>
+        <tr>
+            <td>OnError listener:</td>
+            <td><input type="checkbox" id="11" /></td>
+        </tr>
+        <tr>
+            <td><button onclick="createPP()">Create PeoplePicker!</button></td>
+            <td></td>
+            <td><button onclick="deletePP()">Delete PeoplePicker!</button></td>
+            <td></td>
+        </tr>
+    </table>
+    <div>
+        <h3>Listener get notified:</h3>
+        <textarea id="ListenOutput"></textarea><button onclick="clearOutput()">Clear Output</button>
+    </div>
+    <h2>Call following API from PeoplePicker</h2>
+    <table>
+        <tr>
+            <td><button onclick="getErrorDisplayed()">1 getErrorDisplayed()</button></td>
+            <td>Return:</td>
+            <td><textarea id="getErrorDisplayed"></textarea></td>
+        </tr>
+        <tr>
+            <td><button onclick="getAddedPerson()">2 getAddedPerson()</button></td>
+            <td>Return:</td>
+            <td><textarea id="getAddedPerson"></textarea></td>
+        </tr>
+        <tr>
+            <td><button onclick="clearCacheData()">3 clearCacheData()</button></td>
+        </tr>
+        <tr>
+            <td><button onclick="resetPeoplePicker()">4 resetPeoplePicker()</button></td>
+        </tr>
+        <tr>
+            <td><button onclick="removePerson()">5 remove(person)</button></td>
+            <td>Added Person Index(from 0):</td>
+            <td><textarea id="removePerson">0</textarea></td>
+        </tr>
+        <tr>
+            <td><button onclick="addPerson()">6 add(person,resolve)</button></td>
+            <td>Input person:</td>
+            <td>Person is string:</td>
+            <td><input type="checkbox" id="personIsName" />If true,input person name :<input type="text" id="personName" /></td>
+            <td>The person is resolved:</td>
+            <td><input type="checkbox" id="resolved" /></td>
+        </tr>
+    </table>
+    <div>
+        <h3>The New PeoplePicker</h3>
+        <a id="login_link">Login</a>
+        <table>
+            <tr>
+                <td>PeoplePicker</td>
+                <td><div id='PeoplePickerContainer'></div></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

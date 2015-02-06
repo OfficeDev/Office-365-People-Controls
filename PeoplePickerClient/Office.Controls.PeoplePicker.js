@@ -93,7 +93,7 @@
         record.displayName = info.DisplayName;
         record.Description = info.Description;
         record.PersonId = info.PersonId;
-        record.principal = info;
+        record.principalInfo = info;
     }
 
     Office.Controls.PeoplePicker.parseUserPaste = function (content) {
@@ -163,34 +163,45 @@
             this.validateMultipleEntryAllowed();
             this.validateNoMatchError();
             this.clearInputField();
+            this.clearCacheData();
             if (Office.Controls.PeoplePicker.autofillContainer.currentOpened) {
                 Office.Controls.PeoplePicker.autofillContainer.currentOpened.close();
             }
+            this.autofill = new Office.Controls.PeoplePicker.autofillContainer(this)
             this.toggleDefaultText();
+
         },
 
         remove: function (entryToRemove) {
             var record = this.internalSelectedItems;
             for (var i = 0; i < record.length; i++) {
-                if (record[i].Record === entryToRemove) {
+                if (record[i].Record.principalInfo === entryToRemove) {
                     record[i].removeAndNotTriggerUserListener();
+                    this.validateMultipleMatchError();
+                    this.validateMultipleEntryAllowed();
+                    this.validateNoMatchError();
+                    this.setTextInputDisplayStyle();
+                    this.textInput.focus();
                     break;
                 }
             }
         },
 
-        add: function (p1, resolve) {
+        add: function (p1, resolved) {
             if (typeof (p1) === 'string') {
                 this.addThroughString(p1);
             }
             else {
                 var record = new Office.Controls.PeoplePickerRecord();
                 Office.Controls.PeoplePicker.copyToRecord(record, p1)
-                if (Office.Controls.Utils.isNullOrUndefined(resolve)) {
+                record.text = p1.DisplayName;
+                if (Office.Controls.Utils.isNullOrUndefined(resolved)) {
+                    record.isResolved = false;
                     this.addThroughRecord(record, false);
                 }
                 else {
-                    this.addThroughRecord(record, resolve);
+                    record.isResolved = resolved;
+                    this.addThroughRecord(record, resolved);
                 }
             }
         },
@@ -199,9 +210,16 @@
             var record = this.internalSelectedItems;
             var addedPeople = {}
             for (var i = 0; i < record.length; i++) {
-                addedPeople[i] = record[i].record.info;
+                addedPeople[i] = record[i].Record.principalInfo;
             }
             return addedPeople;
+        },
+
+        clearCacheData: function () {
+            if(this.cache != null){
+                this.cache.cacheDelete('Office.PeoplePicker.Cache');
+                this.cache.dataObject = null;
+            }
         },
 
         getErrorDisplayed: function () {
@@ -238,8 +256,8 @@
             this.addUnresolvedPrincipal(input, false);
         },
 
-        addThroughRecord: function (info, resolve) {
-            if (resolve) {
+        addThroughRecord: function (info, resolved) {
+            if (!resolved) {
                 this.addUncertainPrincipal(info);
             }
             else {
@@ -539,7 +557,7 @@
             this.validateMultipleMatchError();
             this.validateMultipleEntryAllowed();
             this.validateNoMatchError();
-            this.onRemoved(this, selectedPrincipal.info);
+            this.onRemoved(this, selectedPrincipal.principalInfo);
             this.onChange(this);
         },
 
@@ -628,7 +646,7 @@
             this.currentPrincipalsChoices = null;
             this.autofill.close();
             this.textInput.focus();
-            this.onAdded(this, record.info);
+            this.onAdded(this, record.principalInfo);
             this.onChange(this);
         },
 
@@ -638,7 +656,7 @@
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
             this.onDataSelected(record);
-            this.onAdded(this, record.info);
+            this.onAdded(this, record.principalInfo);
             this.currentPrincipalsChoices = null;
         },
 
@@ -648,10 +666,10 @@
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
             var $$t_5 = this, $$t_6 = this;
-            this.dataProvider.getPrincipals(record.email, function (error, ps) {
+            this.dataProvider.getPrincipals(record.DisplayName, function (error, ps) {
                 if (ps != null) {
                     $$t_5.onDataReceivedForStalenessCheck(ps, internalRecord);
-                    this.onAdded(this, record.info);
+                    this.onAdded(this, record.principalInfo);
                 }
                 else {
                     $$t_6.onDataFetchError(error);
@@ -662,10 +680,10 @@
 
         addUnresolvedPrincipal: function (input, triggerUserListener) {
             var record = new Office.Controls.PeoplePickerRecord();
-            var principalInfo = new Office.controls.PrincipalInfo();
+            var principalInfo = new Office.Controls.PrincipalInfo();
             principalInfo.displayName = input;
             record.text = input;
-            record.info = principalInfo;
+            record.principalInfo = principalInfo;
             record.isResolved = false;
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record);
             internalRecord.add();
@@ -677,7 +695,7 @@
                 if (ps != null) {
                     internalRecord = $$t_7.onDataReceivedForResolve(ps, internalRecord);
                     if (triggerUserListener) {
-                        $$t_7.onAdded($$t_7, internalRecord.Record.info);
+                        $$t_7.onAdded($$t_7, internalRecord.Record.principalInfo);
                         $$t_7.onChange($$t_7);
                     }
                 }
@@ -935,7 +953,6 @@
 
         unresolve: function () {
             this.Record.isResolved = false;
-            Office.Controls.Utils.addClass(this.Node, 'has-error');
             var primaryTextNode = this.Node.querySelector('div.ms-Persona-primaryText');
             primaryTextNode.innerHTML = Office.Controls.Utils.htmlEncode(this.Record.text);
             this.updateHoverText(primaryTextNode);
@@ -947,7 +964,7 @@
         },
 
         onAutofillClick: function (selectedPrincipal) {
-            this.parent.onRemoved(this.parent, this.Record.info);
+            this.parent.onRemoved(this.parent, this.Record.principalInfo);
             this.resolveTo(selectedPrincipal);
             this.parent.refreshInputField();
             this.principalOptions = null;
@@ -957,7 +974,7 @@
             }
             this.parent.validateMultipleMatchError();
             this.parent.autofill.close();
-            this.parent.onAdded(this.parent, this.Record);
+            this.parent.onAdded(this.parent, this.Record.principalInfo);
             this.parent.onChange(this.parent);
         }
     }
