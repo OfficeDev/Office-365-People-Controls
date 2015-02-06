@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>PeoplePicker</title>
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
+    <script type="text/javascript" src="DataProvider.js"></script>
+    <script type="text/javascript" src="AadDataProvider.js"></script>
+    <link rel="stylesheet" type="text/css" href="PeoplePickerWholeStyle.css">
+
+    <h1>PeoplePicker Test Cases</h1>
+
+    <div>
+        <h3>Search:</h3>
+        <a id="login_link">Login</a>
+        <table>
+            <tr>
+                <td>Single Selection</td>
+                <td><div id='PeoplePickerContainer'></div></td>
+            </tr>
+            <tr>
+                <td>Multiple Selection</td>
+                <td><div id='PeoplePickerContainer2'></div></td>
+            </tr>
+        </table>
+    </div>
+    
+
+    <script type="text/javascript">
+        //var dataProvider = Object.create(MockDataProvider);
+        //var serverHost = '***REMOVED***';
+        var serverHost = 'yihcaow1001:3000';
+        var pageUri = window.location;
+
+        document.getElementById('login_link').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+
+        var aadDataProvider = Object.create(AadDataProvider);
+        aadDataProvider.serverHost = serverHost;
+
+        params = new Object();
+        params.allowMultipleSelections = false;
+        params.startSearchCharLength = 3;
+        params.enableCache = false;
+        params.inputHint = "test input hint";
+        params.showValidationErrors = true;
+        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), aadDataProvider, params);
+
+        params.allowMultipleSelections = true;
+        new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer2'), aadDataProvider, params);
+    </script>
+</body>
+</html>

@@ -18,18 +18,16 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="AadDataProvider.js" />
     <Content Include="AlchemyFabric.css" />
-    <Content Include="app.css" />
     <Content Include="DataProvider.js" />
+    <Content Include="devex.html" />
     <Content Include="fabric.controls.css" />
     <Content Include="index.html" />
     <Content Include="Office.Controls.PeoplePicker.js" />
     <Content Include="PeoplePickerWholeStyle.css" />
     <Content Include="TestPage.html" />
     <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="peoplePicker3rdParty.pubxml" />

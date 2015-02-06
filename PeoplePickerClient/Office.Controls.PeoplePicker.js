@@ -79,7 +79,7 @@
             this.errors = new Array(0);
             if (this.enableCache == true) {
                 Office.Controls.Runtime.initialize({ HostUrl: window.location.host });
-                this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
+            this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
             }
             
             this.renderControl();
@@ -208,7 +208,7 @@
 
         getAddedPeople: function () {
             var record = this.internalSelectedItems;
-            var addedPeople = {}
+            var addedPeople = [];
             for (var i = 0; i < record.length; i++) {
                 addedPeople[i] = record[i].Record.principalInfo;
             }
@@ -711,7 +711,7 @@
             this.errors.push(err);
             this.displayValidationErrors();
             if (!Office.Controls.Utils.isNullOrUndefined(this.onError)) {
-                this.onError(this, error);
+                this.onError(this, err);
             }
         },
 
@@ -1386,19 +1386,17 @@
         },
 
         checkCacheAvailability: function () {
-            if (typeof window.self.localStorage == 'undefined') {
+            try {
+                if (typeof window.self.localStorage == 'undefined') {
+                    return false;
+                }
+                else {
+                    this.localStorage = window.self.localStorage;
+                    return true;
+                }
+            } catch (e) {
                 return false;
             }
-            else {
-                this.localStorage = window.self.localStorage;
-                return true;
-            }
-
-            //this.localStorage = window.self.localStorage;
-            //if (Office.Controls.Utils.isNullOrUndefined(this.localStorage)) {
-             //   return false;
-            //}
-            //return true;
         },
 
         cacheRetreive: function (key) {
