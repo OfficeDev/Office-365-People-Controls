@@ -1,4 +1,15 @@
-﻿.ms-PeoplePicker {
+﻿@font-face {
+  font-family: 'office365icons';
+  src: url('css/office365icons.eot?');
+  src: url('css/office365icons.eot?#iefix') format('embedded-opentype'),
+       url('css/office365icons.woff?') format('woff'),
+       url('css/office365icons.ttf?') format('truetype'),
+       url('css/office365icons.svg?#office365icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.ms-PeoplePicker {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -149,6 +160,17 @@
   text-align: center;
   top: 50%;
   width: 100%;
+}
+.ms-PeoplePicker .ms-Icon--x:before {
+  content: '\e042';
+}
+
+.ms-PeoplePicker .ms-Icon {
+  display:inline-block;
+  font-style:normal;
+  font-weight:400;
+  line-height:1;
+  speak:none;
 }
 .ms-PeoplePicker .ms-PeoplePicker-resultAction:hover {
   background-color: #c8c8c8;
@@ -601,8 +623,8 @@
     background: none;
     height: 20px !important;
     padding-left : 4px;
-    position:absolute !important;
-    width:inherit !important;
+    /*position:absolute !important;*/
+    /*width:inherit !important;*/
 
 }
 

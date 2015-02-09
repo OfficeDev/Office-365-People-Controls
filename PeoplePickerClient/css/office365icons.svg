@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="office365icons" horiz-adv-x="1000" >
+<font-face font-family="office365icons" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="search" unicode="&#xe039;" d="m613 774c-174 0-316-142-316-316 0-56 15-109 41-155l-236-239c-31-32-31-83 0-114 16-16 37-23 57-23 21 0 42 8 57 23l235 238c47-29 103-46 162-46 174 0 316 142 316 316 0 174-142 316-316 316z m0-534c-121 0-218 98-218 218 0 121 97 218 218 218 120 0 218-97 218-218 0-120-98-218-218-218z" horiz-adv-x="1000" />
+<glyph glyph-name="x" unicode="&#xe042;" d="m875 604l-254-254 254-255-120-120-256 254-253-254-121 120 253 255-253 254 121 121 253-254 256 254 120-121z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
