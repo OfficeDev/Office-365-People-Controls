@@ -20,6 +20,7 @@
   <ItemGroup>
     <Content Include="AadDataProvider.js" />
     <Content Include="AlchemyFabric.css" />
+    <Content Include="css\office365icons.svg" />
     <Content Include="DataProvider.js" />
     <Content Include="devex.html" />
     <Content Include="fabric.controls.css" />
@@ -30,6 +31,9 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\office365icons.eot" />
+    <Content Include="css\office365icons.ttf" />
+    <Content Include="css\office365icons.woff" />
     <None Include="peoplePicker3rdParty.pubxml" />
     <None Include="peoplepickertest.pubxml" />
     <None Include="web.Debug.config">

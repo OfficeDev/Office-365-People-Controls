@@ -76,8 +76,8 @@
         new Office.Controls.PeoplePicker(document.getElementById('ppc_single'), aadDataProvider, params);
 
         params.allowMultipleSelections = true;
-        params.startSearchCharLength = 0;
-        params.inputHint = "Enter text here and try to select multiple records...";
+        params.startSearchCharLength = 3;
+        params.inputHint = "Try to select multiple records...";
         params.showValidationErrors = false;
         params.onError = function (control, validationError) {
             if (validationError.errorName == 'ServerProblem') {
