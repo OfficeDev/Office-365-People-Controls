@@ -20,57 +20,52 @@
 
     Office.Controls.PeoplePicker = function (root, dataProvider, parameterObject) {
         try {
-            if (typeof (root) !== 'object' || typeof (dataProvider) !== 'object' || typeof (parameterObject) !== 'object') {
+            if (typeof (root) !== 'object' || typeof (dataProvider) !== 'object' || !Office.Controls.Utils.isNullOrUndefined(parameterObject) && typeof (parameterObject) !== 'object') {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
             }
             this.root = root;
             this.dataProvider = dataProvider;
+            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject)) {
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.allowMultipleSelections)) {
+                    this.allowMultiple = parameterObject.allowMultipleSelections;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.startSearchCharLength) && parameterObject.startSearchCharLength >= 1) {
+                    this.startSearchCharLength = parameterObject.startSearchCharLength;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.delaySearchInterval)) {
+                    this.delaySearchInterval = parameterObject.delaySearchInterval;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.enableCache)) {
+                    this.enableCache = parameterObject.enableCache;
+                }
+                if (!Office.Controls.Utils.isNullOrEmptyString(parameterObject.inputHint)) {
+                    this.inputHint = parameterObject.inputHint;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showValidationErrors)) {
+                    this.showValidationErrors = parameterObject.showValidationErrors;
+                }
 
-            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.allowMultipleSelections)) {
-                this.allowMultiple = parameterObject.allowMultipleSelections;
-            }
-            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.startSearchCharLength)) {
-                this.startSearchCharLength = parameterObject.startSearchCharLength;
-            }
-            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.delaySearchInterval)) {
-                this.delaySearchInterval = parameterObject.delaySearchInterval;
-            }
-            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.enableCache)) {
-                this.enableCache = parameterObject.enableCache;
-            }
-            if (!Office.Controls.Utils.isNullOrEmptyString(parameterObject.inputHint)) {
-                this.inputHint = parameterObject.inputHint;
-            }
-            if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showValidationErrors)) {
-                this.showValidationErrors = parameterObject.showValidationErrors;
-            }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onAdded)) {
+                    this.onAdded = parameterObject.onAdded;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onRemoved)) {
+                    this.onRemoved = parameterObject.onRemoved;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onChange)) {
+                    this.onChange = parameterObject.onChange;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onFocus)) {
+                    this.onFocus = parameterObject.onFocus;
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onBlur)) {
+                    this.onBlur = parameterObject.onBlur;
+                }
+                this.onError = parameterObject.onError;
 
-            this.onAdded = parameterObject.onAdded;
-            if (Office.Controls.Utils.isNullOrUndefined(this.onAdded)) {
-                this.onAdded = Office.Controls.PeoplePicker.nopAddRemove;
-            }
-            this.onRemoved = parameterObject.onRemoved;
-            if (Office.Controls.Utils.isNullOrUndefined(this.onRemoved)) {
-                this.onRemoved = Office.Controls.PeoplePicker.nopAddRemove;
-            }
-            this.onChange = parameterObject.onChange;
-            if (Office.Controls.Utils.isNullOrUndefined(this.onChange)) {
-                this.onChange = Office.Controls.PeoplePicker.nopOperation;
-            }
-            this.onFocus = parameterObject.onFocus;
-            if (Office.Controls.Utils.isNullOrUndefined(this.onFocus)) {
-                this.onFocus = Office.Controls.PeoplePicker.nopOperation;
-            }
-            this.onBlur = parameterObject.onBlur;
-            if (Office.Controls.Utils.isNullOrUndefined(this.onBlur)) {
-                this.onBlur = Office.Controls.PeoplePicker.nopOperation;
-            }
-            this.onError = parameterObject.onError;
-
-            Office.Controls.PeoplePicker.res = parameterObject.res;
-            if (Office.Controls.Utils.isNullOrUndefined(Office.Controls.PeoplePicker.res)) {
-                Office.Controls.PeoplePicker.res = {};
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.res)) {
+                    Office.Controls.PeoplePicker.res = parameterObject.res;
+                }
             }
 
             this.currentTimerId = -1;
@@ -121,11 +116,11 @@
         delaySearchInterval: 300,
         enableCache: true,
         inputHint: null,
-        onAdded: null,
-        onRemoved: null,
-        onChange: null,
-        onFocus: null,
-        onBlur: null,
+        onAdded: Office.Controls.PeoplePicker.nopAddRemove,
+        onRemoved: Office.Controls.PeoplePicker.nopAddRemove,
+        onChange: Office.Controls.PeoplePicker.nopOperation,
+        onFocus: Office.Controls.PeoplePicker.nopOperation,
+        onBlur: Office.Controls.PeoplePicker.nopOperation,
         onError: null,
         dataProvider: null,
         showValidationErrors: true,
@@ -1853,7 +1848,7 @@
     Office.Controls.Context.registerClass('Office.Controls.Context');
     Office.Controls.Runtime.registerClass('Office.Controls.Runtime');
     Office.Controls.Utils.registerClass('Office.Controls.Utils');
-    Office.Controls.PeoplePicker.res = null;
+    Office.Controls.PeoplePicker.res = {};
     Office.Controls.PeoplePicker.autofillContainer.currentOpened = null;
     Office.Controls.PeoplePicker.autofillContainer.boolBodyHandlerAdded = false;
     Office.Controls.PeoplePicker.ValidationError.multipleMatchName = 'MultipleMatch';
