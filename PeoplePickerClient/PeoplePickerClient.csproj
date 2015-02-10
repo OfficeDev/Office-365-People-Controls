@@ -20,6 +20,7 @@
   <ItemGroup>
     <Content Include="AadDataProvider.js" />
     <Content Include="AlchemyFabric.css" />
+    <Content Include="api.html" />
     <Content Include="css\office365icons.svg" />
     <Content Include="DataProvider.js" />
     <Content Include="devex.html" />
