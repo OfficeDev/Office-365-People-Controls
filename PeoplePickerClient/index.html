@@ -43,7 +43,7 @@
                     <h3>Playground</h3>
                     <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' checked/>Ignore keyword and show all results.<div id='ppc_mock'></div></p>
                     <p><u>AAD data:</u></p>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a><p/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;<span id="logged_user"></span><p></p>
                     <table>
                         <tr>
                             <td>Single Selection</td>
@@ -407,9 +407,15 @@
             serverHost = '***REMOVED***';
         }
         var pageUri = window.location.href;
+        pageUri = pageUri.split("?")[0];
 
         document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
         document.getElementById('login_admin').href = 'http://' + serverHost + '/authcode?userType=admin&redirect_uri=' + pageUri;
+
+        var userId = getQueryString()["userId"];
+        if (typeof(userId) !== 'undefined') {
+            document.getElementById('logged_user').innerText = "logged as " + userId;
+        }
 
         // Mock data
 
@@ -451,6 +457,17 @@
             document.getElementById('ppc_multiple_people').innerHTML = "<pre>" + people + "</pre>";
         }
         new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+
+        function getQueryString() {
+            var result = {}, queryString = location.search.slice(1),
+                re = /([^&=]+)=([^&]*)/g, m;
+
+            while (m = re.exec(queryString)) {
+                result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
+
+            return result;
+        }
 
     </script>
 </body>
