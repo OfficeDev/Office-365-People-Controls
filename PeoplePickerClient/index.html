@@ -5,7 +5,7 @@
     <title>PeoplePicker Playground</title>
     <style type="text/css">
         td.ppcontainer {
-            border: 1px solid black;
+/*            border: 1px solid black;*/
             width: 200px;
         }
     </style>
@@ -22,46 +22,46 @@
 
     <table style="width: 100%; border: 0px">
         <tr>
-            <td>
-    <!-- Links -->
-    <div>
-        <h3>Links</h3>
-        <p><a href="devex.html">Instructions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="TestPage.html">Test Cases</a></p>
-    </div>
+            <td style="vertical-align:top">
+                <!-- Links -->
+                <div>
+                    <h3>Links</h3>
+                    <p><a href="devex.html">Instructions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="TestPage.html">Test Cases</a></p>
+                </div>
 
-    <!-- Known Issues -->
-    <div>
-        <h3>Known Issues</h3>
-        <ul>
-            <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
+                <!-- Known Issues -->
+                <div>
+                    <h3>Known Issues</h3>
+                    <ul>
+                        <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
             <li>Need login first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
-        </ul>
-    </div>
+                    </ul>
+                </div>
 
-    <!-- Playground -->
-    <div>
-        <h3>Playground</h3>
-                    <p><u>Mock data:</u><div id='ppc_mock'></div></p>
+                <!-- Playground -->
+                <div>
+                    <h3>Playground</h3>
+                    <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' checked/>Ignore keyword and show all results.<div id='ppc_mock'></div></p>
                     <p><u>AAD data:</u></p>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>
-        <table>
-            <tr>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a><p/>
+                    <table>
+                        <tr>
                             <td>Single Selection</td>
                             <td class="ppcontainer"><div id='ppc_single'></div></td>
-            </tr>
-            <tr>
+                        </tr>
+                        <tr>
                             <td>Multiple Selection</td>
                             <td class="ppcontainer">
                                 <div id='ppc_multiple'></div>
-                    <div id='ppc_multiple_error' style="color: red"></div>
-                    <div id='ppc_multiple_people' style="color: blue"></div>
-                </td>
-            </tr>
-        </table>
-    </div>
+                                <div id='ppc_multiple_error' style="color: red"></div>
+                                <div id='ppc_multiple_people' style="color: blue"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </td>
             <td style="text-align:right; vertical-align:top">
-                <h3>Demo Tenant and Users</h3>
+                <h3>Demo Tenant and Users (<span style="color:#0000EE">blue</span> is admin)</h3>
                 <table style="border: 1px solid black; margin-left:auto; margin-right:0">
                     <thead><b>***REMOVED***</b></thead>
                     <tr>
@@ -70,13 +70,73 @@
                         <th>Password</th>
                     </tr>
                     <tr>
+                        <td>Bin Du</td>
+                        <td>bidu@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Bin Wang</td>
+                        <td>binwang@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
                         <td>***REMOVED***</td>
                         <td>***REMOVED***</td>
                         ***REMOVED***
                     </tr>
                     <tr>
                         <td>***REMOVED***</td>
+                        <td>chynese_kd@hotmail.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td>***REMOVED***</td>
+                        <td><span style="color:#0000EE">***REMOVED***</span></td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>***REMOVED*** Chen</td>
+                        <td>***REMOVED***@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Flora Li</td>
+                        <td>kaidal@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Jinlong Ju</td>
+                        <td>jiju@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Jonathan Tang</td>
+                        <td>jontang@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kevin Huang</td>
+                        <td>kevinhu@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kun Liu</td>
+                        <td>kuliu@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Li Jiang</td>
+                        <td>lijia@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Ruoying Liang</td>
+                        <td>ruoyingl@chynesekdhotmail1.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Yihua Cao</td>
+                        <td><span style="color:#0000EE">yihcao@chynesekdhotmail1.onmicrosoft.com</span></td>
                         ***REMOVED***
                     </tr>
                     <tr>
@@ -94,18 +154,244 @@
                         <th>Password</th>
                     </tr>
                     <tr>
+                        <td>Abe Ge</td>
+                        <td>yige@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Alex (Thoughtbot)</td>
+                        <td>alex@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Andrew Hobden</td>
+                        <td>anhobden@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>App Tester</td>
+                        <td>apptester@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Arthur Jiang</td>
+                        <td>sjian@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Bin Wang</td>
+                        <td>binwang@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bing Zhu</td>
+                        <td>yibzhu@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>brain davis</td>
+                        <td>bdavis@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>fyan@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Brian van Eimeren</td>
+                        <td>brianvan@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>***REMOVED*** Chen</td>
+                        <td>***REMOVED***@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Chi Zhang</td>
+                        <td>chiz@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>demyren2</td>
+                        <td>demyren2@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dennis Myren</td>
+                        <td>demyren@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dingkun Xie</td>
+                        <td>dixie@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Du Bin</td>
+                        <td>bidu@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Eric Zenz</td>
+                        <td>ezenz@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Esther Ho</td>
+                        <td>estherho@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Fangbai Li</td>
+                        <td>fangbli@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Ge Gao</td>
+                        <td>gega@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Gideon Huang</td>
+                        <td>gihuang@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Henry Liu</td>
+                        <td>henliu@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Huaqing Liu</td>
+                        <td>huliu@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Jessie Chen</td>
+                        <td>jic@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Jipeng Yuan</td>
+                        <td>jipyua@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Joe Zhao</td>
+                        <td>joezhao@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Joseph Chirilov</td>
+                        <td>joseph@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Kathy Liu</td>
+                        <td>kathyl@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kevin Wang</td>
+                        <td>kwan@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kevin Yang</td>
+                        <td>keyang@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kinson Liu</td>
+                        <td>kinliu@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Kun Liu</td>
+                        <td>kuliu@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Leon Wu</td>
+                        <td>liangw@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Melinda Ma</td>
+                        <td>melindam@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Michael Wu</td>
+                        <td>micwu@yamplat.onmicrosoft.com</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Peng Wang</td>
+                        <td>pwang@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ron Blandford</td>
+                        <td>yadmin@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ryan Gao</td>
+                        <td>rgao@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>Vidya Srinivasan</td>
+                        <td>vidya@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Vidya Srinivasan</td>
+                        <td>vidyasri@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Yammer Vader</td>
+                        <td>vader1@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Yammer Vader</td>
+                        <td>vader2@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Yammer Yoda</td>
+                        <td>yammerv1@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Yammer Yoda</td>
+                        <td>YammerM@yamplat.onmicrosoft.com</td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td>Yihua Cao</td>
-                        <td>***REMOVED***</td>
+                        <td><span style="color:#0000EE">***REMOVED***</span></td>
                         ***REMOVED***
                     </tr>
                     <tr>
                         <td>***REMOVED***</td>
                         <td>***REMOVED***</td>
-                        ***REMOVED***
+                        <td></td>
                     </tr>
                     <tr>
                         <td>***REMOVED***</td>
-                        <td>***REMOVED***</td>
+                        <td>hugebull@gmail.com</td>
+                        <td></td>
                     </tr>
                 </table>
                 <h3>Other Tenant</h3>
@@ -127,8 +413,12 @@
 
         // Mock data
 
-        var mockDataProvider = Object.create(MockDataProvider);
+        var mockDataProvider = new MockDataProvider();
         new Office.Controls.PeoplePicker(document.getElementById('ppc_mock'), mockDataProvider, {});
+
+        function checkbox_ignore_click(cb) {
+            mockDataProvider.ignoreKeyword = cb.checked;
+        }
 
         // AAD data
 
