@@ -53,7 +53,7 @@
             if (document.getElementById("11").checked == true) {
                 params.onError = listeneError;
             }
-            var dataProvider = Object.create(MockDataProvider);
+            var dataProvider = new MockDataProvider();
             document.getElementById('PeoplePickerContainer').innerHTML = "";
             PeoplePicker= new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);
         }
@@ -114,7 +114,7 @@
             }
         }
     </script>
-    <h2>Input following parmas to create a PeoplePicker</h2>
+    <h2>Input following options to create a PeoplePicker</h2>
     <table>
         <tr>
             <td>Allow mutiple selection(bool):</td>
