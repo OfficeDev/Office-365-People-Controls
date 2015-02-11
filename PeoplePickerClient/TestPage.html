@@ -117,21 +117,21 @@
     <h2>Input following parmas to create a PeoplePicker</h2>
     <table>
         <tr>
-            <td>Allow mutiple selection:</td>
+            <td>Allow mutiple selection(bool):</td>
             <td><input type="text" id="1" /></td>
-            <td>Start search Char length:</td>
+            <td>Start search Char length(int):</td>
             <td><input type="text" id="2" /></td>
         </tr>
         <tr>
-            <td>Delay search interval:</td>
+            <td>Delay search interval(int,Unit:ms):</td>
             <td><input type="text" id="3" /></td>
-            <td>Enable cache:</td>
+            <td>Enable cache(bool):</td>
             <td><input type="text" id="4" /></td>
         </tr>
         <tr>
-            <td>Input hint:</td>
+            <td>Input hint(string or sentence):</td>
             <td><input type="text" id="5" /></td>
-            <td>Show validation Errors:</td>
+            <td>Show validation Errors(bool):</td>
             <td><input type="text" id="6" /></td>
         </tr>
         <tr>
@@ -187,10 +187,9 @@
         <tr>
             <td><button onclick="addPerson()">6 add(person,resolve)</button></td>
             <td>Input person:</td>
-            <td>Person is string:</td>
-            <td><input type="checkbox" id="personIsName" />If true,input person name :<input type="text" id="personName" /></td>
-            <td>The person is resolved:</td>
-            <td><input type="checkbox" id="resolved" /></td>
+            <td>Person is string:<input type="checkbox" id="personIsName" /></td>
+            <td>If true,input person name :<input type="text" id="personName" /></td>
+            <td>The person is resolved:<input type="checkbox" id="resolved" /></td>
         </tr>
     </table>
     <div>
