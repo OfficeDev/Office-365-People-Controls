@@ -53,7 +53,7 @@
             if (document.getElementById("11").checked == true) {
                 params.onError = listeneError;
             }
-            var dataProvider = Object.create(MockDataProvider);
+            var dataProvider = new MockDataProvider();
             document.getElementById('PeoplePickerContainer').innerHTML = "";
             PeoplePicker= new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);
         }
