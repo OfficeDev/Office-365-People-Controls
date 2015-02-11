@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <title>PeoplePicker</title>
+    <title>PeoplePicker Playground</title>
     <style type="text/css">
-        td {
+        td.ppcontainer {
             border: 1px solid black;
             width: 200px;
         }
@@ -13,7 +13,6 @@
 <body>
 
     <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <script type="text/javascript" src="AadDataProvider.js"></script>
@@ -21,6 +20,9 @@
 
     <h1>PeoplePicker</h1>
 
+    <table style="width: 100%; border: 0px">
+        <tr>
+            <td>
     <!-- Links -->
     <div>
         <h3>Links</h3>
@@ -31,6 +33,7 @@
     <div>
         <h3>Known Issues</h3>
         <ul>
+            <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
             <li>Need login first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
         </ul>
     </div>
@@ -38,22 +41,78 @@
     <!-- Playground -->
     <div>
         <h3>Playground</h3>
-        <a id="login_link">Login</a>
+                    <p><u>Mock data:</u><div id='ppc_mock'></div></p>
+                    <p><u>AAD data:</u></p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>
         <table>
             <tr>
-                <td >Single Selection</td>
-                <td ><div id='ppc_single'></div></td>
+                            <td>Single Selection</td>
+                            <td class="ppcontainer"><div id='ppc_single'></div></td>
             </tr>
             <tr>
-                <td >Multiple Selection</td>
-                <td >
-                    <div id='ppc_multiple' ></div>
+                            <td>Multiple Selection</td>
+                            <td class="ppcontainer">
+                                <div id='ppc_multiple'></div>
                     <div id='ppc_multiple_error' style="color: red"></div>
                     <div id='ppc_multiple_people' style="color: blue"></div>
                 </td>
             </tr>
         </table>
     </div>
+            </td>
+            <td style="text-align:right; vertical-align:top">
+                <h3>Demo Tenant and Users</h3>
+                <table style="border: 1px solid black; margin-left:auto; margin-right:0">
+                    <thead><b>***REMOVED***</b></thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Account</th>
+                        <th>Password</th>
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                </table>
+                <p/>
+                <table style="border: 1px solid black; margin-left:auto; margin-right:0">
+                    <thead><b>Tenant: yamplat.onmicrosoft.com</b></thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Account</th>
+                        <th>Password</th>
+                    </tr>
+                    <tr>
+                        <td>Yihua Cao</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                        ***REMOVED***
+                    </tr>
+                    <tr>
+                        <td>***REMOVED***</td>
+                        <td>***REMOVED***</td>
+                    </tr>
+                </table>
+                <h3>Other Tenant</h3>
+                <p>Please do <b><a id="login_admin">Admin Consent</a></b> with a <b style="color: #0000EE">Admin</b> account first.</p>
+            </td>
+        </tr>
+    </table>
     
 
     <script type="text/javascript">
@@ -63,19 +122,27 @@
         }
         var pageUri = window.location.href;
 
-        document.getElementById('login_link').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+        document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+        document.getElementById('login_admin').href = 'http://' + serverHost + '/authcode?userType=admin&redirect_uri=' + pageUri;
+
+        // Mock data
+
+        var mockDataProvider = Object.create(MockDataProvider);
+        new Office.Controls.PeoplePicker(document.getElementById('ppc_mock'), mockDataProvider, {});
+
+        // AAD data
 
         var aadDataProvider = new AadDataProvider();
         aadDataProvider.serverHost = serverHost;
 
         params = new Object();
-        params.allowMultipleSelections = true;
+        params.allowMultipleSelections = false;
         params.enableCache = true;
         params.showValidationErrors = true;
         new Office.Controls.PeoplePicker(document.getElementById('ppc_single'), aadDataProvider, params);
 
         params.allowMultipleSelections = true;
-        params.startSearchCharLength = 3;
+        params.startSearchCharLength = 1;
         params.inputHint = "Try to select multiple records...";
         params.showValidationErrors = false;
         params.onError = function (control, validationError) {
@@ -94,6 +161,7 @@
             document.getElementById('ppc_multiple_people').innerHTML = "<pre>" + people + "</pre>";
         }
         new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+
     </script>
 </body>
 </html>
