@@ -114,8 +114,8 @@
             }
         }
     </script>
-    <h2>Input following parmas to create a PeoplePicker</h2>
-    <table>
+    <h2>Input following options to create a PeoplePicker</h2>
+    <table style="border: 1px dotted blue;">
         <tr>
             <td>Allow mutiple selection(bool):</td>
             <td><input type="text" id="1" /></td>
@@ -158,11 +158,20 @@
         </tr>
     </table>
     <div>
+        <h3>The New PeoplePicker</h3>
+        <table>
+            <tr>
+                <td>PeoplePicker</td>
+                <td><div id='PeoplePickerContainer'></div></td>
+            </tr>
+        </table>
+    </div>
+    <div>
         <h3>Listener get notified:</h3>
         <textarea id="ListenOutput"></textarea><button onclick="clearOutput()">Clear Output</button>
     </div>
     <h2>Call following API from PeoplePicker</h2>
-    <table>
+    <table style="border: 1px dotted blue;">
         <tr>
             <td><button onclick="getErrorDisplayed()">1 getErrorDisplayed()</button></td>
             <td>Return:</td>
@@ -192,16 +201,11 @@
             <td>The person is resolved:<input type="checkbox" id="resolved" /></td>
         </tr>
     </table>
-    <div>
-        <h3>The New PeoplePicker</h3>
-        <a id="login_link">Login</a>
-        <table>
-            <tr>
-                <td>PeoplePicker</td>
-                <td><div id='PeoplePickerContainer'></div></td>
-            </tr>
-        </table>
-    </div>
+    <table style="position:fixed;top:30px;right:10px;">
+        <tr>
+            <td>Read <a href="api.html">PeoplePicker and data provider API</a></td>
+        </tr>
+    </table>
 </body>
 
 </html>
