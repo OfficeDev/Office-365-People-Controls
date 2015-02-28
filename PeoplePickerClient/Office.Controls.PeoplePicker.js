@@ -112,7 +112,7 @@
     }
     Office.Controls.PeoplePicker.prototype = {
         allowMultiple: false,
-        startSearchCharLength: 3,
+        startSearchCharLength: 1,
         delaySearchInterval: 300,
         enableCache: true,
         inputHint: null,
@@ -162,6 +162,8 @@
             if (Office.Controls.PeoplePicker.autofillContainer.currentOpened) {
                 Office.Controls.PeoplePicker.autofillContainer.currentOpened.close();
             }
+            Office.Controls.PeoplePicker.autofillContainer.currentOpened = null;
+            Office.Controls.PeoplePicker.autofillContainer.boolBodyHandlerAdded = false;
             this.autofill = new Office.Controls.PeoplePicker.autofillContainer(this)
             this.toggleDefaultText();
 
