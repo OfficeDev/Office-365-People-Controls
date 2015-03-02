@@ -1903,7 +1903,7 @@
     Office.Controls.PeoplePickerResourcesDefaults.PP_ServerProblem = 'Sorry, we\'re having trouble reaching the server.';
     Office.Controls.PeoplePickerResourcesDefaults.PP_DefaultMessagePlural = 'Enter names or email addresses...';
     Office.Controls.PeoplePickerResourcesDefaults.PP_MultipleMatch = 'Multiple entries matched, please click to resolve.';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_Results = 'No results found||{0} found||Showing {0} results';
+    Office.Controls.PeoplePickerResourcesDefaults.PP_Results = 'No results found||{0} found||{0} found';
     Office.Controls.PeoplePickerResourcesDefaults.PP_Searching = 'Searching...';
     Office.Controls.PeoplePickerResourcesDefaults.PP_ResultsIntervals = '0||1||2-';
     Office.Controls.PeoplePickerResourcesDefaults.PP_NoSuggestionsAvailable = 'No Suggestions Available';
