@@ -54,6 +54,7 @@
                 params.onError = listeneError;
             }
             var dataProvider = new MockDataProvider();
+            dataProvider.ignoreKeyword = false;
             document.getElementById('PeoplePickerContainer').innerHTML = "";
             PeoplePicker= new Office.Controls.PeoplePicker(document.getElementById('PeoplePickerContainer'), dataProvider, params);
         }

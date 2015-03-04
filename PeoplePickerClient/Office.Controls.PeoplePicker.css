@@ -48,8 +48,7 @@
 .ms-PeoplePicker .ms-PeoplePicker-persona {
   display: inline-block;
   float: left;
-  /*margin: 4px;*/
-  margin:0;
+  margin: 4px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-persona .ms-Persona {
   background-color: #f4f4f4;
@@ -627,6 +626,7 @@
     padding-left : 4px;
     /*position:absolute !important;*/
     /*width:inherit !important;*/
+    margin-top:4px; /*Add for 3rd party*/
 
 }
 
@@ -673,6 +673,7 @@
     border:0 !important;
     position:absolute !important;
     overflow:hidden;
+    background-color:transparent !important;
 }
 
 .ms-PeoplePicker-searchMoreIconFixed {
