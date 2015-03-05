@@ -456,7 +456,8 @@
                 });
             document.getElementById('ppc_multiple_people').innerHTML = "<pre>" + people + "</pre>";
         }
-        new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+        var pp = new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+        document.getElementById('ppc_multiple').setAttribute("data-pp", pp);
 
         function getQueryString() {
             var result = {}, queryString = location.search.slice(1),
