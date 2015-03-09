@@ -667,6 +667,14 @@
     padding-left: 10px !important;
 }
 
+.ms-PeoplePicker-resultAddedForSelect {
+    background-color:aliceblue;
+}
+
+.ms-PeoplePicker-persona:focus {
+    border:1px solid;
+}
+
 .ms-PeoplePicker-searchFieldAddedForSingleSelectionHidden {
     width:0 !important;
     height:0 !important;
