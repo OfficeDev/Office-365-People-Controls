@@ -368,6 +368,7 @@
                 }
             }
             else if ((keyEvent.keyCode === 75 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186) || (keyEvent.keyCode === 59) || (keyEvent.keyCode === 13)) {
+
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 this.cancelLastRequest();
