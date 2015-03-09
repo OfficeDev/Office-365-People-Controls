@@ -1,7 +1,18 @@
 /*! Version=16.00.0549.000 */
 (function () {
 
-    Type.registerNamespace('Office.Controls');
+    if (window.Type && window.Type.registerNamespace) {
+        Type.registerNamespace('Office.Controls');
+    } else {
+        if (typeof (window['Office']) == 'undefined') {
+            window['Office'] = new Object(); window['Office'].__namespace = true;
+        }
+        if (typeof (window['Office']['Controls']) == 'undefined') {
+            window['Office']['Controls'] = new Object(); window['Office']['Controls'].__namespace = true;
+        }
+
+    }
+
 
     Office.Controls.PrincipalInfo = function () { }
 
@@ -74,9 +85,9 @@
             this.errors = new Array(0);
             if (this.enableCache == true) {
                 Office.Controls.Runtime.initialize({ HostUrl: window.location.host });
-            this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
+                this.cache = Office.Controls.PeoplePicker.mruCache.getInstance();
             }
-            
+
             this.renderControl();
             this.autofill = new Office.Controls.PeoplePicker.autofillContainer(this);
         }
@@ -213,7 +224,7 @@
         },
 
         clearCacheData: function () {
-            if(this.cache != null){
+            if (this.cache != null) {
                 this.cache.cacheDelete('Office.PeoplePicker.Cache');
                 this.cache.dataObject = null;
             }
@@ -446,7 +457,7 @@
                             else {
                                 $$t_7.onDataFetchError(error);
                             }
-                            
+
                         });
                     }
                     else {
@@ -515,7 +526,7 @@
             }
             this.toggleDefaultText();
             this.onFocus(this);
-            
+
             var $$_9 = this;
             if (this.startSearchCharLength == 0 && (this.allowMultiple == true || this.internalSelectedItems.length == 0)) {
                 this.startQueryAfterDelay();
@@ -1514,7 +1525,7 @@
         var groupTitle = (isCached) ? cachedGrouptTitile : searchedGroupTitile;
         listHtml += '<div class=\"ms-PeoplePicker-resultGroup\">';
         listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle ms-PeoplePicker-resultGroupTitleAdded\">' + groupTitle + '</div>';
-        listHtml += '<ul class=\"ms-PeoplePicker-resultList\" id=\"'+ groupTitle +'\">';
+        listHtml += '<ul class=\"ms-PeoplePicker-resultList\" id=\"' + groupTitle + '\">';
         for (var i = 0; i < principals.length; i++) {
             listHtml += Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate(principals[i], source);
         }
@@ -1843,21 +1854,21 @@
     }
 
 
-    Office.Controls.PrincipalInfo.registerClass('Office.Controls.PrincipalInfo');
-    Office.Controls.PeoplePickerRecord.registerClass('Office.Controls.PeoplePickerRecord');
-    Office.Controls.PeoplePicker.registerClass('Office.Controls.PeoplePicker');
-    Office.Controls.PeoplePicker.internalPeoplePickerRecord.registerClass('Office.Controls.PeoplePicker.internalPeoplePickerRecord');
-    Office.Controls.PeoplePicker.autofillContainer.registerClass('Office.Controls.PeoplePicker.autofillContainer');
-    Office.Controls.PeoplePicker.Parameters.registerClass('Office.Controls.PeoplePicker.Parameters');
-    Office.Controls.PeoplePicker.cancelToken.registerClass('Office.Controls.PeoplePicker.cancelToken');
-    Office.Controls.PeoplePicker.ValidationError.registerClass('Office.Controls.PeoplePicker.ValidationError');
-    Office.Controls.PeoplePicker.mruCache.registerClass('Office.Controls.PeoplePicker.mruCache');
-    Office.Controls.PeoplePicker.mruCache.mruData.registerClass('Office.Controls.PeoplePicker.mruCache.mruData');
-    Office.Controls.PeoplePickerResourcesDefaults.registerClass('Office.Controls.PeoplePickerResourcesDefaults');
-    Office.Controls.peoplePickerTemplates.registerClass('Office.Controls.peoplePickerTemplates');
-    Office.Controls.Context.registerClass('Office.Controls.Context');
-    Office.Controls.Runtime.registerClass('Office.Controls.Runtime');
-    Office.Controls.Utils.registerClass('Office.Controls.Utils');
+    if (Office.Controls.PrincipalInfo.registerClass) Office.Controls.PrincipalInfo.registerClass('Office.Controls.PrincipalInfo');
+    if (Office.Controls.PeoplePickerRecord.registerClass) Office.Controls.PeoplePickerRecord.registerClass('Office.Controls.PeoplePickerRecord');
+    if (Office.Controls.PeoplePicker.registerClass) Office.Controls.PeoplePicker.registerClass('Office.Controls.PeoplePicker');
+    if (Office.Controls.PeoplePicker.internalPeoplePickerRecord.registerClass) Office.Controls.PeoplePicker.internalPeoplePickerRecord.registerClass('Office.Controls.PeoplePicker.internalPeoplePickerRecord');
+    if (Office.Controls.PeoplePicker.autofillContainer.registerClass) Office.Controls.PeoplePicker.autofillContainer.registerClass('Office.Controls.PeoplePicker.autofillContainer');
+    if (Office.Controls.PeoplePicker.Parameters.registerClass) Office.Controls.PeoplePicker.Parameters.registerClass('Office.Controls.PeoplePicker.Parameters');
+    if (Office.Controls.PeoplePicker.cancelToken.registerClass) Office.Controls.PeoplePicker.cancelToken.registerClass('Office.Controls.PeoplePicker.cancelToken');
+    if (Office.Controls.PeoplePicker.ValidationError.registerClass) Office.Controls.PeoplePicker.ValidationError.registerClass('Office.Controls.PeoplePicker.ValidationError');
+    if (Office.Controls.PeoplePicker.mruCache.registerClass) Office.Controls.PeoplePicker.mruCache.registerClass('Office.Controls.PeoplePicker.mruCache');
+    if (Office.Controls.PeoplePicker.mruCache.mruData.registerClass) Office.Controls.PeoplePicker.mruCache.mruData.registerClass('Office.Controls.PeoplePicker.mruCache.mruData');
+    if (Office.Controls.PeoplePickerResourcesDefaults.registerClass) Office.Controls.PeoplePickerResourcesDefaults.registerClass('Office.Controls.PeoplePickerResourcesDefaults');
+    if (Office.Controls.peoplePickerTemplates.registerClass) Office.Controls.peoplePickerTemplates.registerClass('Office.Controls.peoplePickerTemplates');
+    if (Office.Controls.Context.registerClass) Office.Controls.Context.registerClass('Office.Controls.Context');
+    if (Office.Controls.Runtime.registerClass) Office.Controls.Runtime.registerClass('Office.Controls.Runtime');
+    if (Office.Controls.Utils.registerClass) Office.Controls.Utils.registerClass('Office.Controls.Utils');
     Office.Controls.PeoplePicker.res = {};
     Office.Controls.PeoplePicker.autofillContainer.currentOpened = null;
     Office.Controls.PeoplePicker.autofillContainer.boolBodyHandlerAdded = false;

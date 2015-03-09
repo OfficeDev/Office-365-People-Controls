@@ -12,7 +12,6 @@
 </head>
 <body>
 
-    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <script type="text/javascript" src="AadDataProvider.js"></script>
@@ -420,7 +419,8 @@
         // Mock data
 
         var mockDataProvider = new MockDataProvider();
-        new Office.Controls.PeoplePicker(document.getElementById('ppc_mock'), mockDataProvider, {});
+        var pp = new Office.Controls.PeoplePicker(document.getElementById('ppc_mock'), mockDataProvider, {});
+        document.getElementById('ppc_mock').datapp = pp;
 
         function checkbox_ignore_click(cb) {
             mockDataProvider.ignoreKeyword = cb.checked;
@@ -456,8 +456,8 @@
                 });
             document.getElementById('ppc_multiple_people').innerHTML = "<pre>" + people + "</pre>";
         }
-        var pp = new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
-        document.getElementById('ppc_multiple').setAttribute("data-pp", pp);
+        pp = new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+        document.getElementById('ppc_multiple').datapp = pp;
 
         function getQueryString() {
             var result = {}, queryString = location.search.slice(1),

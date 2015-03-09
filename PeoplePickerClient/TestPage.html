@@ -6,8 +6,6 @@
 <body>
     <a href="index.html">Playground</a>/Test cases
 
-    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/4.0/MicrosoftAjax.debug.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="Office.Controls.PeoplePicker.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <link rel="stylesheet" type="text/css" href="Office.Controls.PeoplePicker.css">
@@ -152,7 +150,7 @@
             <td><input type="checkbox" id="11" /></td>
         </tr>
         <tr>
-            <td><button onclick="createPP()">Create PeoplePicker!</button></td>
+            <td><button id="createPPButton" onclick="createPP()">Create PeoplePicker!</button></td>
             <td></td>
             <td><button onclick="deletePP()">Delete PeoplePicker!</button></td>
             <td></td>
@@ -179,7 +177,7 @@
             <td><textarea id="getErrorDisplayed"></textarea></td>
         </tr>
         <tr>
-            <td><button onclick="getAddedPerson()">2 getAddedPerson()</button></td>
+            <td><button id="getAddedPersonButton" onclick="getAddedPerson()">2 getAddedPerson()</button></td>
             <td>Return:</td>
             <td><textarea id="getAddedPerson"></textarea></td>
         </tr>
@@ -190,12 +188,12 @@
             <td><button onclick="resetPeoplePicker()">4 resetPeoplePicker()</button></td>
         </tr>
         <tr>
-            <td><button onclick="removePerson()">5 remove(person)</button></td>
+            <td><button id="removePersonButton" onclick="removePerson()">5 remove(person)</button></td>
             <td>Added Person Index(from 0):</td>
             <td><textarea id="removePerson">0</textarea></td>
         </tr>
         <tr>
-            <td><button onclick="addPerson()">6 add(person,resolve)</button></td>
+            <td><button id="addPersonButton" onclick="addPerson()">6 add(person,resolve)</button></td>
             <td>Input person:</td>
             <td>Person is string:<input type="checkbox" id="personIsName" /></td>
             <td>If true,input person name :<input type="text" id="personName" /></td>
