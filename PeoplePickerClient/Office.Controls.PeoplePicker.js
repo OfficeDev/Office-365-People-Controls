@@ -379,7 +379,6 @@
                 }
             }
             else if ((keyEvent.keyCode === 75 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186) || (keyEvent.keyCode === 59) || (keyEvent.keyCode === 13)) {
-
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 this.cancelLastRequest();
@@ -632,6 +631,7 @@
                 this.lastSearchQuery = '';
                 this.addUnresolvedPrincipal(this.textInput.value, true);
                 this.clearInputField();
+                this.setTextInputDisplayStyle();
             }
         },
 
@@ -693,6 +693,7 @@
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record);
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
+            this.setTextInputDisplayStyle();
             var $$t_5 = this, $$t_6 = this;
             this.dataProvider.getPrincipals(record.DisplayName, function (error, ps) {
                 if (ps != null) {
