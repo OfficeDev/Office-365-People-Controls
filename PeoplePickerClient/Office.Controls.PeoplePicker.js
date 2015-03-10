@@ -337,11 +337,16 @@
             }
             else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) {
                 var focusElement = this.autofillElement.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
-                var personId = this.autofill.getPersonIdFromListElement(focusElement);
-                this.addResolvedPrincipal(this.autofill.entries[personId]);
-                this.autofill.flushContent();
-                Office.Controls.Utils.cancelEvent(e);
-                return false;
+                if (focusElement != null) {
+                    var personId = this.autofill.getPersonIdFromListElement(focusElement);
+                    this.addResolvedPrincipal(this.autofill.entries[personId]);
+                    this.autofill.flushContent();
+                    Office.Controls.Utils.cancelEvent(e);
+                    return false;
+                }
+                else {
+                    this.autofill.close();
+                }
             }
             else if ((keyEvent.keyCode === 40 || keyEvent.keyCode === 38 ) && this.autofill.IsDisplayed) {
                 this.autofill.onKeyDownFromInput(keyEvent);
