@@ -39,7 +39,7 @@
             this.dataProvider = dataProvider;
             if (!Office.Controls.Utils.isNullOrUndefined(parameterObject)) {
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.allowMultipleSelections)) {
-                    this.allowMultiple = parameterObject.allowMultipleSelections;
+                    this.allowMultiple = (parameterObject.allowMultipleSelections == "true");
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.startSearchCharLength) && parameterObject.startSearchCharLength >= 1) {
                     this.startSearchCharLength = parameterObject.startSearchCharLength;
@@ -48,13 +48,13 @@
                     this.delaySearchInterval = parameterObject.delaySearchInterval;
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.enableCache)) {
-                    this.enableCache = parameterObject.enableCache;
+                    this.enableCache = (parameterObject.enableCache == "true");
                 }
                 if (!Office.Controls.Utils.isNullOrEmptyString(parameterObject.inputHint)) {
                     this.inputHint = parameterObject.inputHint;
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showValidationErrors)) {
-                    this.showValidationErrors = parameterObject.showValidationErrors;
+                    this.showValidationErrors = (parameterObject.showValidationErrors == "true");
                 }
 
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onAdded)) {
@@ -96,7 +96,7 @@
         }
     }
     Office.Controls.PeoplePicker.copyToRecord = function (record, info) {
-        record.displayName = info.DisplayName;
+        record.DisplayName = info.DisplayName;
         record.Description = info.Description;
         record.PersonId = info.PersonId;
         record.principalInfo = info;
@@ -635,8 +635,6 @@
             if (this.textInput.value.length > 0) {
                 this.lastSearchQuery = '';
                 this.addUnresolvedPrincipal(this.textInput.value, true);
-                this.clearInputField();
-                this.setTextInputDisplayStyle();
             }
         },
 
@@ -654,7 +652,7 @@
 
         onDataReceivedForStalenessCheck: function (principalsReceived, internalRecordToCheck) {
             if (principalsReceived.length === 1) {
-                internalRecordToCheck.refresh(principalsReceived[0]);
+                internalRecordToCheck.resolveTo(principalsReceived[0]);
             }
             else {
                 internalRecordToCheck.unresolve();
@@ -699,11 +697,13 @@
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
             this.setTextInputDisplayStyle();
+            this.displayLoadingIcon(record.text);
             var $$t_5 = this, $$t_6 = this;
             this.dataProvider.getPrincipals(record.DisplayName, function (error, ps) {
                 if (ps != null) {
-                    $$t_5.onDataReceivedForStalenessCheck(ps, internalRecord);
-                    this.onAdded(this, record.principalInfo);
+                    internalRecord = $$t_5.onDataReceivedForResolve(ps, internalRecord);
+                    $$t_5.onAdded(this, internalRecord.Record.principalInfo);
+                    $$t_5.onChange($$t_5);
                 }
                 else {
                     $$t_6.onDataFetchError(error);
@@ -723,6 +723,8 @@
             internalRecord.add();
             this.selectedItems.push(record);
             this.internalSelectedItems.push(internalRecord);
+            this.clearInputField();
+            this.setTextInputDisplayStyle();
             this.displayLoadingIcon(input);
             var $$t_7 = this, $$t_8 = this;
             this.dataProvider.getPrincipals(input, function (error, ps) {
