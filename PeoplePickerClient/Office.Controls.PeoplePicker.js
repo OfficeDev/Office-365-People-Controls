@@ -337,11 +337,16 @@
             }
             else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) {
                 var focusElement = this.autofillElement.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
-                var personId = this.autofill.getPersonIdFromListElement(focusElement);
-                this.addResolvedPrincipal(this.autofill.entries[personId]);
-                this.autofill.flushContent();
-                Office.Controls.Utils.cancelEvent(e);
-                return false;
+                if (focusElement != null) {
+                    var personId = this.autofill.getPersonIdFromListElement(focusElement);
+                    this.addResolvedPrincipal(this.autofill.entries[personId]);
+                    this.autofill.flushContent();
+                    Office.Controls.Utils.cancelEvent(e);
+                    return false;
+                }
+                else {
+                    this.autofill.close();
+                }
             }
             else if ((keyEvent.keyCode === 40 || keyEvent.keyCode === 38 ) && this.autofill.IsDisplayed) {
                 this.autofill.onKeyDownFromInput(keyEvent);
@@ -626,6 +631,7 @@
                 this.lastSearchQuery = '';
                 this.addUnresolvedPrincipal(this.textInput.value, true);
                 this.clearInputField();
+                this.setTextInputDisplayStyle();
             }
         },
 
@@ -687,6 +693,7 @@
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record);
             internalRecord.add();
             this.internalSelectedItems.push(internalRecord);
+            this.setTextInputDisplayStyle();
             var $$t_5 = this, $$t_6 = this;
             this.dataProvider.getPrincipals(record.DisplayName, function (error, ps) {
                 if (ps != null) {
