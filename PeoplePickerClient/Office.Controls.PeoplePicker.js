@@ -303,8 +303,8 @@
                 return $$t_A.onInputKeyDown(e);
             });
             var $$t_B = this;
-            Office.Controls.Utils.addEventListener(this.textInput, 'keyup', function (e) {
-                return $$t_B.onInputKeyUp(e);
+            Office.Controls.Utils.addEventListener(this.textInput, 'input', function (e) {
+                return $$t_B.onInput(e);
             });
             var $$t_C = this;
             Office.Controls.Utils.addEventListener(window.self, 'resize', function (e) {
@@ -379,7 +379,6 @@
                 }
             }
             else if ((keyEvent.keyCode === 75 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186) || (keyEvent.keyCode === 59) || (keyEvent.keyCode === 13)) {
-
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 this.cancelLastRequest();
@@ -417,16 +416,11 @@
             }
         },
 
-        onInputKeyUp: function (e) {
-            var keyEvent = Office.Controls.Utils.getEvent(e);
-            if (keyEvent.keyCode !== 40 && keyEvent.keyCode !== 38)
-            {
-                this.startQueryAfterDelay();
-                this.resizeInputField();
-                this.autofill.close();
-                return true;
-            }
-            return false;
+        onInput: function (e) {
+            this.startQueryAfterDelay();
+            this.resizeInputField();
+            this.autofill.close();
+            return true;
         },
 
         displayCachedEntries: function () {
