@@ -25,6 +25,7 @@
     <Content Include="DataProvider.js" />
     <Content Include="devex.html" />
     <Content Include="fabric.controls.css" />
+    <Content Include="images\questionmark.png" />
     <Content Include="index.html" />
     <Content Include="Office.Controls.PeoplePicker.js" />
     <Content Include="Office.Controls.PeoplePicker.css" />
