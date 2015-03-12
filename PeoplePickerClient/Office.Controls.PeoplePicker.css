@@ -673,6 +673,7 @@
 
 .ms-PeoplePicker-persona:focus {
     border:1px solid;
+    border-color:aliceblue;
 }
 
 .ms-PeoplePicker-searchFieldAddedForSingleSelectionHidden {
