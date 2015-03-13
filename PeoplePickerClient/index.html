@@ -22,15 +22,9 @@
     <table style="width: 100%; border: 0px">
         <tr>
             <td style="vertical-align:top">
-                <!-- Links -->
-                <div>
-                    <h3>Links</h3>
-                    <p><a href="devex.html">Instructions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="TestPage.html">Test Cases</a></p>
-                </div>
-
                 <!-- Known Issues -->
                 <div>
-                    <h3>Known Issues</h3>
+                    <h3>Before you start</h3>
                     <ul>
                         <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
                         <li>Need <b style="color: #0000EE">login</b> first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
@@ -40,7 +34,6 @@
                 <!-- Playground -->
                 <div>
                     <h3>Playground</h3>
-                    <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);'/>Ignore keyword and show all results.<div id='ppc_mock'></div></p>
                     <p><u>AAD data:</u></p>
                     &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
                     <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer"></img></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -59,6 +52,16 @@
                             </td>
                         </tr>
                     </table>
+                    <p/>
+                    <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' />Ignore keyword and show all results.<div id='ppc_mock'></div></p>
+                </div>
+
+                <p />
+
+                <!-- Links -->
+                <div>
+                    <h3>Links</h3>
+                    <p><a href="devex.html">Instructions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="TestPage.html">Test Cases</a></p>
                 </div>
             </td>
             <td style="text-align:right; vertical-align:top">
@@ -84,7 +87,6 @@
         pageUri = pageUri.split("?")[0];
 
         document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
-        //document.getElementById('login_admin').href = 'http://' + serverHost + '/authcode?userType=admin&redirect_uri=' + pageUri;
 
         var userId = getQueryString()["userId"];
         if (typeof(userId) !== 'undefined') {
