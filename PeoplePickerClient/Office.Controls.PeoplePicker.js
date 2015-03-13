@@ -184,7 +184,9 @@
             var record = this.internalSelectedItems;
             for (var i = 0; i < record.length; i++) {
                 if (record[i].Record.principalInfo === entryToRemove) {
+                    var recordToRemove = record[i].Record;
                     record[i].removeAndNotTriggerUserListener();
+                    this.onRemoved(this, recordToRemove.principalInfo);
                     this.validateMultipleMatchError();
                     this.validateMultipleEntryAllowed();
                     this.validateNoMatchError();
@@ -226,7 +228,8 @@
         clearCacheData: function () {
             if (this.cache != null) {
                 this.cache.cacheDelete('Office.PeoplePicker.Cache');
-                this.cache.dataObject = null;
+                this.cache.dataObject = new Office.Controls.PeoplePicker.mruCache.mruData();
+                this.cache.dataObject.cacheMapping[Office.Controls.Runtime.context.HostUrl] = new Array(0);
             }
         },
 
@@ -1161,16 +1164,26 @@
         },
 
         setServerEntries: function (entries) {
-            var newServerEntries = new Array(0);
-            var length = entries.length;
-            for (var i = 0; i < length; i++) {
-                var currentEntry = entries[i];
-                if (Office.Controls.Utils.isNullOrUndefined(this.entries[currentEntry.PersonId])) {
-                    this.entries[entries[i].PersonId] = entries[i];
-                    newServerEntries.push(currentEntry);
+            if (this.parent.enableCache == true) {
+                var newServerEntries = new Array(0);
+                var length = entries.length;
+                for (var i = 0; i < length; i++) {
+                    var currentEntry = entries[i];
+                    if (Office.Controls.Utils.isNullOrUndefined(this.entries[currentEntry.PersonId])) {
+                        this.entries[entries[i].PersonId] = entries[i];
+                        newServerEntries.push(currentEntry);
+                    }
                 }
+                this.serverEntries = newServerEntries;
             }
-            this.serverEntries = newServerEntries;
+            else {
+                this.entries = {};
+                var length = entries.length;
+                for (var i = 0; i < length; i++) {
+                    this.entries[entries[i].PersonId] = entries[i];
+                }
+                this.serverEntries = entries;
+            }
         },
 
         renderList: function (handler) {
