@@ -627,7 +627,10 @@
     /*position:absolute !important;*/
     /*width:inherit !important;*/
     margin-top:4px; /*Add for 3rd party*/
+}
 
+.ms-PeoplePicker-searchFieldAdded::-ms-clear {
+    display: none;
 }
 
 .ms-PeoplePicker-resultsAdded {

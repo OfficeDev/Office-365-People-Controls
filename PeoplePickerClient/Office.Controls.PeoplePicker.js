@@ -467,18 +467,13 @@
                         var token = new Office.Controls.PeoplePicker.cancelToken();
                         $$t_7.currentToken = token;
                         $$t_7.dataProvider.getPrincipals($$t_7.textInput.value, function (error, principalsReceived) {
-                            if (principalsReceived != null) {
-                                if (!token.IsCanceled) {
+                            if (!token.IsCanceled) {
+                                if (principalsReceived != null) {
                                     $$t_7.onDataReceived(principalsReceived);
-                                }
-                                else {
-                                    $$t_7.hideLoadingIcon();
+                                } else {
+                                    $$t_7.onDataFetchError(error);
                                 }
                             }
-                            else {
-                                $$t_7.onDataFetchError(error);
-                            }
-
                         });
                     }
                     else {

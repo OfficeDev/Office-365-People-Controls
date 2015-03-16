@@ -37,17 +37,17 @@
                     <p>
                         <u>AAD data:</u>
                         &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
-                        <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer"></img></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer;position:relative;top:5px"></img></span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <span id="logged_user"></span>
                     </p><p></p>
                     <table style="vertical-align:top">
                         <tr>
-                            <td>Single Selection</td>
-                            <td class="ppcontainer"><div id='ppc_single'></div></td>
+                            <td style="vertical-align:top;text-align:right">Single Selection</td>
+                            <td style="vertical-align:top" class="ppcontainer"><div id='ppc_single'></div></td>
                         </tr>
                         <tr>
-                            <td>Multiple Selection</td>
-                            <td class="ppcontainer">
+                            <td style="vertical-align:top;text-align:right">Multiple Selection</td>
+                            <td style="vertical-align:top" class="ppcontainer">
                                 <div id='ppc_multiple'></div>
                                 <div id='ppc_multiple_error' style="color: red"></div>
                                 <div id='ppc_multiple_people' style="color: blue"></div>
@@ -128,6 +128,7 @@
             }
         };
         params.onAdded = params.onRemoved = function (control) {
+            document.getElementById('ppc_multiple_error').innerHTML = "";
             var people = 'Added people: ';
             control.getAddedPeople().forEach(
                 function (e) {
@@ -141,7 +142,8 @@
         document.getElementById('login_instructions').style.display = 'none';
         
         function showLoginInstructions() {
-            document.getElementById('login_instructions').style.display = 'inherit';
+            var display = document.getElementById('login_instructions').style.display;
+            document.getElementById('login_instructions').style.display = (display === 'none') ? 'inherit' : 'none';
         }
 
         function getQueryString() {
