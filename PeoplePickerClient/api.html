@@ -9,7 +9,7 @@
 
         <h1>
             <span lang=EN-US>
-                3<span style='font:7.0pt "Times New Roman"'>
+                1<span style='font:7.0pt "Times New Roman"'>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </span>
             </span><span lang=EN-US>Public Data Structure and API</span>
@@ -17,166 +17,158 @@
 
         <p class=MsoSubtitle><span lang=EN-US>Public Data Structure</span></p>
 
-        <div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <i>
-                        <span lang=EN-US style='font-size:14.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>Person</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        An object has below properties.
-                    </span>
-                </span><span class=eop>
-                    <span lang=EN-US
-                          style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        &nbsp; This data
-                        structure is used both in following data provider and PeoplePicker API.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span class=spellingerror>
-                    <i>
-                        <span lang=EN-US style='font-size:11.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>displayName</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        The display name of the person.
-                    </span>
-                </span><span class=eop>
-                    <span lang=EN-US
-                          style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;</span>
-                </span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <i>
-                        <span lang=EN-US style='font-size:11.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>description</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        Any descriptive info of the person. It could be job title, email, etc.
-                    </span>
-                </span><span class=eop><span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;</span></span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span class=spellingerror>
-                    <i>
-                        <span lang=EN-US style='font-size:11.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>personId</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        A unique identifier of current person object.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span lang=EN-US style='font-size:6.0pt;font-family:"Segoe UI",sans-serif'>&nbsp;</span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <i>
-                        <span lang=EN-US style='font-size:14.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>ValidationError</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        An error object, which was used by PeoplePicker error mechanism.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <i>
-                        <span lang=EN-US style='font-size:11.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>errorName</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        The error name. In this version, the possible values include:
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “MultipleMatch”:
-                        There’s multiple match results for current resolved item.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “MultipleEntry”:
-                        There’s multiple items in PeoplePicker while allowsMultipleSelection is false.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “NoMatch”:
-                        No search result for current input.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-char;vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “ServerProblem”:
-                        The data provider can’t provide data due to server unavailable.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span class=normaltextrun>
-                    <i>
-                        <span lang=EN-US style='font-size:11.0pt;font-family:
-"Calibri",sans-serif;color:#0072C6'>localizedErrorMessage</span>
-                    </i>
-                </span><span class=normaltextrun>
-                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                        :
-                        A default error message provided by PeoplePicker.
-                    </span>
-                </span>
-            </p>
-
-            <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
-                <span lang=EN-US style='font-size:6.0pt;font-family:"Segoe UI",sans-serif'>&nbsp;</span>
-            </p>
-
-        </div>
+        <table class=MsoTableGrid cellspacing=0 cellpadding=0
+               style='border-collapse:collapse;border:none'>
+            <tr>
+                <td width=553 valign=top style='width:414.8pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+                    <div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+                        <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <i>
+                                    <span lang=EN-US style='font-size:14.0pt;font-family:
+  "Calibri",sans-serif;color:#5B9BD5'>Person</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>: An object has below properties.</span>
+                            </span><span class=eop>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
+                                    &nbsp;
+                                    This data structure is used both in following data provider and PeoplePicker
+                                    API.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=spellingerror>
+                                <i>
+                                    <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif;color:#0072C6'>displayName</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>: The display name of the person.</span>
+                            </span><span class=eop><span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;</span></span>
+                        </p>
+                        <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <i>
+                                    <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif;color:#0072C6'>description</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    : Any descriptive info of the person. It could be job
+                                    title, email, etc.
+                                </span>
+                            </span><span class=eop>
+                                <span lang=EN-US
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;</span>
+                            </span>
+                        </p>
+                        <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=spellingerror>
+                                <i>
+                                    <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif;color:#0072C6'>personId</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>: A unique identifier of current person object.</span>
+                            </span>
+                        </p>
+                        <p class=paragraph1 style='vertical-align:baseline;border:none;padding:0cm'>
+                            <span lang=EN-US style='font-size:6.0pt;font-family:"Segoe UI",sans-serif'>&nbsp;</span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <i>
+                                    <span lang=EN-US style='font-size:14.0pt;font-family:
+  "Calibri",sans-serif;color:#5B9BD5'>ValidationError</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    : An error object, which was used by PeoplePicker error
+                                    mechanism.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <i>
+                                    <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif;color:#5B9BD5'>errorName</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    : The error name. In this version, the possible values
+                                    include:
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “MultipleMatch”:
+                                    There’s multiple match results for current resolved item.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “MultipleEntry”:
+                                    There’s multiple items in PeoplePicker while allowsMultipleSelection is
+                                    false.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “NoMatch”:
+                                    No search result for current input.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “ServerProblem”:
+                                    The data provider can’t provide data due to server unavailable.
+                                </span>
+                            </span>
+                        </p>
+                        <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
+  char;vertical-align:baseline;border:none;padding:0cm'>
+                            <span class=normaltextrun>
+                                <i>
+                                    <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif;color:#5B9BD5'>localizedErrorMessage</span>
+                                </i>
+                            </span><span class=normaltextrun>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>: A default error message provided by PeoplePicker.</span>
+                            </span>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
 
@@ -198,7 +190,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>Office.Controls.PeoplePicker(container, dataProvider, options)</span>
+  color:#5B9BD5'>Office.Controls.PeoplePicker(container, dataProvider, options)</span>
                             </i>
                         </span>
                     </p>
@@ -207,7 +199,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>container</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>container</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -222,7 +214,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>dataProvider</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>dataProvider</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -238,7 +230,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>options</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>options</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -250,25 +242,16 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                     </p>
                     <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;text-indent:36.0pt;
   layout-grid-mode:char;vertical-align:baseline'>
-                        <a>
-                            <span class=normaltextrun>
-                                <i>
-                                    <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;
+                        <span class=normaltextrun>
+                            <i>
+                                <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;
   color:#0071C6'>allowMultipleSelections</span>
-                                </i>
-                            </span>
-                        </a><span class=normaltextrun>
+                            </i>
+                        </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
                                 : bool. If it’s true, more than one person can be
                                 added to control. The default value is false.
-                            </span>
-                        </span><span class=MsoCommentReference>
-                            <span lang=EN-US style='font-size:8.0pt'>
-                                <a class=msocomanchor id="_anchor_2"
-                                   onmouseover="msoCommentShow('_anchor_2','_com_2')"
-                                   onmouseout="msoCommentHide('_com_2')" href="#_msocom_2" language=JavaScript
-                                   name="_msoanchor_2">[Q(2]</a>&nbsp;
                             </span>
                         </span>
                     </p>
@@ -283,14 +266,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
                                 : int. The minimal characters length to trigger
-                                search begin. The default value is 3. The minimal value is 1<a>. </a>
-                            </span>
-                        </span><span class=MsoCommentReference>
-                            <span lang=EN-US style='font-size:8.0pt'>
-                                <a class=msocomanchor id="_anchor_3"
-                                   onmouseover="msoCommentShow('_anchor_3','_com_3')"
-                                   onmouseout="msoCommentHide('_com_3')" href="#_msocom_3" language=JavaScript
-                                   name="_msoanchor_3">[Q(3]</a>&nbsp;
+                                search begin. The default value is 3. The minimal value is 1.
                             </span>
                         </span>
                     </p>
@@ -299,7 +275,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;
-  color:#0072C6'>delaySearchInterval</span>
+  color:#5B9BD5'>delaySearchInterval</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -348,18 +324,9 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
-  "Calibri,Segoe UI",serif'>:<a> bool. </a></span>
-                        </span><span class=MsoCommentReference>
-                            <span lang=EN-US style='font-size:8.0pt'>
-                                <a class=msocomanchor id="_anchor_4"
-                                   onmouseover="msoCommentShow('_anchor_4','_com_4')"
-                                   onmouseout="msoCommentHide('_com_4')" href="#_msocom_4" language=JavaScript
-                                   name="_msoanchor_4">[Q(4]</a>&nbsp;
-                            </span>
-                        </span><span class=normaltextrun>
-                            <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif'>
-                                Whether
-                                to enable default PeoplePicker error mechanism. The default value is true.
+  "Calibri,Segoe UI",serif'>
+                                : bool. Whether to enable default PeoplePicker
+                                error mechanism. The default value is true.
                             </span>
                         </span>
                     </p>
@@ -420,7 +387,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>onFocus</span>
+  color:#5B9BD5'>onFocus</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
@@ -434,7 +401,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>onBlur</span>
+  color:#5B9BD5'>onBlur</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
@@ -448,7 +415,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>onError(control, validationError)</span>
+  color:#5B9BD5'>onError(control, validationError)</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -477,7 +444,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri,Segoe UI",serif;
-  color:#0072C6'>PeoplePicker<a>methods</a></span>
+  color:#5B9BD5'>PeoplePicker methods</span>
                             </i>
                         </span>
                     </p>
@@ -514,29 +481,15 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=spellingerror>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;color:#0072C6'>get</span>
-                            </i>
-                        </span><span class=MsoCommentReference>
-                            <span lang=EN-US style='font-size:8.0pt'>
-                                <a class=msocomanchor id="_anchor_5"
-                                   onmouseover="msoCommentShow('_anchor_5','_com_5')"
-                                   onmouseout="msoCommentHide('_com_5')" href="#_msocom_5" language=JavaScript
-                                   name="_msoanchor_5">[CC(5]</a>&nbsp;
-                            </span>
-                        </span><span class=spellingerror>
-                            <i>
-                                <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;
-  color:#0072C6'>AddedPeople()</span>
+                                      style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;color:#5B9BD5'>getAddedPeople()</span>
                             </i>
                         </span><span class=normaltextrun>
-                            <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif'>
-                                : An
-                                array of <i><span style='color:#0071C6'>person</span></i> object. These are
-                                the items displayed inside people picker.
+                            <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri,Segoe UI",serif'>
+                                : An array of <i><span style='color:#0071C6'>person</span></i>
+                                object. These are the items displayed inside people picker.
                             </span>
-                        </span><span class=eop>
-                            <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif'>&nbsp;</span>
-                        </span><span class=normaltextrun>
+                        </span><span class=eop><span lang=EN-US style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif'>&nbsp;</span></span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
                                 If the <i><span style='color:#0071C6'>person</span></i>
@@ -549,14 +502,13 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:
-  "Calibri,Segoe UI",serif;color:#0072C6'>clearCacheData()</span>
+  "Calibri,Segoe UI",serif;color:#5B9BD5'>clearCacheData()</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
-                                : Clear cache data when cache is enabled when
-                                initialize PeoplePicker and stores some selected people which you want to
-                                clear.
+                                : Clear cache data when cache is enabled when initialize
+                                PeoplePicker and stores some selected people which you want to clear.
                             </span>
                         </span>
                     </p>
@@ -565,7 +517,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>reset()</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>reset()</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -577,7 +529,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>remove(person)</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>remove(person)</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -592,19 +544,10 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                             </i>
                         </span><span class=spellingerror>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
-  "Calibri",sans-serif;color:black'>get</span>
-                        </span><span class=MsoCommentReference>
-                            <span lang=EN-US style='font-size:8.0pt;color:black'>
-                                <a></a><a class=msocomanchor id="_anchor_6"
-                                          onmouseover="msoCommentShow('_anchor_6','_com_6')"
-                                          onmouseout="msoCommentHide('_com_6')" href="#_msocom_6" language=JavaScript
-                                          name="_msoanchor_6">[CC(6]</a>&nbsp;
-                            </span>
-                        </span><span class=spellingerror>
-                            <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:black'>AddedPerson</span>
+  "Calibri",sans-serif;color:black'>getAddedPerson</span>
                         </span><span class=normaltextrun>
-                            <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>().</span>
+                            <span lang=EN-US style='font-size:11.0pt;font-family:
+  "Calibri",sans-serif'>().</span>
                         </span>
                     </p>
                     <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
@@ -612,7 +555,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;color:#0072C6'>
+                                      style='font-size:11.0pt;font-family:"Calibri,Segoe UI",serif;color:#5B9BD5'>
                                     add(person,
                                     resolved)
                                 </span>
@@ -630,7 +573,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <span lang=EN-US
                                   style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When
                                 person is string, then the value of resolved is ignored and PeoplePicker
                                 would call data provider to resolve the person.
                             </span>
@@ -641,7 +584,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <span lang=EN-US
                                   style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When
                                 person is a
                             </span>
                         </span><span class=normaltextrun>
@@ -658,7 +601,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
   char;vertical-align:baseline'>
                         <span class=normaltextrun>
                             <span lang=EN-US
-                                  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
@@ -671,7 +614,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
   char;vertical-align:baseline'>
                         <span class=normaltextrun>
                             <span lang=EN-US
-                                  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                  style='font-size:11.0pt;font-family:"Calibri",sans-serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri,Segoe UI",serif'>
@@ -704,7 +647,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>function searchAsync(keyword, callback)</span>
+  color:#5B9BD5'>function searchAsync(keyword, callback)</span>
                             </i>
                         </span>
                     </p>
@@ -713,7 +656,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>keyword</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>keyword</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -728,7 +671,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>callback</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>callback</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -743,7 +686,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>error</span>
+  color:#5B9BD5'>error</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
@@ -757,7 +700,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>data</span>
+  color:#5B9BD5'>data</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:"Calibri",sans-serif'>
@@ -773,7 +716,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>person</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>person</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -786,7 +729,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>displayName</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>displayName</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -799,7 +742,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>description</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>description</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -815,15 +758,14 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>personId</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>personId</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
   "Calibri",sans-serif'>: A unique identifier of current person object.</span>
                         </span>
                     </p>
-                    <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span lang=EN-US>&nbsp;</span></p>
+                    <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
                 </td>
             </tr>
         </table>
@@ -832,7 +774,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
 
         <h1>
             <span lang=EN-US>
-                4<span style='font:7.0pt "Times New Roman"'>
+                2<span style='font:7.0pt "Times New Roman"'>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </span>
             </span><span lang=EN-US>AAD data provider</span>
@@ -866,7 +808,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>AadDataProvider properties</span>
+  color:#5B9BD5'>AadDataProvider properties</span>
                             </i>
                         </span>
                     </p>
@@ -875,7 +817,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>maxResult</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>maxResult</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -886,7 +828,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>AadDataProvider methods</span>
+  color:#5B9BD5'>AadDataProvider methods</span>
                             </i>
                         </span>
                     </p>
@@ -895,7 +837,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>
                                     searchAsync(keyword,
                                     callback)
                                 </span>
@@ -908,8 +850,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                             </span>
                         </span>
                     </p>
-                    <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span lang=EN-US>&nbsp;</span></p>
+                    <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
                 </td>
             </tr>
         </table>
@@ -921,24 +862,26 @@ char;vertical-align:baseline;border:none;padding:0cm'>
             </span>
         </p>
 
+        <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
         <p class=MsoNormal>
             <span lang=EN-US>
-                We also provide a convenient endpoint
-                /login for user to login when load page. Developer can decide when to
-                authenticate user.
+                We also provide a convenient endpoint /login
+                for user to login when load page. Developer can decide when to authenticate
+                user.
             </span>
         </p>
 
-        <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0 width=719
-               style='width:539.5pt;border-collapse:collapse;border:none'>
+        <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+               style='border-collapse:collapse;border:none'>
             <tr>
-                <td width=719 valign=top style='width:539.5pt;border:solid windowtext 1.0pt;
+                <td width=553 valign=top style='width:414.8pt;border:solid windowtext 1.0pt;
   padding:0cm 5.4pt 0cm 5.4pt'>
                     <p class=paragraph style='vertical-align:baseline'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US style='font-size:14.0pt;font-family:"Calibri",sans-serif;
-  color:#0072C6'>AadDataProvider server-side endpoints</span>
+  color:#5B9BD5'>AadDataProvider server-side endpoints</span>
                             </i>
                         </span>
                     </p>
@@ -947,7 +890,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>/login</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>/login</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -962,7 +905,7 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                         <span class=normaltextrun>
                             <i>
                                 <span lang=EN-US
-                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#0072C6'>/api?keyword=&lt;keyword&gt;</span>
+                                      style='font-size:11.0pt;font-family:"Calibri",sans-serif;color:#5B9BD5'>/api?keyword=&lt;keyword&gt;</span>
                             </i>
                         </span><span class=normaltextrun>
                             <span lang=EN-US style='font-size:11.0pt;font-family:
@@ -973,8 +916,6 @@ char;vertical-align:baseline;border:none;padding:0cm'>
                             </span>
                         </span>
                     </p>
-                    <p class=paragraph style='margin:0cm;margin-bottom:.0001pt;layout-grid-mode:
-  char;vertical-align:baseline'><span lang=EN-US>&nbsp;</span></p>
                 </td>
             </tr>
         </table>

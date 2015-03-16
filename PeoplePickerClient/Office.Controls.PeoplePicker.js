@@ -39,7 +39,7 @@
             this.dataProvider = dataProvider;
             if (!Office.Controls.Utils.isNullOrUndefined(parameterObject)) {
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.allowMultipleSelections)) {
-                    this.allowMultiple = (parameterObject.allowMultipleSelections == "true");
+                    this.allowMultiple = (String(parameterObject.allowMultipleSelections) === "true");
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.startSearchCharLength) && parameterObject.startSearchCharLength >= 1) {
                     this.startSearchCharLength = parameterObject.startSearchCharLength;
@@ -48,13 +48,13 @@
                     this.delaySearchInterval = parameterObject.delaySearchInterval;
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.enableCache)) {
-                    this.enableCache = (parameterObject.enableCache == "true");
+                    this.enableCache = (String(parameterObject.enableCache) === "true");
                 }
                 if (!Office.Controls.Utils.isNullOrEmptyString(parameterObject.inputHint)) {
                     this.inputHint = parameterObject.inputHint;
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showValidationErrors)) {
-                    this.showValidationErrors = (parameterObject.showValidationErrors == "true");
+                    this.showValidationErrors = (String(parameterObject.showValidationErrors) === "true");
                 }
 
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onAdded)) {
