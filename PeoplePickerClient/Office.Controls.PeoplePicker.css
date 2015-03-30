@@ -519,48 +519,25 @@
   background-color: #b6cfd8;
 }
 
-.office {
-    color: rgb(68,68,68);
-    font-size: 13px;
+.office a:link {
+    text-decoration: none;
 }
-
-    .office a {
-        color: rgb(0,114,198);
-    }
-
-        .office a:link {
-            text-decoration: none;
-        }
 
 .office a:focus {
-    outline: thin dotted !important;
-}
-.office-helper {
-    color: rgb(119,119,119);
-}
-
-.office-error {
-    color: rgb(191,0,0);
+    outline: thin dotted ;
 }
 
 .office-hide {
     display: none;
 }
 
-.office-listview img {
-    border-style: none;
-}
-
-.office-peoplepicker {
-	width: 100%;
-}
 
 .office-peoplepicker-default {
-    /**top: 3px;*/
-    left: 4px;
     text-align:center;
     position: absolute;
+    color: rgb(119,119,119);
 }
+
 .office-peoplepicker-autofill-focus,
 .office-peoplepicker-autofill-focus:hover
  {
@@ -571,12 +548,9 @@
     background-color: inherit;
 }
 
-.ms-PeoplePicker.office-peoplepicker-autofill-focus .ms-PeoplePicker-searchBox.ms-PeoplePicker-searchBoxAdded {
-    border-color: #0078d7 !important;
-}
-
 .office-peoplepicker-error {
     margin-left: 4px;
+    color: rgb(191,0,0);
 }
 
 .office-peoplepicker-alert {
@@ -585,23 +559,10 @@
 
 .ms-PeoplePicker-searchBoxAdded {
     position: relative;
-    min-height: 30px !important;
-    border: 1px solid #c8c8c8 !important;
-    padding:4px !important;
-}
-
-.ms-PeoplePicker-searchBoxAdded:hover {
-    border: 1px solid black;
 }
 
 .ms-Icon-added {
-    vertical-align: super;
-    margin-top: 4px;
     font-family: Office365Icons !important;
-}
-
-.ms-Persona-primaryTextAdded {
-    line-height: 20px;
 }
 
 .ms-PersonaAdded {
@@ -609,57 +570,16 @@
 
 }
 
-.ms-PersonaAddedForRecord {
-    min-height: 15px !important;
-    height: 20px;
-}
-
-.ms-PeoplePicker-personaRemoveAdded {
-    min-height: 15px !important;
-    height: 20px !important;
-    width: 25px !important;
-}
-
-.ms-PeoplePicker-searchFieldAdded {
-    background: none;
-    height: 20px !important;
-    padding-left : 4px;
-    /*position:absolute !important;*/
-    /*width:inherit !important;*/
-    margin-top:4px; /*Add for 3rd party*/
-}
-
-.ms-PeoplePicker-searchFieldAdded::-ms-clear {
-    display: none;
-}
-
-.ms-PeoplePicker-resultsAdded {
-    width: 340px;
-}
-
 .ms-PeoplePicker-searchMorePrimaryAdded {
     padding-top: 25px !important;
 }
 
 .ms-Persona-primaryTextForResolvedUserAdded {
-    padding-left: 10px;
-    padding-right: 10px;
     white-space:normal !important;
     word-break:break-all;
 }
 
-.ms-Persona-detailsAdded {
-    padding-right: 0px !important;
-}
 
-.ms-Persona-secondaryTextAdded {
-    padding-top: 3px !important;
-}
-
-.ms-Persona-detailsForDropdownAdded {
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
-}
 
 .ms-PeoplePicker-personaForSingleAdded {
     width:100% !important;
@@ -667,9 +587,6 @@
     margin:0 !important;
 }
 
-.ms-PeoplePicker-resultGroupTitleAdded {
-    padding-left: 10px !important;
-}
 
 .ms-PeoplePicker-resultAddedForSelect {
     background-color:aliceblue;

@@ -321,7 +321,7 @@
 
         toggleDefaultText: function () {
             if (this.actualRoot.className.indexOf('office-peoplepicker-autofill-focus') === -1 && this.showInputHint && !this.selectedItems.length && !this.textInput.value.length) {
-                this.defaultText.className = 'office-peoplepicker-default office-helper';
+                this.defaultText.className = 'office-peoplepicker-default';
             }
             else {
                 this.defaultText.className = 'office-hide';
@@ -1584,7 +1584,7 @@
         }
         body += '/>';
         body += '<div class=\"ms-PeoplePicker-searchBox ms-PeoplePicker-searchBoxAdded\">';
-        body += '<span class=\"office-peoplepicker-default office-helper\">' + defaultText + '</span>';
+        body += '<span class=\"office-peoplepicker-default\">' + defaultText + '</span>';
         body += '<div class=\"office-peoplepicker-recordList\"></div>';
         body += '<input type=\"text\" class=\"ms-PeoplePicker-searchField ms-PeoplePicker-searchFieldAdded\" size=\"1\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\"  style=\"width:106px;\" />';
         body += '</div>';
@@ -1595,7 +1595,7 @@
         return body;
     }
     Office.Controls.peoplePickerTemplates.generateErrorTemplate = function (ErrorMessage) {
-        var innerHtml = '<span class=\"office-peoplepicker-error office-error\">';
+        var innerHtml = '<span class=\"office-peoplepicker-error\">';
         innerHtml += Office.Controls.Utils.htmlEncode(ErrorMessage);
         innerHtml += '</span>';
         return innerHtml;
