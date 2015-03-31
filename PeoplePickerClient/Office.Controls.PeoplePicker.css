@@ -531,21 +531,15 @@
     display: none;
 }
 
-
 .office-peoplepicker-default {
-    text-align:center;
+    line-height:38px;
     position: absolute;
     color: rgb(119,119,119);
 }
 
-.office-peoplepicker-autofill-focus,
-.office-peoplepicker-autofill-focus:hover
- {
+.ms-PeoplePicker.office-peoplepicker-autofill-focus .ms-PeoplePicker-searchBox {
     background-color: inherit;
-}
-
-.office-peoplepicker-autofill-focus {
-    background-color: inherit;
+    border-color: #0078d7;
 }
 
 .office-peoplepicker-error {
@@ -567,7 +561,6 @@
 
 .ms-PersonaAdded {
     width: 100%;
-
 }
 
 .ms-PeoplePicker-searchMorePrimaryAdded {
@@ -579,14 +572,10 @@
     word-break:break-all;
 }
 
-
-
 .ms-PeoplePicker-personaForSingleAdded {
-    width:100% !important;
+    width:97%;
     background-color:#f4f4f4;
-    margin:0 !important;
 }
-
 
 .ms-PeoplePicker-resultAddedForSelect {
     background-color:aliceblue;
