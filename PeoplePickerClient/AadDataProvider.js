@@ -3,6 +3,7 @@
     }
 
     AadDataProvider.prototype = {
+        maxResult: 50,
         lastErrorMessage: null,
         severHost: 'yihcaow1001:3000',
         getPrincipals: function (input, callback) {
@@ -40,6 +41,9 @@
                         person.PersonId = e.objectId;
                         people.push(person);
                     });
+                if (people.length > self.maxResult) {
+                    people = people.slice(0, self.maxResult)
+                }
                 callback(null, people);
             };
             xhr.send('');
