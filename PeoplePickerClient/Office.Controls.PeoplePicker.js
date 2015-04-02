@@ -321,7 +321,7 @@
 
         toggleDefaultText: function () {
             if (this.actualRoot.className.indexOf('office-peoplepicker-autofill-focus') === -1 && this.showInputHint && !this.selectedItems.length && !this.textInput.value.length) {
-                this.defaultText.className = 'office-peoplepicker-default office-helper';
+                this.defaultText.className = 'office-peoplepicker-default';
             }
             else {
                 this.defaultText.className = 'office-hide';
@@ -1584,9 +1584,9 @@
         }
         body += '/>';
         body += '<div class=\"ms-PeoplePicker-searchBox ms-PeoplePicker-searchBoxAdded\">';
-        body += '<span class=\"office-peoplepicker-default office-helper\">' + defaultText + '</span>';
+        body += '<span class=\"office-peoplepicker-default\">' + defaultText + '</span>';
         body += '<div class=\"office-peoplepicker-recordList\"></div>';
-        body += '<input type=\"text\" class=\"ms-PeoplePicker-searchField ms-PeoplePicker-searchFieldAdded\" size=\"1\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\"  style=\"width:106px;\" />';
+        body += '<input type=\"text\" class=\"ms-PeoplePicker-searchField\" size=\"1\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\"  style=\"width:106px;\" />';
         body += '</div>';
         body += '<div class=\"ms-PeoplePicker-results\">';
         body += '</div>';
@@ -1595,7 +1595,7 @@
         return body;
     }
     Office.Controls.peoplePickerTemplates.generateErrorTemplate = function (ErrorMessage) {
-        var innerHtml = '<span class=\"office-peoplepicker-error office-error\">';
+        var innerHtml = '<span class=\"office-peoplepicker-error\">';
         innerHtml += Office.Controls.Utils.htmlEncode(ErrorMessage);
         innerHtml += '</span>';
         return innerHtml;
@@ -1604,11 +1604,11 @@
         var titleText = Office.Controls.Utils.htmlEncode((Office.Controls.Utils.isNullOrEmptyString(principal.Email)) ? '' : principal.Email);
         var itemHtml = '<li tabindex=\"0\" class=\"ms-PeoplePicker-result\" data-office-peoplepicker-value=\"' + Office.Controls.Utils.htmlEncode(principal.PersonId) + '\" title=\"' + titleText + '\">';
         itemHtml += '<div  class=\"ms-Persona ms-PersonaAdded\">';
-        itemHtml += '<div  class=\"ms-Persona-details ms-Persona-detailsForDropdownAdded\">';
+        itemHtml += '<div  class=\"ms-Persona-details\">';
         itemHtml += '<a onclick=\"return false;\" href=\"#\" tabindex=\"-1\">';
-        itemHtml += '<div class=\"ms-Persona-primaryText ms-Persona-primaryTextAdded\" >' + Office.Controls.Utils.htmlEncode(principal.DisplayName) + '</div>';
+        itemHtml += '<div class=\"ms-Persona-primaryText\" >' + Office.Controls.Utils.htmlEncode(principal.DisplayName) + '</div>';
         if (!Office.Controls.Utils.isNullOrEmptyString(principal.Description)) {
-            itemHtml += '<div class=\"ms-Persona-secondaryText ms-Persona-secondaryTextAdded\" >' + Office.Controls.Utils.htmlEncode(principal.Description) + '</div>';
+            itemHtml += '<div class=\"ms-Persona-secondaryText\" >' + Office.Controls.Utils.htmlEncode(principal.Description) + '</div>';
         }
         itemHtml += '</a></div></div></li>';
         return itemHtml;
@@ -1636,7 +1636,7 @@
         var searchedGroupTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultMoreGroup'));
         var groupTitle = (isCached) ? cachedGrouptTitile : searchedGroupTitile;
         listHtml += '<div class=\"ms-PeoplePicker-resultGroup\">';
-        listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle ms-PeoplePicker-resultGroupTitleAdded\">' + groupTitle + '</div>';
+        listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle\">' + groupTitle + '</div>';
         listHtml += '<ul class=\"ms-PeoplePicker-resultList\" id=\"' + groupTitle + '\">';
         for (var i = 0; i < principals.length; i++) {
             listHtml += Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate(principals[i], source);
@@ -1679,11 +1679,11 @@
         else {
             recordHtml = '<div class=\"' + userRecordClass + ' ' + 'has-error' + '\" tabindex=\"0\">';
         }
-        recordHtml += '<div class=\"ms-Persona ms-Persona--xs ms-PersonaAddedForRecord\" >';
-        recordHtml += '<div class=\"ms-Persona-details ms-Persona-detailsAdded\">';
+        recordHtml += '<div class=\"ms-Persona ms-Persona--xs\" >';
+        recordHtml += '<div class=\"ms-Persona-details\">';
         recordHtml += '<div class=\"ms-Persona-primaryText ms-Persona-primaryTextForResolvedUserAdded\">' + Office.Controls.Utils.htmlEncode(record.text);
         recordHtml += '</div></div></div>';
-        recordHtml += '<div class=\"ms-PeoplePicker-personaRemove ms-PeoplePicker-personaRemoveAdded\">';
+        recordHtml += '<div class=\"ms-PeoplePicker-personaRemove\">';
         recordHtml += '<i tabindex=\"0\" class=\"ms-Icon ms-Icon--x ms-Icon-added\">';
         recordHtml += '</i></div>';
         recordHtml += '</div>';
