@@ -27,7 +27,7 @@
 
     Office.Controls.PeoplePicker = function (root, dataProvider, parameterObject) {
         try {
-            if (typeof (root) !== 'object' || typeof (dataProvider) !== 'object' || !Office.Controls.Utils.isNullOrUndefined(parameterObject) && typeof (parameterObject) !== 'object') {
+            if (typeof root !== 'object' || typeof dataProvider !== 'object' || (!Office.Controls.Utils.isNullOrUndefined(parameterObject) && typeof parameterObject !== 'object')) {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
             }
@@ -196,7 +196,7 @@
         },
 
         add: function (p1, resolved) {
-            if (typeof (p1) === 'string') {
+            if (typeof p1 === 'string') {
                 this.addThroughString(p1);
             } else {
                 var record = new Office.Controls.PeoplePickerRecord();
@@ -436,7 +436,7 @@
                         self.currentToken = token;
                         self.dataProvider.getPrincipals(self.textInput.value, function (error, principalsReceived) {
                             if (!token.IsCanceled) {
-                                if (principalsReceived != null) {
+                                if (principalsReceived !== null) {
                                     self.onDataReceived(principalsReceived);
                                 } else {
                                     self.onDataFetchError(error);
@@ -840,7 +840,6 @@
 
         onRecordRemovalKeyDown: function (e) {
             var recordRemovalEvent = Office.Controls.Utils.getEvent(e);
-            var target = Office.Controls.Utils.getTarget(recordRemovalEvent);
             if (recordRemovalEvent.keyCode === 8 || recordRemovalEvent.keyCode === 13 || recordRemovalEvent.keyCode === 46) {
                 this.remove();
                 Office.Controls.Utils.cancelEvent(e);
@@ -857,12 +856,12 @@
                 Office.Controls.Utils.cancelEvent(e);
                 this.parent.autofill.close();
             } else if (keyEvent.keyCode === 37) {
-                if (this.Node.previousSibling != null) {
+                if (this.Node.previousSibling !== null) {
                     this.Node.previousSibling.focus();
                 }
                 Office.Controls.Utils.cancelEvent(e);
             } else if (keyEvent.keyCode === 39) {
-                if (this.Node.nextSibling != null) {
+                if (this.Node.nextSibling !== null) {
                     this.Node.nextSibling.focus();
                 } else {
                     this.parent.textInput.focus();
@@ -902,7 +901,7 @@
         removeAndNotTriggerUserListener: function () {
             this.parent.resolvedListRoot.removeChild(this.Node);
             var i;
-            for ( i = 0; i < this.parent.internalSelectedItems.length; i++) {
+            for (i = 0; i < this.parent.internalSelectedItems.length; i++) {
                 if (this.parent.internalSelectedItems[i] === this) {
                     this.parent.internalSelectedItems.splice(i, 1);
                 }
@@ -958,12 +957,12 @@
             var key = Office.Controls.Utils.getEvent(e),
             target = Office.Controls.Utils.getTarget(key);
             if (key.keyCode === 38) {
-                if (target.previousSibling != null) {
+                if (target.previousSibling !== null) {
                     this.parent.autofill.changeFocus(target, target.previousSibling);
                     target.previousSibling.focus();
-                } else if (target.parentNode.parentNode.nextSibling != null) {
-                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul');
-                    var ul = autofillElementsUlTags[1];
+                } else if (target.parentNode.parentNode.nextSibling !== null) {
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
+                    ul = autofillElementsUlTags[1];
                     this.parent.autofill.changeFocus(target, ul.lastChild);
                     ul.lastChild.focus();
                 } else {
@@ -972,10 +971,10 @@
                     recentList.lastChild.focus();
                 }
             } else if (key.keyCode === 40) {
-                if (target.nextSibling != null) {
+                if (target.nextSibling !== null) {
                     this.parent.autofill.changeFocus(target, target.nextSibling);
                     target.nextSibling.focus();
-                } else if (target.parentNode.parentNode.nextSibling != null) {
+                } else if (target.parentNode.parentNode.nextSibling !== null) {
                     var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
                     this.parent.autofill.changeFocus(target, ul.firstChild);
@@ -1103,7 +1102,7 @@
         },
 
         setServerEntries: function (entries) {
-            if (this.parent.enableCache == true) {
+            if (this.parent.enableCache === true) {
                 var newServerEntries = new Array(0),
                 length = entries.length, i;
                 for (i = 0; i < length; i++) {
@@ -1194,8 +1193,8 @@
         onEntryClick: function (e, handler) {
             var click = Office.Controls.Utils.getEvent(e),
             target = Office.Controls.Utils.getTarget(click),
-            target = this.getParentListItem(target),
-            PersonId = this.getPersonIdFromListElement(target);
+            listItem = this.getParentListItem(target),
+            PersonId = this.getPersonIdFromListElement(listItem);
             handler(this.entries[PersonId]);
             this.flushContent();
             return true;
@@ -1211,9 +1210,9 @@
         onKeyDownFromInput: function (key) {
             var target = this.root.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
             if (key.keyCode === 38) {
-                if (target.previousSibling != null) {
+                if (target.previousSibling !== null) {
                     this.changeFocus(target, target.previousSibling);
-                } else if (target.parentNode.parentNode.nextSibling != null) {
+                } else if (target.parentNode.parentNode.nextSibling !== null) {
                     var autofillElementsUlTags = this.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
                     this.changeFocus(target, ul.lastChild);
@@ -1222,9 +1221,9 @@
                     this.changeFocus(target, recentList.lastChild);
                 }
             } else if (key.keyCode === 40) {
-                if (target.nextSibling != null) {
+                if (target.nextSibling !== null) {
                     this.changeFocus(target, target.nextSibling);
-                } else if (target.parentNode.parentNode.nextSibling != null) {
+                } else if (target.parentNode.parentNode.nextSibling !== null) {
                     var autofillElementsUlTags = this.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
                     this.changeFocus(target, ul.firstChild);
@@ -1264,7 +1263,7 @@
             Office.Controls.Utils.removeClass(target, 'office-peoplepicker-autofill-focus');
             if (isTabKey) {
                 var next = target.nextSibling;
-                if ((next) && (next.nextSibling.className.toLowerCase() === 'ms-PeoplePicker-searchMore js-searchMore'.toLowerCase())) {
+                if (next && (next.nextSibling.className.toLowerCase() === 'ms-PeoplePicker-searchMore js-searchMore'.toLowerCase())) {
                     Office.Controls.PeoplePicker.autofillContainer.currentOpened.close();
                 }
             }
@@ -1407,7 +1406,7 @@
             if (Office.Controls.Utils.isNullOrUndefined(candidate.DisplayName)) {
                 candidate.DisplayName = '';
             }
-            if (!userNameKey.toLowerCase().indexOf(key) || !emailKey.toLowerCase().indexOf(key) || !candidate.DisplayName.toLowerCase().indexOf(key)) {
+            if ((!userNameKey.toLowerCase().indexOf(key)) || (!emailKey.toLowerCase().indexOf(key)) || (!candidate.DisplayName.toLowerCase().indexOf(key))) {
                 return true;
             }
             return false;
@@ -1468,19 +1467,17 @@
     };
     Office.Controls.peoplePickerTemplates.getString = function (stringName) {
         var newName = 'PeoplePicker' + stringName.substr(3);
-        if ((newName) in Office.Controls.PeoplePicker.res) {
+        if (Office.Controls.PeoplePicker.res.hasOwnProperty("newName")) {
             return Office.Controls.PeoplePicker.res[newName];
-        } else {
-            return Office.Controls.Utils.getStringFromResource('PeoplePicker', stringName);
         }
+        return Office.Controls.Utils.getStringFromResource('PeoplePicker', stringName);
     };
 
     Office.Controls.peoplePickerTemplates.getDefaultText = function (allowMultiple) {
         if (allowMultiple) {
             return Office.Controls.peoplePickerTemplates.getString('PP_DefaultMessagePlural');
-        } else {
-            return Office.Controls.peoplePickerTemplates.getString('PP_DefaultMessage');
         }
+        return Office.Controls.peoplePickerTemplates.getString('PP_DefaultMessage');
     };
 
     Office.Controls.peoplePickerTemplates.generateControlTemplate = function (inputName, allowMultiple, inputHint) {
@@ -1552,7 +1549,7 @@
         var listHtml = '',
         cachedGrouptTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultRecentGroup')),
         searchedGroupTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultMoreGroup')), i,
-        groupTitle = (isCached) ? cachedGrouptTitile : searchedGroupTitile;
+        groupTitle = isCached ? cachedGrouptTitile : searchedGroupTitile;
         if (!principals.length) {
             return listHtml;
         }
@@ -1619,7 +1616,7 @@
     };
 
     Office.Controls.Context = function (parameterObject) {
-        if (typeof (parameterObject) !== 'object') {
+        if (typeof parameterObject !== 'object') {
             Office.Controls.Utils.errorConsole('Invalid parameters type');
             return;
         }
@@ -1636,7 +1633,7 @@
         this.HostUrl = this.HostUrl.toLocaleLowerCase();
     };
     Office.Controls.Context.prototype = {
-        HostUrl: null,
+        HostUrl: null
     };
 
     Office.Controls.Runtime = function () { };
@@ -1648,20 +1645,19 @@
     Office.Controls.Utils.deserializeJSON = function (data) {
         if (Office.Controls.Utils.isNullOrEmptyString(data)) {
             return {};
-        } else {
-            return JSON.parse(data);
         }
+        return JSON.parse(data);
     };
     Office.Controls.Utils.serializeJSON = function (obj) {
         return JSON.stringify(obj);
     };
     Office.Controls.Utils.isNullOrEmptyString = function (str) {
         var strNull = null;
-        return str === strNull || typeof (str) === 'undefined' || !str.length;
+        return str === strNull || typeof str === 'undefined' || !str.length;
     };
     Office.Controls.Utils.isNullOrUndefined = function (obj) {
         var objNull = null;
-        return obj === objNull || typeof (obj) === 'undefined';
+        return obj === objNull || typeof obj === 'undefined';
     };
     Office.Controls.Utils.getQueryStringParameter = function (paramToRetrieve) {
         if (document.URL.split('?').length < 2) {
@@ -1716,8 +1712,7 @@
         var h = function (e) {
             try {
                 return handler(e);
-            }
-            catch (ex) {
+            } catch (ex) {
                 throw ex;
             }
         };
@@ -1786,18 +1781,17 @@
             if (open < 0) {
                 result = result + format.substr(i);
                 break;
+            }
+            var close = Office.Controls.Utils.findPlaceHolder(format, open, '}');
+            if (close > open) {
+                result = result + format.substr(i, open - i);
+                var position = format.substr(open + 1, close - open - 1);
+                var pos = parseInt(position);
+                result = result + args[pos];
+                i = close + 1;
             } else {
-                var close = Office.Controls.Utils.findPlaceHolder(format, open, '}');
-                if (close > open) {
-                    result = result + format.substr(i, open - i);
-                    var position = format.substr(open + 1, close - open - 1);
-                    var pos = parseInt(position);
-                    result = result + args[pos];
-                    i = close + 1;
-                } else {
-                    Office.Controls.Utils.errorConsole('Invalid Operation');
-                    return null;
-                }
+                Office.Controls.Utils.errorConsole('Invalid Operation');
+                return null;
             }
         }
         return result;
@@ -1824,7 +1818,7 @@
     Office.Controls.Utils.getLocalizedCountValue = function (locText, intervals, count) {
         var ret = '';
         var locIndex = -1;
-        var intervalsArray = intervals.split('||'), i, length
+        var intervalsArray = intervals.split('||'), i, length;
         for (i = 0, length = intervalsArray.length; i < length; i++) {
             var interval = intervalsArray[i];
             if (Office.Controls.Utils.isNullOrEmptyString(interval)) {
@@ -1848,9 +1842,8 @@
                     } else {
                         if (isNaN(Number(range[0]))) {
                             continue;
-                        } else {
-                            min = parseInt(range[0]);
                         }
+                        min = parseInt(range[0]);
                     }
                     if (count >= min) {
                         if (range[1] === '') {
@@ -1859,9 +1852,8 @@
                         } else {
                             if (isNaN(Number(range[1]))) {
                                 continue;
-                            } else {
-                                max = parseInt(range[1]);
                             }
+                            max = parseInt(range[1]);
                         }
                         if (count <= max) {
                             locIndex = i;
@@ -1892,17 +1884,17 @@
     if (Office.Controls.PeoplePickerRecord.registerClass) { Office.Controls.PeoplePickerRecord.registerClass('Office.Controls.PeoplePickerRecord'); }
     if (Office.Controls.PeoplePicker.registerClass) { Office.Controls.PeoplePicker.registerClass('Office.Controls.PeoplePicker'); }
     if (Office.Controls.PeoplePicker.internalPeoplePickerRecord.registerClass) { Office.Controls.PeoplePicker.internalPeoplePickerRecord.registerClass('Office.Controls.PeoplePicker.internalPeoplePickerRecord'); }
-    if (Office.Controls.PeoplePicker.autofillContainer.registerClass) { Office.Controls.PeoplePicker.autofillContainer.registerClass('Office.Controls.PeoplePicker.autofillContainer');}
-    if (Office.Controls.PeoplePicker.Parameters.registerClass) { Office.Controls.PeoplePicker.Parameters.registerClass('Office.Controls.PeoplePicker.Parameters');}
+    if (Office.Controls.PeoplePicker.autofillContainer.registerClass) { Office.Controls.PeoplePicker.autofillContainer.registerClass('Office.Controls.PeoplePicker.autofillContainer'); }
+    if (Office.Controls.PeoplePicker.Parameters.registerClass) { Office.Controls.PeoplePicker.Parameters.registerClass('Office.Controls.PeoplePicker.Parameters'); }
     if (Office.Controls.PeoplePicker.cancelToken.registerClass) { Office.Controls.PeoplePicker.cancelToken.registerClass('Office.Controls.PeoplePicker.cancelToken');}
-    if (Office.Controls.PeoplePicker.ValidationError.registerClass) { Office.Controls.PeoplePicker.ValidationError.registerClass('Office.Controls.PeoplePicker.ValidationError');}
+    if (Office.Controls.PeoplePicker.ValidationError.registerClass) { Office.Controls.PeoplePicker.ValidationError.registerClass('Office.Controls.PeoplePicker.ValidationError'); }
     if (Office.Controls.PeoplePicker.mruCache.registerClass) { Office.Controls.PeoplePicker.mruCache.registerClass('Office.Controls.PeoplePicker.mruCache');}
-    if (Office.Controls.PeoplePicker.mruCache.mruData.registerClass) { Office.Controls.PeoplePicker.mruCache.mruData.registerClass('Office.Controls.PeoplePicker.mruCache.mruData');}
-    if (Office.Controls.PeoplePickerResourcesDefaults.registerClass) { Office.Controls.PeoplePickerResourcesDefaults.registerClass('Office.Controls.PeoplePickerResourcesDefaults');}
-    if (Office.Controls.peoplePickerTemplates.registerClass) { Office.Controls.peoplePickerTemplates.registerClass('Office.Controls.peoplePickerTemplates');}
-    if (Office.Controls.Context.registerClass) { Office.Controls.Context.registerClass('Office.Controls.Context');}
-    if (Office.Controls.Runtime.registerClass) { Office.Controls.Runtime.registerClass('Office.Controls.Runtime');}
-    if (Office.Controls.Utils.registerClass) { Office.Controls.Utils.registerClass('Office.Controls.Utils');
+    if (Office.Controls.PeoplePicker.mruCache.mruData.registerClass) { Office.Controls.PeoplePicker.mruCache.mruData.registerClass('Office.Controls.PeoplePicker.mruCache.mruData'); }
+    if (Office.Controls.PeoplePickerResourcesDefaults.registerClass) { Office.Controls.PeoplePickerResourcesDefaults.registerClass('Office.Controls.PeoplePickerResourcesDefaults'); }
+    if (Office.Controls.peoplePickerTemplates.registerClass) { Office.Controls.peoplePickerTemplates.registerClass('Office.Controls.peoplePickerTemplates'); }
+    if (Office.Controls.Context.registerClass) { Office.Controls.Context.registerClass('Office.Controls.Context'); }
+    if (Office.Controls.Runtime.registerClass) { Office.Controls.Runtime.registerClass('Office.Controls.Runtime'); }
+    if (Office.Controls.Utils.registerClass) { Office.Controls.Utils.registerClass('Office.Controls.Utils'); }
     Office.Controls.PeoplePicker.res = {};
     Office.Controls.PeoplePicker.autofillContainer.currentOpened = null;
     Office.Controls.PeoplePicker.autofillContainer.boolBodyHandlerAdded = false;
