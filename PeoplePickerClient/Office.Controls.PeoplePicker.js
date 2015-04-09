@@ -71,8 +71,8 @@
                 }
                 this.onError = parameterObject.onError;
 
-                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.res)) {
-                    Office.Controls.PeoplePicker.res = parameterObject.res;
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.resourceStrings)) {
+                    Office.Controls.PeoplePicker.res = parameterObject.resourceStrings;
                 }
             }
 
