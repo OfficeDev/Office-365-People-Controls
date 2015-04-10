@@ -1653,11 +1653,11 @@
     };
     Office.Controls.Utils.isNullOrEmptyString = function (str) {
         var strNull = null;
-        return str === strNull || str === 'undefined' || !str.length;
+        return str === strNull || str === undefined || !str.length;
     };
     Office.Controls.Utils.isNullOrUndefined = function (obj) {
         var objNull = null;
-        return obj === objNull || obj === 'undefined';
+        return obj === objNull || obj === undefined;
     };
     Office.Controls.Utils.getQueryStringParameter = function (paramToRetrieve) {
         if (document.URL.split('?').length < 2) {
