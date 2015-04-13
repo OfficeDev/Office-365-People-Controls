@@ -23,8 +23,10 @@
     <Content Include="api.html" />
     <Content Include="css\office365icons.svg" />
     <Content Include="DataProvider.js" />
+    <Content Include="DetectVersion.js" />
     <Content Include="devex.html" />
     <Content Include="fabric.controls.css" />
+    <Content Include="GulpFile.js" />
     <Content Include="images\questionmark.png" />
     <Content Include="index.html" />
     <Content Include="Office.Controls.PeoplePicker.js" />
