@@ -1,8 +1,7 @@
 ﻿(function () {
-    "use strict";
 
     AadDataProvider = function () {
-    };
+    }
 
     AadDataProvider.prototype = {
         maxResult: 50,
