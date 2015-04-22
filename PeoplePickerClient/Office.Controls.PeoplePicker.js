@@ -567,8 +567,17 @@
             if ((!this.allowMultiple) && (this.internalSelectedItems.length === 1)) {
                 this.textInput.className = 'ms-PeoplePicker-searchFieldAddedForSingleSelectionHidden';
                 this.textInput.setAttribute('readonly', 'readonly');
+                //this.textInput.setAttribute('tabindex', '-1');
+                //if (Office.Controls.Utils.isNullOrEmptyString(this.actualRoot.className)) {
+                //    this.actualRoot.className = 'office-peoplepicker-autofill-focus';
+                //} else {
+                 //   this.actualRoot.className += ' office-peoplepicker-autofill-focus';
+                //}
             } else {
                 this.textInput.removeAttribute('readonly');
+                if (!Office.Controls.Utils.isNullOrUndefined(this.inputTabindex)) {
+                    this.textInput.setAttribute('tabindex', this.inputTabindex);
+                }
                 this.textInput.className = 'ms-PeoplePicker-searchField ms-PeoplePicker-searchFieldAdded';
             }
         },
@@ -623,6 +632,7 @@
             record.isResolved = true;
             this.selectedItems.push(record);
             internalRecord.add();
+            internalRecord.updateHoverText();
             this.internalSelectedItems.push(internalRecord);
             this.onDataSelected(record);
             if (this.enableCache) {
@@ -639,6 +649,7 @@
             this.selectedItems.push(record);
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record);
             internalRecord.add();
+            internalRecord.updateHoverText();
             this.internalSelectedItems.push(internalRecord);
             this.onDataSelected(record);
             this.onAdded(this, record.principalInfo);
@@ -650,6 +661,7 @@
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record),
             self = this;
             internalRecord.add();
+            internalRecord.updateHoverText();
             this.internalSelectedItems.push(internalRecord);
             this.setTextInputDisplayStyle();
             this.displayLoadingIcon(record.text);
@@ -674,6 +686,7 @@
             record.isResolved = false;
             var internalRecord = new Office.Controls.PeoplePicker.internalPeoplePickerRecord(this, record);
             internalRecord.add();
+            internalRecord.updateHoverText();
             this.selectedItems.push(record);
             this.internalSelectedItems.push(internalRecord);
             this.clearInputField();
@@ -998,7 +1011,7 @@
             Office.Controls.Utils.removeClass(this.Node, 'has-error');
             var primaryTextNode = this.Node.querySelector('div.ms-Persona-primaryText');
             primaryTextNode.innerHTML = Office.Controls.Utils.htmlEncode(principal.DisplayName);
-            this.updateHoverText(primaryTextNode);
+            this.updateHoverText();
         },
 
         refresh: function (principal) {
@@ -1012,10 +1025,11 @@
             this.Record.isResolved = false;
             var primaryTextNode = this.Node.querySelector('div.ms-Persona-primaryText');
             primaryTextNode.innerHTML = Office.Controls.Utils.htmlEncode(this.Record.text);
-            this.updateHoverText(primaryTextNode);
+            this.updateHoverText();
         },
 
-        updateHoverText: function (userLabel) {
+        updateHoverText: function () {
+            var userLabel = this.Node.querySelector('div.ms-Persona-primaryText');
             userLabel.title = Office.Controls.Utils.htmlEncode(this.Record.text);
             this.Node.querySelector('div.ms-PeoplePicker-personaRemove').title = Office.Controls.Utils.formatString(Office.Controls.peoplePickerTemplates.getString(Office.Controls.Utils.htmlEncode('PP_RemovePerson')), this.Record.text);
         },
