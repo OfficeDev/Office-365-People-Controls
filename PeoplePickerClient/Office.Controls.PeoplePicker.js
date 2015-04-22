@@ -567,12 +567,6 @@
             if ((!this.allowMultiple) && (this.internalSelectedItems.length === 1)) {
                 this.textInput.className = 'ms-PeoplePicker-searchFieldAddedForSingleSelectionHidden';
                 this.textInput.setAttribute('readonly', 'readonly');
-                //this.textInput.setAttribute('tabindex', '-1');
-                //if (Office.Controls.Utils.isNullOrEmptyString(this.actualRoot.className)) {
-                //    this.actualRoot.className = 'office-peoplepicker-autofill-focus';
-                //} else {
-                 //   this.actualRoot.className += ' office-peoplepicker-autofill-focus';
-                //}
             } else {
                 this.textInput.removeAttribute('readonly');
                 if (!Office.Controls.Utils.isNullOrUndefined(this.inputTabindex)) {
