@@ -29,8 +29,8 @@ var getArgs = function () {
     return args;
 }
 
-var peoplePickerCSS = "Office.Controls.PeoplePicker.min.css";
-var peoplePicerJS = "Office.Controls.PeoplePicker.min.js";
+var peoplePickerCSS = "../dist/Office.Controls.PeoplePicker.min.css";
+var peoplePicerJS = "../dist/Office.Controls.PeoplePicker.min.js";
 
 // Get URL Parameter and load debug/minify version
 // debug=1 -- debug version; debug=0 --minify version
@@ -38,8 +38,8 @@ var args = getArgs();
 var isdebug = args.debug || "0";
 
 if (isdebug === "1") {
-    peoplePickerCSS = "Office.Controls.PeoplePicker.css";
-    peoplePicerJS = "Office.Controls.PeoplePicker.js";
+    peoplePickerCSS = "../dist/Office.Controls.PeoplePicker.css";
+    peoplePicerJS = "../dist/Office.Controls.PeoplePicker.js";
 }
 
 loadjscssfile(peoplePickerCSS, "css");
