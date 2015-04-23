@@ -595,6 +595,10 @@
     background-color:transparent !important;
 }
 
+.ms-PeoplePicker-searchField::-ms-clear {
+    display: none;
+}
+
 .ms-PeoplePicker-searchMoreIconFixed {
    -moz-osx-font-smoothing: grayscale;
    -webkit-font-smoothing: antialiased;
