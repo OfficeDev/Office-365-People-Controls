@@ -1,6 +1,0 @@
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\bin\PeoplePickerClient.dll.config
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\bin\PeoplePickerClient.dll
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\bin\PeoplePickerClient.pdb
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\obj\Debug\PeoplePickerClient.dll
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\obj\Debug\PeoplePickerClient.pdb
-C:\Users\fyan\Source\Repos\PeoplePicker3rdParty2\PeoplePickerClient\obj\Debug\PeoplePickerClient.csprojResolveAssemblyReference.cache
