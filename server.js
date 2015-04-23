@@ -15,7 +15,12 @@ var express_session = require('express-session');
 var AuthenticationContext = require('adal-node').AuthenticationContext;
 var url = require('url');
 
+// retrieve configuration values from azure env or config file.
 var deploy_config = JSON.parse(fs.readFileSync(path.resolve(__dirname, "config.json")));
+var config_authorityHostUrl = process.env.AUTHORITYHOST || deploy_config.authorityHostUrl;
+var config_site = process.env.SITEHOST || deploy_config.site;
+var config_clientId = process.env.CLIENTID || deploy_config.clientId;
+var config_clientSecret = process.env.CLIENTSECRET || deploy_config.clientSecret;
 
 function sha256(str) {
     var sha256 = crypto.createHash("sha256");
@@ -42,14 +47,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/example'));
 
 // constants
-var authorityUrl = [deploy_config.authorityHostUrl, 'common'].join("/");
-var redirectUri = ['http://', process.env.SITEHOST || deploy_config.site, '/accesstoken'].join("");
+var authorityUrl = [config_authorityHostUrl, 'common'].join("/");
+var redirectUri = ['http://', process.env.SITEHOST || config_site, '/accesstoken'].join("");
 var ad_resource = '00000002-0000-0000-c000-000000000000';
 
 var templateAuthzUrl = 'https://login.windows.net/common/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>&state=<state>&resource=<resource>';
 
 function createAuthorizationUrl(state, resource, userType) {
-    var authorizationUrl = templateAuthzUrl.replace('<client_id>', deploy_config.clientId);
+    var authorizationUrl = templateAuthzUrl.replace('<client_id>', config_clientId);
     authorizationUrl = authorizationUrl.replace('<redirect_uri>', redirectUri);
     authorizationUrl = authorizationUrl.replace('<state>', state);
     authorizationUrl = authorizationUrl.replace('<resource>', resource);
@@ -100,8 +105,8 @@ app.get('/accesstoken', function (req, res) {
             req.query.code,
             redirectUri,
             ad_resource,
-            deploy_config.clientId,
-            deploy_config.clientSecret,
+            config_clientId,
+            config_clientSecret,
             function (err, response) {
                 var errorMessage = '';
                 if (err) {
