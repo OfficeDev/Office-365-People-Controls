@@ -39,6 +39,7 @@ app.use(express.static(__dirname + '/static'));
 app.engine('ejs', engine);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/example'));
 
 // constants
 var authorityUrl = [deploy_config.authorityHostUrl, 'common'].join("/");
@@ -61,7 +62,8 @@ function createAuthorizationUrl(state, resource, userType) {
 
 // url mapping
 app.get('/', function (req, res) {
-    res.redirect('/login');
+    //res.redirect('/login');
+    res.redirect('example/index.html');
 });
 
 app.get('/login', function (req, res) {

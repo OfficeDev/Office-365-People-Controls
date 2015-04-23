@@ -36,6 +36,9 @@ gulp.task('cpfiles', function() {
 
     gulp.src("src/css/*")
     .pipe(gulp.dest('dist/css/'));
+    
+    gulp.src("dist/*")
+    .pipe(gulp.dest('example/control/'));
 });
 
 gulp.task('default', function () {
