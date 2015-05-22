@@ -1885,6 +1885,70 @@
     };
     Office.Controls.Utils.NOP = function () { };
 
+    Office.Controls.PeoplePickerAadDataProvider = function (authContext) {
+        this.authContext = authContext;
+    }
+
+    Office.Controls.PeoplePickerAadDataProvider.prototype = {
+        maxResult: 50,
+        authContext: null,
+        getPrincipals: function (input, callback) {
+
+            var self = this;
+            self.authContext.acquireToken('00000002-0000-0000-c000-000000000000', function (error, token) {
+
+                // Handle ADAL Errors
+                if (error || !token) {
+                    callback('Error', null);
+                    return;
+                }
+                var parsed = self.authContext._extractIdToken(token);
+                var tenant = '';
+                if (parsed) {
+                    if (parsed.hasOwnProperty('tid')) {
+                        tenant = parsed.tid;
+                    }
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://graph.windows.net/' + tenant + '/users?api-version=2013-11-08' + "&$filter=startswith(displayName," +
+                    encodeURIComponent("'" + input + "') or ") + "startswith(userPrincipalName," + encodeURIComponent("'" + input + "')"), true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
+                    callback('Error', null);
+                };
+                xhr.onload = function () {
+                    if (xhr.status === 401) {
+                        callback('Unauthorized', null);
+                        return;
+                    }
+                    if (xhr.status !== 200) {
+                        callback('Unknown error', null);
+                    }
+                    var result = JSON.parse(xhr.responseText), people = [];
+                    if (result["odata.error"] !== undefined) {
+                        callback(result["odata.error"], null);
+                        return;
+                    }
+                    result.value.forEach(
+                        function (e) {
+                            var person = {};
+                            person.DisplayName = e.displayName;
+                            person.Description = e.department;
+                            person.PersonId = e.objectId;
+                            people.push(person);
+                        });
+                    if (people.length > self.maxResult) {
+                        people = people.slice(0, self.maxResult);
+                    }
+                    callback(null, people);
+                };
+                xhr.send('');
+            });
+        }
+    };
+
     if (Office.Controls.PrincipalInfo.registerClass) { Office.Controls.PrincipalInfo.registerClass('Office.Controls.PrincipalInfo'); }
     if (Office.Controls.PeoplePickerRecord.registerClass) { Office.Controls.PeoplePickerRecord.registerClass('Office.Controls.PeoplePickerRecord'); }
     if (Office.Controls.PeoplePicker.registerClass) { Office.Controls.PeoplePicker.registerClass('Office.Controls.PeoplePicker'); }
@@ -1927,3 +1991,4 @@
     Office.Controls.Utils.oDataJSONAcceptString = 'application/json;odata=verbose';
     Office.Controls.Utils.clientTagHeaderName = 'X-ClientService-ClientTag';
 })();
+

@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>PeoplePicker Playground for Implicit Grant</title>
+    <style type="text/css">
+        td.ppcontainer {
+/*            border: 1px solid black;*/
+            width: 200px;
+        }
+    </style>
+    <script type="text/javascript" src="DetectVersion.js"></script>
+    <script type="text/javascript" src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.min.js"></script>
+
+</head>
+<body>
+    <a href="index.html">Playground</a>/Use Single Page Application
+
+    <h2>PeoplePicker for Implicit Grant</h2>
+
+    <table style="width: 100%; border: 0px">
+        <tr>
+            <td style="vertical-align:top">
+                <!-- Known Issues -->
+                <div>
+                    <h3>Before you start</h3>
+                    <ul>
+                        <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
+                        <li>Need <b style="color: #0000EE">login</b> first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
+                    </ul>
+                </div>
+
+                <!-- Playground -->
+                <div>
+                    <h3>Playground</h3>
+                    <p>
+                        <u>AAD data:</u>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<!-- <a id="login_user">Login</a> --><button id="login_user">Login</button>&nbsp;&nbsp;
+                        <span id="logged_user"></span>
+                    </p><p></p>
+                    <table style="vertical-align:top">
+                        <tr>
+                            <td style="vertical-align:top;text-align:right">Multiple Selection</td>
+                            <td style="vertical-align:top" class="ppcontainer">
+                                <div id='ppc_multiple'></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p />
+            </td>
+        </tr>
+    </table>
+    
+
+    <script type="text/javascript">
+        if (typeof Office !== "undefined") {
+            creatPeoplePickers();
+        }else {
+            var timerId = window.setInterval(function () {
+                if (typeof Office !== "undefined") {
+                    window.clearInterval(timerId);
+                    creatPeoplePickers();
+                }
+            }, 100);
+        }
+
+        function creatPeoplePickers() {
+
+            // AAD authentication
+
+            window.config = {
+                instance: 'https://login.microsoftonline.com/',
+                clientId: '***REMOVED***',
+                postLogoutRedirectUri: window.location.origin,
+                cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
+            };
+            var authContext = new AuthenticationContext(config);
+
+            // Check For & Handle Redirect From AAD After Login
+            var isCallback = authContext.isCallback(window.location.hash);
+            authContext.handleWindowCallback();
+
+            document.getElementById('login_user').addEventListener("click", function () {
+                authContext.login();
+            });
+
+            var user = authContext.getCachedUser();
+            if (user) {
+                document.getElementById('logged_user').innerText = "logged as " + user.userName;
+            }
+
+            // AAD data
+            var aadDataProvider = new Office.Controls.PeoplePickerAadDataProvider();
+            aadDataProvider.authContext = authContext;
+
+            params = new Object();
+            params.allowMultipleSelections = true;
+            params.startSearchCharLength = 1;
+            params.inputHint = "Try to select multiple records...";
+            new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+        }
+    </script>
+</body>
+</html>
