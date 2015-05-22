@@ -73,7 +73,7 @@
             window.config = {
                 instance: 'https://login.microsoftonline.com/',
                 clientId: '***REMOVED***',
-                postLogoutRedirectUri: window.location.origin,
+                postLogoutRedirectUri: window.location,
                 cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
             };
             var authContext = new AuthenticationContext(config);
@@ -82,14 +82,19 @@
             var isCallback = authContext.isCallback(window.location.hash);
             authContext.handleWindowCallback();
 
-            document.getElementById('login_user').addEventListener("click", function () {
-                authContext.login();
-            });
-
             var user = authContext.getCachedUser();
             if (user) {
                 document.getElementById('logged_user').innerText = "logged as " + user.userName;
+                document.getElementById('login_user').textContent = 'Logout';
             }
+
+            document.getElementById('login_user').addEventListener("click", function () {
+                if (user) {
+                    authContext.logOut();
+                } else {
+                    authContext.login();
+                }
+            });
 
             // AAD data
             var aadDataProvider = new Office.Controls.PeoplePickerAadDataProvider();
