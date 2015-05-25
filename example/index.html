@@ -3,16 +3,9 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     <title>PeoplePicker Playground</title>
-    <style type="text/css">
-        td.ppcontainer {
-/*            border: 1px solid black;*/
-            width: 600px;
-        }
-    </style>
     <script type="text/javascript" src="DetectVersion.js"></script>
     <script type="text/javascript" src="DataProvider.js"></script>
     <script type="text/javascript" src="AadDataProvider.js"></script>
-
 </head>
 <body>
 
@@ -38,22 +31,17 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
                         <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer;position:relative;top:5px" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <span id="logged_user"></span>
-                    </p><p></p>
-                    <table style="vertical-align:top">
-                        <tr>
-                            <td style="vertical-align:top;text-align:right">Single Selection</td>
-                            <td style="vertical-align:top" class="ppcontainer"><div id='ppc_single'></div></td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:top;text-align:right">Multiple Selection</td>
-                            <td style="vertical-align:top" class="ppcontainer">
-                                <div id='ppc_multiple'></div>
-                                <div id='ppc_multiple_error' style="color: red"></div>
-                                <div id='ppc_multiple_people' style="color: blue"></div>
-                            </td>
-                        </tr>
-                    </table>
-                    <p />
+                    </p>
+                    <p>
+                        <u>Single Selection</u>
+                        <div id='ppc_single'></div>
+                    </p>
+                    <p>
+                        <u>Multiple Selection</u>
+                        <div id='ppc_multiple'></div>
+                        <div id='ppc_multiple_error' style="color: red"></div>
+                        <div id='ppc_multiple_people' style="color: blue"></div>
+                    </p>
                     <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' />Ignore keyword and show all results.<div id='ppc_mock'></div></p>
                 </div>
 
@@ -98,9 +86,9 @@
 
         function creatPeoplePickers() {
             var serverHost = 'localhost:3000';
-            if (window.location.href.indexOf('azurewebsites.net') != -1) {
+            //if (window.location.href.indexOf('azurewebsites.net') != -1) {
                 serverHost = '***REMOVED***';
-            }
+            //}
             var pageUri = window.location.href;
             pageUri = pageUri.split("?")[0];
 
