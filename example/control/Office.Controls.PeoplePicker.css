@@ -348,7 +348,7 @@
 }
 .ms-Persona .ms-Persona-details {
   display: table-cell;
-  padding-right: 0px;
+  padding-right: 10px;
   vertical-align: middle;
 }
 .ms-Persona .ms-Persona-primaryText {
