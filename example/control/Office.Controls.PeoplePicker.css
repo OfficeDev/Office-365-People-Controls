@@ -81,7 +81,7 @@
   margin-bottom: -1px;
   max-width: 600px;
   position: absolute;
-  width: 100%;
+  width: 95%;
   *zoom: 1;
   z-index: 99;
 }
@@ -143,7 +143,7 @@
   background-color: #a1caee;
 }
 .ms-PeoplePicker .ms-PeoplePicker-result .ms-Persona-details {
-  width: 90%;
+  width: 100%;
 }
 .ms-PeoplePicker .ms-PeoplePicker-resultAction {
   display: block;
