@@ -1,0 +1,152 @@
+ /* The new added class must be put to the last.
+                If not, it will change the class ordered number when compiled out.
+                Since the css and js files are in the different locations currently,
+                the change of class order will impact the existing layout. SO
+                Please put your new class to the last!!!
+            */
+
+.persona.needMore {
+    font-family: "Segoe UI Web Regular","Segoe UI","Segoe WP",Tahoma,Arial,sans-serif !important;
+    font-weight: 400;
+    color: #333; 
+    height: auto;
+    padding: 10px;
+    padding-bottom: 35px;
+    background-color: white;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.persona.needMore .title{
+    font-family: inherit;
+    font-weight: inherit;
+    color:inherit;
+    font-size: 17px;
+    cursor: default;
+}
+
+.persona.needMore .text{
+    font-family: inherit;
+    font-weight: inherit;
+    color:inherit;
+    font-size: 14px;
+    cursor: default;
+}
+
+.persona.needMore .checkbox{
+    margin-right: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.persona.needMore .sendButton{
+    font-family: inherit;
+    font-weight: inherit;
+    color:inherit;
+    font-size: 17px;
+    border: 1px solid;
+    padding: 0px 10px 0px 10px;
+    float: right;
+    margin-top: 5px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.linkStyle {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 30px !important;
+    color: #0072c6 !important;
+    font-family: 'wf_segoe-ui_normal', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
+    background: none !important;
+    border: none !important;
+    padding: 0px !important;
+    cursor: pointer !important;
+    vertical-align:top !important;
+}
+
+.detail {
+    z-index: 999 !important;
+    background: white;
+}
+
+.readOnly {
+    background-color: transparent !important;
+    padding: 0px !important;
+    line-height: 0 !important;
+    height: 22px !important;
+}
+
+.iconArea {
+}
+
+.icon {
+    line-height: 2 !important;
+    background: none !important;
+    border: none !important;
+}
+
+@media (min-width: 400px) {
+    .displayMode  {
+        position: absolute !important;
+        bottom: inherit !important;
+    }
+}
+
+.clickStyle {
+    cursor: pointer;
+}
+
+.defaultStyle {
+    cursor: default;
+}
+
+.image {
+    padding-right: 10px;
+    box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    -webkit-box-sizing: content-box !important;
+    float: left;
+}
+
+.nameImage {
+    max-width: 248px;
+    display: block !important;
+}
+
+.imageOfNameImage {
+    width: 18% !important;
+    min-width: 38px;
+    min-height: 38px;
+    max-width: 44px;
+    max-height: 44px;
+}
+
+.ms-Persona-details-nameImage {
+    float: left;
+    padding-right: 0px !important;
+    max-width: 0% !important;
+}
+
+.ms-Persona-primaryText-nameImage {
+    margin-top: 3px !important;
+}
+
+.ms-Persona-secondaryText-nameImage {
+    padding-top: 5px !important;
+}
+
+ /* instead of .ms-PersonaCard in fabric-control.css */
+.personaCard-customized {
+    width: 360px;
+}
+
+.nameOnlyText {
+    color: #0072c6 !important;
+}
+
+.nameOnlyText:hover {
+    color: #2a6496 !important;
+    text-decoration: underline;
+}
