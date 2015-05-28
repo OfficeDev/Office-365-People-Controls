@@ -1,6 +1,6 @@
 var currentNode = null; 
 
-function loadTemplate(templateID, isHidden)
+function loadTemplate(parentElementID, templateID, isHidden)
 {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", "control/templates/template.htm", true);
@@ -25,7 +25,7 @@ function loadTemplate(templateID, isHidden)
                 }  
                 
                 var templateNode = xmlDoc.getElementById(templateID);
-                var root = document.getElementById("root");
+                var root = document.getElementById(parentElementID);
                 var templateElement = document.createElement("div");
                 hiddenNode(templateElement, isHidden);
 
@@ -71,7 +71,7 @@ function bindData(htmlStr)
     // Get the property names
     var properties = resultStr.match(regExp);
 
-    for (i = 0; i < properties.length; i++) { 
+    for (var i = 0; i < properties.length; i++) { 
         var propertyValue = personaInfo[properties[i].substring(2, properties[i].length - 1)]
         resultStr = resultStr.replace(properties[i], propertyValue);
     }
@@ -93,24 +93,67 @@ function hiddenNode(node, isHidden)
     }
 }
 
+
+function showNameOnly()
+{
+    loadTemplate('nameOnlyRoot', 'NameOnly', true);
+}
+
 var isCreated = true;
-function showDetailCard()
+function showNameImage()
 {
     if (isCreated)
     {
-        currentNode = loadTemplate('DetailCard', true);
+        currentNode = loadTemplate('nameOnlyRoot', 'NameImage', true);
         isCreated = false;
     }
 }
 
+function showPersonaCard()
+{
+    currentNode = loadTemplate('personaCardRoot', 'PersonaCard', true);
+}
+
+function showAll()
+{
+    showNameOnly();
+    showPersonaCard();
+}
+
 function removeDetailCard()
 {
-    var root = document.getElementById("root");
-    root.parentNode.removeChild(currentNode);
+   /* var root = document.getElementById("root");
+    root.parentNode.removeChild(currentNode);*/
 }
 
 function createPersona()
 {
     // Create NameOnly
     loadTemplate('NameOnly', true);
+}
+
+var oriID = "";
+function setActiveStyle(selfObj, id)
+{
+    var changedClassName = " is-active";
+    var parentClassName = "ms-PersonaCard-action";
+    var childClassName = "ms-PersonaCard-actionDetails";
+
+    var parentElement = document.getElementsByClassName(parentClassName);
+    for (var i = 0; i < parentElement.length; i++) {
+        parentElement[i].className = parentElement[i].className.replace(changedClassName, "");
+    }
+    var childElement = document.getElementsByClassName(childClassName);
+    for (var i = 0; i < childElement.length; i++) {
+        childElement[i].className = childElement[i].className.replace(changedClassName, "");
+    }
+
+    if ((selfObj.className.indexOf(changedClassName) == -1) && (oriID != id)) {
+        selfObj.className += changedClassName;
+        var srcElement = document.getElementById(id);
+        srcElement.className += changedClassName;  
+        oriID = id;
+    } else {
+        oriID = "";
+    }
 }
