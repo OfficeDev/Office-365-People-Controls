@@ -1,0 +1,29 @@
+<html lang="en" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:vm="Office.Controls.Persona">
+<head></head>
+<body>
+	<!--Template NameOnly-->
+	<template id="NameOnly">
+		<div class="ms-Persona ms-Persona--tiny readOnly clickStyle" AriaTabIndex="0" onmouseover="showDetailCard()" onmouseout="removeDetailCard()">
+	        <div class="ms-Persona-primaryText nameOnlyText"><Label Text="${DisplayName}">${DisplayName}</Label></div>
+	    </div>
+	</template>
+
+	<!--Template NameImage-->
+	<template id="DetailCard" dataType="vm:PersonaViewModel">
+	    <div class="ms-PersonaCard personaCard-customized detail displayMode">
+	        <div class="ms-PersonaCard-persona">
+	            <div class="ms-Persona ms-Persona--xl">
+	                <image class="ms-Persona-image image" ImageName="${DisplayName}" Src="${ImageUrl}"></image>
+	                <div class="ms-Persona-details">
+	                    <div class="ms-Persona-primaryText"><Label class="defaultStyle" Text="${DisplayName}">${DisplayName}</Label></div>
+	                    <div class="ms-Persona-secondaryText"><Label class="defaultStyle" Text="${JobTitle}">${JobTitle}</Label></div>
+	                    <div class="ms-Persona-tertiaryText"><Label class="defaultStyle" Text="${Department}">${Department}</Label></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</template>
+</body>
+</html>
