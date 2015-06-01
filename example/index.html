@@ -34,15 +34,18 @@
                     </p>
                     <p>
                         <u>Single Selection</u>
-                        <div id='ppc_single'></div>
+                        <div id='ppc_single' style='max-width:600px;'></div>
                     </p>
                     <p>
                         <u>Multiple Selection</u>
-                        <div id='ppc_multiple'></div>
+                        <div id='ppc_multiple' style='max-width:600px;'></div>
                         <div id='ppc_multiple_error' style="color: red"></div>
                         <div id='ppc_multiple_people' style="color: blue"></div>
                     </p>
-                    <p><u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' />Ignore keyword and show all results.<div id='ppc_mock'></div></p>
+                    <p>
+                        <u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' />Ignore keyword and show all results.
+                        <div id='ppc_mock' style='max-width:600px;'></div>
+                    </p>
                 </div>
 
                 <p />
@@ -86,9 +89,9 @@
 
         function creatPeoplePickers() {
             var serverHost = 'localhost:3000';
-            //if (window.location.href.indexOf('azurewebsites.net') != -1) {
+            if (window.location.href.indexOf('azurewebsites.net') != -1) {
                 serverHost = '***REMOVED***';
-            //}
+            }
             var pageUri = window.location.href;
             pageUri = pageUri.split("?")[0];
 

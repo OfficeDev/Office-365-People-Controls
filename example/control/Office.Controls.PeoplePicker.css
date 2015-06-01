@@ -18,7 +18,7 @@
   font-size: 14px;
   font-weight: normal;
   background-color: #ffffff;
-  max-width:600px;
+  width:100%;
   min-width:300px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-searchBox {
@@ -81,10 +81,9 @@
   display: none;
   margin-bottom: -1px;
   max-width: 600px;
-  min-width:300px;
-  position: absolute;
+  min-width: 300px;
   width: 95%;
-  *zoom: 1;
+  position: absolute;
   z-index: 99;
 }
 .ms-PeoplePicker.is-active .ms-PeoplePicker-results {
