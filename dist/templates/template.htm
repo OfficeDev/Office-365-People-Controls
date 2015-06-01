@@ -1,0 +1,93 @@
+<html lang="en" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:vm="Office.Controls.Persona">
+<head></head>
+<body>
+	<!--Template NameOnly-->
+	<template id="NameOnly">
+		<div class="ms-Persona ms-Persona--tiny readOnly clickStyle" AriaTabIndex="0">
+	        <div class="ms-Persona-primaryText nameOnlyText"><Label Text="${DisplayName}">${DisplayName}</Label></div>
+	    </div>
+	</template>
+
+	<!--Template NameImage-->
+	<template id="NameImage" dataType="vm:PersonaViewModel"> 
+        <div class="ms-Persona">
+            <image class="imageOfNameImage image" ImageName="${DisplayName}" Src="${ImageUrl}"></image>
+            <div class="ms-Persona-details ms-Persona-details-nameImage">
+                <div class="ms-Persona-primaryText ms-Persona-primaryText-nameImage">
+                	<Label class="clickStyle" Text="${DisplayName}" Title="${DisplayName}">${DisplayName}</Label>
+                </div>
+                <div class="ms-Persona-secondaryText ms-Persona-secondaryText-nameImage">
+                	<Label class="defaultStyle" Text="${JobTitle}" Title="${JobTitle}">${JobTitle}</Label>
+                </div>
+            </div>
+        </div>
+    </template>
+
+	<!--Template DetailCard-->
+	<template id="DetailCard" dataType="vm:PersonaViewModel">
+	    <div class="ms-PersonaCard personaCard-customized detail displayMode">
+	        <div class="ms-PersonaCard-persona">
+	            <div class="ms-Persona ms-Persona--xl">
+	                <image class="ms-Persona-image image" ImageName="${DisplayName}" Src="${ImageUrl}"></image>
+	                <div class="ms-Persona-details">
+	                    <div class="ms-Persona-primaryText"><Label class="defaultStyle" Text="${DisplayName}">${DisplayName}</Label></div>
+	                    <div class="ms-Persona-secondaryText"><Label class="defaultStyle" Text="${JobTitle}">${JobTitle}</Label></div>
+	                    <div class="ms-Persona-tertiaryText"><Label class="defaultStyle" Text="${Department}">${Department}</Label></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</template>
+
+	<!--Template PersonaCard-->
+	<template id="PersonaCard" dataType="vm:PersonaViewModel">
+	    <div class="ms-PersonaCard personaCard-customized detail displayMode">
+	        <div class="ms-PersonaCard-persona">
+	            <div class="ms-Persona ms-Persona--xl">
+	                <image class="ms-Persona-image image" ImageName="${DisplayName}" Src="${ImageUrl}"></image>
+	                <div class="ms-Persona-details">
+	                    <div class="ms-Persona-primaryText">
+	                    	<Label class="defaultStyle" Text="${DisplayName}">${DisplayName}</Label>
+	                    </div>
+	                    <div class="ms-Persona-secondaryText">
+	                    	<Label class="defaultStyle" Text="${JobTitle}">${JobTitle}</Label>
+	                    </div>
+	                    <div class="ms-Persona-tertiaryText">
+	                    	<Label class="defaultStyle" Text="${Department}">${Department}</Label>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        <ul class="ms-PersonaCard-actions">
+		        <li class="ms-PersonaCard-action" onclick="setActiveStyle(event, 'mail')">
+		        	<i class="ms-Icon ms-Icon--mail icon"></i>
+		        </li>
+				<li class="ms-PersonaCard-action" onclick="setActiveStyle(event, 'phone')">
+					<i class="ms-Icon ms-Icon--phone icon"></i>
+				</li>
+				<li class="ms-PersonaCard-action" onclick="setActiveStyle(event, 'chat')">
+					<i class="ms-Icon ms-Icon--chat icon"></i>
+				</li>
+		    </ul>
+		    <div id="mail" class="ms-PersonaCard-actionDetails">
+			    <div class="ms-PersonaCard-detailLine">
+			    	<span class="ms-PersonaCard-detailLabel">Work:</span><a href="mailto:${Email}">${Email}</a>
+			    </div>
+			</div>
+	        <div id="phone" class="ms-PersonaCard-actionDetails">
+			    <div class="ms-PersonaCard-detailLine">
+			    	<span class="ms-PersonaCard-detailLabel">Work:</span><a href="tel:${WorkPhone}">${WorkPhone}</a><br/>
+			    	<span class="ms-PersonaCard-detailLabel">Mobile:</span><a href="tel:${MobilePhone}">${MobilePhone}</a>
+			    </div>
+			</div>
+	        <div id="chat" class="ms-PersonaCard-actionDetails">
+			    <div class="ms-PersonaCard-detailLine">
+			    	<span class="ms-PersonaCard-detailLabel">Lync:</span><a href="sip:${SipAddress}">${SipAddress}</a>
+			    </div>
+			</div>
+	    </div>	  
+	</template>
+</body>
+</html>
