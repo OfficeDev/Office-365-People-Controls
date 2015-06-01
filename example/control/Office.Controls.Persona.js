@@ -12,19 +12,20 @@
         }
     }
 
-    Office.Controls.Persona = function (parentElementID, templateID, isHidden) {
+    Office.Controls.Persona = function (root, templateID, dataProvider, isHidden) {
         try {
-            if ((Office.Controls.Utils.isNullOrUndefined(parentElementID)) || (Office.Controls.Utils.isNullOrUndefined(templateID))) {
+            if (typeof root !== 'object' || typeof dataProvider !== 'object' || (Office.Controls.Utils.isNullOrUndefined(templateID))) {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
             }
-            this.parentElementID = parentElementID;
+            
+            this.root = root;
             this.templateID = templateID;
+            this.dataProvider = dataProvider;
             this.isHidden = isHidden;
             this.currentNode = null;
-            this.root = document.getElementById(parentElementID);            
 
-            this.loadTemplate(this.parentElementID, this.templateID, this.isHidden);
+            this.loadTemplate();
         } catch (ex) {
             throw ex;
         }
@@ -48,48 +49,7 @@
             return this.errorDisplayed;
         },
 
-        getDisplayInfoAsync: function (userInfoHandler, userEmail) {
-        },
-
-        renderControl: function (inputName) {
-            // this.root.innerHTML = Office.Controls.PersonaTemplates.generateControlTemplate(inputName, this.allowMultiple, this.inputHint);
-            // if (this.root.className.length > 0) {
-            //     this.root.className += ' ';
-            // }
-            // this.root.className += 'office office-peoplepicker';
-            // this.actualRoot = this.root.querySelector('div.ms-PeoplePicker');
-            // var self = this;
-            // Office.Controls.Utils.addEventListener(this.actualRoot, 'click', function (e) {
-            //     return self.onPickerClick(e);
-            // });
-            // this.inputData = this.actualRoot.querySelector('input[type=\"hidden\"]');
-            // this.textInput = this.actualRoot.querySelector('input[type=\"text\"]');
-            // this.defaultText = this.actualRoot.querySelector('span.office-peoplepicker-default');
-            // this.resolvedListRoot = this.actualRoot.querySelector('div.office-peoplepicker-recordList');
-            // this.autofillElement = this.actualRoot.querySelector('.ms-PeoplePicker-results');
-            // this.alertDiv = this.actualRoot.querySelector('.office-peoplepicker-alert');
-            // Office.Controls.Utils.addEventListener(this.textInput, 'focus', function (e) {
-            //     return self.onInputFocus(e);
-            // });
-            // Office.Controls.Utils.addEventListener(this.textInput, 'blur', function (e) {
-            //     return self.onInputBlur(e);
-            // });
-            // Office.Controls.Utils.addEventListener(this.textInput, 'keydown', function (e) {
-            //     return self.onInputKeyDown(e);
-            // });
-            // Office.Controls.Utils.addEventListener(this.textInput, 'input', function (e) {
-            //     return self.onInput(e);
-            // });
-            // Office.Controls.Utils.addEventListener(window.self, 'resize', function (e) {
-            //     return self.onResize(e);
-            // });
-            // this.toggleDefaultText();
-            // if (!Office.Controls.Utils.isNullOrUndefined(this.inputTabindex)) {
-            //     this.textInput.setAttribute('tabindex', this.inputTabindex);
-            // }
-        },
-
-        loadTemplate: function (parentElementID, templateID, isHidden)
+        loadTemplate: function ()
         {
             var self = this;
             var xmlhttp = new XMLHttpRequest();
@@ -114,9 +74,9 @@
                            xmlDoc.loadXML(this.responseText); 
                         }  
                         
-                        var templateNode = xmlDoc.getElementById(templateID);
+                        var templateNode = xmlDoc.getElementById(self.templateID);
                         var templateElement = document.createElement("div");
-                        self.hiddenNode(templateElement, isHidden);
+                        self.hiddenNode(templateElement, self.isHidden);
 
                         // Do data binding
                         templateElement.innerHTML = self.bindData(templateNode.innerHTML);
@@ -134,28 +94,12 @@
             xmlhttp.send();
         },
 
-        samplePersonInfo: function ()
-        {
-            // User Profile
-            var personaInfo = new Array(); 
-            personaInfo["DisplayName"] = "***REMOVED*** Chen"; 
-            personaInfo["JobTitle"] = "Software Engineer 2"; 
-            personaInfo["ImageUrl"] = "control/images/icon.png"; 
-            personaInfo["Department"] = "ASG EA China";
-            personaInfo["Office"] = "BEIJING-BJW-1/12329"; 
-            personaInfo["Email"] = "***REMOVED***@microsoft.com"; 
-            personaInfo["SipAddress"] = "***REMOVED***@microsoft.com"; 
-            personaInfo["MobilePhone"] = "+86 1861-2947-014"; 
-            personaInfo["WorkPhone"] = "+86(10) 59173216"; 
-            return personaInfo;
-        },
-
         bindData: function (htmlStr)
         {
             var regExp = /\$\{([^\}\{]+)\}/g;
             var resultStr = htmlStr;
             // Get the data
-            var personaInfo = this.samplePersonInfo();
+            var personaInfo = this.dataProvider;
 
             // Get the property names
             var properties = resultStr.match(regExp);
@@ -182,30 +126,10 @@
             }
         },
 
-        showNameOnly: function ()
-        {
-            loadTemplate('nameOnlyRoot', 'NameOnly', true);
-            var self = this;
-            Office.Controls.Utils.addEventListener(this.root, 'click', function (e) {
-                return self.showNameImage();
-            });
-        },
-
-        showPersonaCard: function ()
-        {
-            currentNode = loadTemplate('personaCardRoot', 'PersonaCard', true);
-        },
-
         removeDetailCard: function ()
         {
            /* var root = document.getElementById("root");
             root.parentNode.removeChild(currentNode);*/
-        },
-
-        createPersona: function ()
-        {
-            // Create NameOnly
-            loadTemplate('NameOnly', true);
         },
 
         setActiveStyle: function (event, childID)
@@ -245,7 +169,6 @@
     };
 
     if (Office.Controls.Persona.registerClass) { Office.Controls.Persona.registerClass('Office.Controls.Persona'); }
-    // if (Office.Controls.PersonaTemplates.registerClass) { Office.Controls.PersonaTemplates.registerClass('Office.Controls.PersonaTemplates'); }
     if (Office.Controls.PersonaConstants.registerClass) { Office.Controls.PersonaConstants.registerClass('Office.Controls.PersonaConstants'); }
     if (Office.Controls.PersonaResources.registerClass) { Office.Controls.PersonaResources.registerClass('Office.Controls.PersonaResources'); }
     Office.Controls.Persona.res = {};
