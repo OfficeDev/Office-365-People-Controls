@@ -84,6 +84,16 @@
 
     Office.Controls.Utils.getObjectFromFullyQualifiedName = function (objectName) {
         var currentObject = window.self;
+        return Office.Controls.Utils.getObjectFromJSONObjectName(currentObject, objectName);
+    };
+
+    // Parse the json object to get the corresponding value
+    Office.Controls.Utils.getObjectFromJSONObjectName = function (jsonObject, objectName) {
+        var currentObject = jsonObject;
+        if (Office.Controls.Utils.isNullOrUndefined(currentObject)) {
+                return null;
+        } 
+
         var controlNameParts = objectName.split('.'), i;
         for (i = 0; i < controlNameParts.length; i++) {
             currentObject = currentObject[controlNameParts[i]];

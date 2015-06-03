@@ -13,23 +13,38 @@
     }
 
     /*
+    *  The format of DataProvider:
     *  {
-            ImageUrl: 'control/images/icon.png',
-            PrimaryText: '***REMOVED*** Chen',
-            SecondaryText: 'Software Engineer 2, ASG EA China', // JobTitle, Department
-            TertiaryText: 'BEIJING-BJW-1/12329', // Office
-            Email: '***REMOVED***@microsoft.com',
-            SipAddress: '***REMOVED***@microsoft.com',
-            MobilePhone: '+86 1861-2947-014',
-            WorkPhone: '+86(10) 59173216',
-            Id: '***REMOVED***',
+            "Id": "***REMOVED***",
+            "Main":
+                {
+                    "ImageUrl": "control/images/icon.png",
+                    "PrimaryText": '***REMOVED*** Chen',
+                    "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
+                    "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+                },
+            "Action":
+                {
+                    "Email":{
+                                "Work": { "Label": "Work: ", "Protocol": "mailto:", "Value": "***REMOVED***@microsoft.com" }
+                            },
+                    "Phone": 
+                            {
+                                "Work": { "Label": "Work: ", "Protocol": "tel:", "Value": "+86(10) 59173216" },
+                                "Mobile": { "Label": "Mobile: ", "Protocol": "tel:", "Value": "+86 1861-2947-014" }
+                            },
+                    "Chat": 
+                            {
+                                "Lync": { "Label": "Lync: ", "Protocol": "sip:", "Value": "***REMOVED***@microsoft.com" },
+                            }
+                }
         };
     */
     Office.Controls.Persona = function (root, templateID, dataProvider, isHidden) {
         if (typeof root !== 'object' || typeof dataProvider !== 'object' || (Office.Controls.Utils.isNullOrUndefined(templateID))) {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
-            }
+        }
             
         this.root = root;
         this.templateID = templateID;
@@ -142,22 +157,29 @@
             }
         },
 
+        // Bind data to template
         bindData: function (htmlStr)
         {
             var regExp = /\$\{([^\}\{]+)\}/g;
             var resultStr = htmlStr;
-            // Get the data
-            var displayInfo = this.dataProvider;
 
             // Get the property names
             var properties = resultStr.match(regExp);
-
+            var propertyName, propertyValue;
+            var self = this;
             for (var i = 0; i < properties.length; i++) { 
-                var propertyValue = displayInfo[properties[i].substring(2, properties[i].length - 1)]
+                propertyName = properties[i].substring(2, properties[i].length - 1);
+                propertyValue = self.getValueFromJSONObject(propertyName);
                 resultStr = resultStr.replace(properties[i], propertyValue);
             }
 
             return resultStr;
+        },
+
+        // Parse the json object to get the corresponding value
+        getValueFromJSONObject: function (objectName)
+        {
+            return Office.Controls.Utils.getObjectFromJSONObjectName(this.dataProvider, objectName);
         },
 
         hiddenNode: function (node, isHidden)
@@ -212,6 +234,68 @@
         },
     };
 
+    Office.Controls.Persona.PersonaHelper = function () { };
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, templatePath, personaType, dataProvider, isHidden, callback) {
+        var personaInstance = new Office.Controls.Persona(root, personaType, dataProvider, isHidden);
+        personaInstance.loadTemplateAsync(templatePath, callback);
+    };
+
+    Office.Controls.Persona.PersonaHelper.getPersonaType = function () { 
+        var personaType = {
+            "NameOnly": "nameonly",
+            "NameImage" : "nameimage",
+            "DetailCard" : "detailcard",
+            "PersonaCard" : "personacard"
+        };
+
+        return personaType;
+    };
+
+    Office.Controls.Persona.ImageSize = function () {};
+    Office.Controls.Persona.ImageSize.prototype = {
+        s: 0,
+        m: 1,
+        l: 2
+    };
+
+    Office.Controls.Persona.StringUtils = function () { };
+    Office.Controls.Persona.StringUtils.getDisplayText = function (displayText, personaType, personaProperty) {
+        if (!displayText) {
+            return '';
+        }
+        if (!Office.Controls.Persona.StringUtils._propertyDisplayConfiguration || Office.Controls.Persona.StringUtils._currentPersonaType !== personaType) {
+            Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = Office.Controls.Persona.StringUtils._loadLengthConfiguration(personaType);
+            Office.Controls.Persona.StringUtils._currentPersonaType = personaType;
+        }
+        if (Office.Controls.Persona.StringUtils._propertyDisplayConfiguration.length && displayText.length > Office.Controls.Persona.StringUtils._propertyDisplayConfiguration[personaProperty]) {
+            return displayText.substr(0, Office.Controls.Persona.StringUtils._propertyDisplayConfiguration[personaProperty]) + '...';
+        }
+        else {
+            return displayText;
+        }
+    };
+    Office.Controls.Persona.StringUtils._loadLengthConfiguration = function (personaType) {
+        var returnValue; 
+
+        switch (personaType) {
+            case 1:
+                returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 18, 26, 40, 42 ];
+                break;
+            case 0:
+            case 4:
+                // if (Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isInternetExplorer() || Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isFirefox()) {
+                //     returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
+                // }
+                // else {
+                    returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 27, 0, 40, 42 ];
+                // }
+                break;
+            default:
+                returnValue = null;
+        }
+        return returnValue;
+    };
+
     Office.Controls.Persona.Strings = function() {
     }
 
@@ -221,11 +305,13 @@
     Office.Controls.PersonaConstants = function () {
     };
 
+    
     if (Office.Controls.Persona.registerClass) { Office.Controls.Persona.registerClass('Office.Controls.Persona'); }
-    // if (Office.Controls.Persona.PersonaViewModel.registerClass) {Office.Controls.Persona.PersonaViewModel.registerClass('Office.Controls.Persona.PersonaViewModel');}
     if (Office.Controls.Persona.Strings.registerClass) { Office.Controls.Persona.Strings.registerClass('Office.Controls.Persona.Strings'); }
     if (Office.Controls.PersonaConstants.registerClass) { Office.Controls.PersonaConstants.registerClass('Office.Controls.PersonaConstants'); }
     if (Office.Controls.PersonaResources.registerClass) { Office.Controls.PersonaResources.registerClass('Office.Controls.PersonaResources'); }
+    if (Office.Controls.Persona.PersonaHelper.registerClass) { Office.Controls.Persona.PersonaHelper.registerClass('Office.Controls.Persona.PersonaHelper'); }
+    if (Office.Controls.Persona.StringUtils.registerClass) { Office.Controls.Persona.StringUtils.registerClass('Office.Controls.Persona.StringUtils'); }
     Office.Controls.PersonaResources.PersonaName = 'Persona';
     Office.Controls.Persona.Strings.emailString = 'Email';
     Office.Controls.Persona.Strings.lyncMessageString = 'IM';
@@ -234,6 +320,8 @@
     Office.Controls.Persona.Strings.workPhoneString = 'Work';
     Office.Controls.Persona.Strings.colonString = ':';
     Office.Controls.Persona.Strings.suspensionPoints = '...';
+    Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = null;
+    Office.Controls.Persona.StringUtils._currentPersonaType = 0;
     Office.Controls.Persona.res = {};
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";

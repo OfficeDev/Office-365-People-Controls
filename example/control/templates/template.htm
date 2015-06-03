@@ -4,37 +4,37 @@
 <head></head>
 <body>
 	<!--Template NameOnly-->
-	<template id="NameOnly">
+	<template id="nameonly">
 		<div class="ms-Persona ms-Persona--tiny readOnly clickStyle" AriaTabIndex="0">
-	        <div class="ms-Persona-primaryText nameOnlyText"><Label Text="${PrimaryText}">${PrimaryText}</Label></div>
+	        <div class="ms-Persona-primaryText nameOnlyText"><Label Text="${Main.PrimaryText}">${Main.PrimaryText}</Label></div>
 	    </div>
 	</template>
 
 	<!--Template NameImage-->
-	<template id="NameImage" dataType="vm:PersonaViewModel"> 
+	<template id="nameimage" dataType="vm:PersonaViewModel"> 
         <div class="ms-Persona">
-            <image class="imageOfNameImage image" ImageName="${PrimaryText}" Src="${ImageUrl}"></image>
+            <image class="imageOfNameImage image" ImageName="${Main.PrimaryText}" Src="${Main.ImageUrl}"></image>
             <div class="ms-Persona-details ms-Persona-details-nameImage">
                 <div class="ms-Persona-primaryText ms-Persona-primaryText-nameImage">
-                	<Label class="clickStyle" Text="${PrimaryText}" Title="${PrimaryText}">${PrimaryText}</Label>
+                	<Label class="clickStyle" Text="${Main.PrimaryText}" Title="${Main.PrimaryText}">${Main.PrimaryText}</Label>
                 </div>
                 <div class="ms-Persona-secondaryText ms-Persona-secondaryText-nameImage">
-                	<Label class="defaultStyle" Text="${SecondaryText}" Title="${SecondaryText}">${SecondaryText}</Label>
+                	<Label class="defaultStyle" Text="${Main.SecondaryText}" Title="${Main.SecondaryText}">${Main.SecondaryText}</Label>
                 </div>
             </div>
         </div>
     </template>
 
 	<!--Template DetailCard-->
-	<template id="DetailCard" dataType="vm:PersonaViewModel">
+	<template id="detailcard" dataType="vm:PersonaViewModel">
 	    <div class="ms-PersonaCard personaCard-customized detail displayMode">
 	        <div class="ms-PersonaCard-persona">
 	            <div class="ms-Persona ms-Persona--xl">
-	                <image class="ms-Persona-image image" ImageName="${PrimaryText}" Src="${ImageUrl}"></image>
+	                <image class="ms-Persona-image image" ImageName="${Main.PrimaryText}" Src="${Main.ImageUrl}"></image>
 	                <div class="ms-Persona-details">
-	                    <div class="ms-Persona-primaryText"><Label class="defaultStyle" Text="${PrimaryText}">${PrimaryText}</Label></div>
-	                    <div class="ms-Persona-secondaryText"><Label class="defaultStyle" Text="${SecondaryText}">${SecondaryText}</Label></div>
-	                    <div class="ms-Persona-tertiaryText"><Label class="defaultStyle" Text="${TertiaryText}">${TertiaryText}</Label></div>
+	                    <div class="ms-Persona-primaryText"><Label class="defaultStyle" Text="${Main.PrimaryText}">${Main.PrimaryText}</Label></div>
+	                    <div class="ms-Persona-secondaryText"><Label class="defaultStyle" Text="${Main.SecondaryText}">${Main.SecondaryText}</Label></div>
+	                    <div class="ms-Persona-tertiaryText"><Label class="defaultStyle" Text="${Main.TertiaryText}">${Main.TertiaryText}</Label></div>
 	                </div>
 	            </div>
 	        </div>
@@ -42,20 +42,20 @@
 	</template>
 
 	<!--Template PersonaCard-->
-	<template id="PersonaCard" dataType="vm:PersonaViewModel">
+	<template id="personacard" dataType="vm:PersonaViewModel">
 	    <div class="ms-PersonaCard personaCard-customized detail displayMode">
 	        <div class="ms-PersonaCard-persona persona-section-tag-main">
 	            <div class="ms-Persona ms-Persona--xl">
-	                <image class="ms-Persona-image image" ImageName="${PrimaryText}" Src="${ImageUrl}"></image>
+	                <image class="ms-Persona-image image" ImageName="${Main.PrimaryText}" Src="${Main.ImageUrl}"></image>
 	                <div class="ms-Persona-details">
 	                    <div class="ms-Persona-primaryText">
-	                    	<Label class="defaultStyle" Text="${PrimaryText}">${PrimaryText}</Label>
+	                    	<Label class="defaultStyle" Text="${Main.PrimaryText}">${Main.PrimaryText}</Label>
 	                    </div>
 	                    <div class="ms-Persona-secondaryText">
-	                    	<Label class="defaultStyle" Text="${SecondaryText}">${SecondaryText}</Label>
+	                    	<Label class="defaultStyle" Text="${Main.SecondaryText}">${Main.SecondaryText}</Label>
 	                    </div>
 	                    <div class="ms-Persona-tertiaryText">
-	                    	<Label class="defaultStyle" Text="${TertiaryText}">${TertiaryText}</Label>
+	                    	<Label class="defaultStyle" Text="${Main.TertiaryText}">${Main.TertiaryText}</Label>
 	                    </div>
 	                </div>
 	            </div>
@@ -73,18 +73,18 @@
 		    </ul>
 		    <div class="ms-PersonaCard-actionDetails action-detail-mail">
 			    <div class="ms-PersonaCard-detailLine">
-			    	<span class="ms-PersonaCard-detailLabel">Work:</span><a href="mailto:${Email}">${Email}</a>
+			    	<span class="ms-PersonaCard-detailLabel">${Action.Email.Work.Label}</span><a href="${Action.Email.Work.Protocol}${Action.Email.Work.Value}">${Action.Email.Work.Value}</a>
 			    </div>
 			</div>
 	        <div class="ms-PersonaCard-actionDetails action-detail-phone">
 			    <div class="ms-PersonaCard-detailLine">
-			    	<span class="ms-PersonaCard-detailLabel">Work:</span><a href="tel:${WorkPhone}">${WorkPhone}</a><br/>
-			    	<span class="ms-PersonaCard-detailLabel">Mobile:</span><a href="tel:${MobilePhone}">${MobilePhone}</a>
+			    	<span class="ms-PersonaCard-detailLabel">${Action.Phone.Work.Label}</span><a href="${Action.Phone.Work.Protocol}${Action.Phone.Work.Value}">${Action.Phone.Work.Value}</a><br/>
+			    	<span class="ms-PersonaCard-detailLabel">${Action.Phone.Mobile.Label}</span><a href="${Action.Phone.Mobile.Protocol}${Action.Phone.Mobile.Value}">${Action.Phone.Mobile.Value}</a>
 			    </div>
 			</div>
 	        <div class="ms-PersonaCard-actionDetails action-detail-chat">
 			    <div class="ms-PersonaCard-detailLine">
-			    	<span class="ms-PersonaCard-detailLabel">Lync:</span><a href="sip:${SipAddress}">${SipAddress}</a>
+			    	<span class="ms-PersonaCard-detailLabel">${Action.Chat.Lync.Label}</span><a href="${Action.Chat.Lync.Protocol}${Action.Chat.Lync.Value}">${Action.Chat.Lync.Value}</a>
 			    </div>
 			</div>
 	    </div>	  
