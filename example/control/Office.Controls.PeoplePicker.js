@@ -1543,23 +1543,25 @@
         if (actualCount > maxCount && cachedEntries.length < maxCount) {
             serverEntries = serverEntries.slice(0, maxCount - cachedEntries.length);
         }
-        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(cachedEntries, 1, true);
-        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(serverEntries, 0, false);
+        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(cachedEntries, 1, true, true);
+        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(serverEntries, 0, false, (cachedEntries.length > 0));
         html += '</div>';
         html += Office.Controls.peoplePickerTemplates.generateAutofillFooterTemplate(actualCount, maxCount);
         return html;
     };
 
-    Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate = function (principals, source, isCached) {
+    Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate = function (principals, source, isCached, showTitle) {
         var listHtml = '',
-        cachedGrouptTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultRecentGroup')),
-        searchedGroupTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultMoreGroup')), i,
-        groupTitle = isCached ? cachedGrouptTitile : searchedGroupTitile;
+        cachedGrouptTitle = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultRecentGroup')),
+        searchedGroupTitle = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultMoreGroup')), i,
+        groupTitle = isCached ? cachedGrouptTitle : searchedGroupTitle;
         if (!principals.length) {
             return listHtml;
         }
         listHtml += '<div class=\"ms-PeoplePicker-resultGroup\">';
-        listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle\">' + groupTitle + '</div>';
+        if (showTitle) {
+            listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle\">' + groupTitle + '</div>';
+        }
         listHtml += '<ul class=\"ms-PeoplePicker-resultList\" id=\"' + groupTitle + '\">';
         for (i = 0; i < principals.length; i++) {
             listHtml += Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate(principals[i], source);
