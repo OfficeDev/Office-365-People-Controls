@@ -1521,7 +1521,7 @@
         body += '<div class=\"ms-PeoplePicker-searchBox ms-PeoplePicker-searchBoxAdded\">';
         body += '<span class=\"office-peoplepicker-default\">' + defaultText + '</span>';
         body += '<div class=\"office-peoplepicker-recordList\"></div>';
-        body += '<input type=\"text\" class=\"ms-PeoplePicker-searchField\" size=\"1\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\"  style=\"width:106px;\" />';
+        body += '<input type=\"text\" class=\"ms-PeoplePicker-searchField\" size=\"1\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" />';
         body += '</div>';
         body += '<div class=\"ms-PeoplePicker-results\">';
         body += '</div>';
