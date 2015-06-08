@@ -37,18 +37,16 @@
                         <u>AAD data:</u>
                         &nbsp;&nbsp;&nbsp;&nbsp;<!-- <a id="login_user">Login</a> --><button id="login_user">Login</button>&nbsp;&nbsp;
                         <span id="logged_user"></span>
-                    </p><p></p>
-                    <table style="vertical-align:top">
-                        <tr>
-                            <td style="vertical-align:top;text-align:right">Multiple Selection</td>
-                            <td style="vertical-align:top" class="ppcontainer">
-                                <div id='ppc_multiple'></div>
-                            </td>
-                        </tr>
-                    </table>
+                    </p>
+                    <p>
+                        <u>No Image</u>
+                        <div id='ppc_noImage' style='max-width:600px;'></div>
+                    </p>
+                    <p>
+                        <u>Show Image</u>
+                        <div id='ppc_showImage' style='max-width:600px;'></div>
+                    </p>
                 </div>
-
-                <p />
             </td>
         </tr>
     </table>
@@ -104,7 +102,10 @@
             params.allowMultipleSelections = true;
             params.startSearchCharLength = 1;
             params.inputHint = "Try to select multiple records...";
-            new Office.Controls.PeoplePicker(document.getElementById('ppc_multiple'), aadDataProvider, params);
+            new Office.Controls.PeoplePicker(document.getElementById('ppc_noImage'), aadDataProvider, params);
+
+            params.showImage = true;
+            new Office.Controls.PeoplePicker(document.getElementById('ppc_showImage'), aadDataProvider, params);
         }
     </script>
 </body>
