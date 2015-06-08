@@ -144,14 +144,12 @@
         autofillElement: null,
         errorMessageElement: null,
         root: null,
-        alertDiv: null,
         lastSearchQuery: '',
         currentToken: null,
         widthSet: false,
         currentPrincipalsChoices: null,
         hasErrors: false,
         errorDisplayed: null,
-        hasMultipleEntryValidationError: false,
         hasMultipleMatchValidationError: false,
         hasNoMatchValidationError: false,
         autofill: null,
@@ -164,7 +162,6 @@
             }
             this.setTextInputDisplayStyle();
             this.validateMultipleMatchError();
-            this.validateMultipleEntryAllowed();
             this.validateNoMatchError();
             this.clearInputField();
             this.clearCacheData();
@@ -186,7 +183,6 @@
                     record[i].removeAndNotTriggerUserListener();
                     this.onRemoved(this, recordToRemove.principalInfo);
                     this.validateMultipleMatchError();
-                    this.validateMultipleEntryAllowed();
                     this.validateNoMatchError();
                     this.setTextInputDisplayStyle();
                     this.textInput.focus();
@@ -284,7 +280,6 @@
             this.defaultText = this.actualRoot.querySelector('span.office-peoplepicker-default');
             this.resolvedListRoot = this.actualRoot.querySelector('div.office-peoplepicker-recordList');
             this.autofillElement = this.actualRoot.querySelector('.ms-PeoplePicker-results');
-            this.alertDiv = this.actualRoot.querySelector('.office-peoplepicker-alert');
             Office.Controls.Utils.addEventListener(this.textInput, 'focus', function (e) {
                 return self.onInputFocus(e);
             });
@@ -537,7 +532,6 @@
 
         onDataSelected: function (selectedPrincipal) {
             this.lastSearchQuery = '';
-            this.validateMultipleEntryAllowed();
             this.clearInputField();
             this.refreshInputField();
         },
@@ -545,7 +539,6 @@
         onDataRemoved: function (selectedPrincipal) {
             this.refreshInputField();
             this.validateMultipleMatchError();
-            this.validateMultipleEntryAllowed();
             this.validateNoMatchError();
             this.onRemoved(this, selectedPrincipal.principalInfo);
             this.onChange(this);
@@ -573,12 +566,7 @@
             }
         },
 
-        changeAlertMessage: function (message) {
-            this.alertDiv.innerHTML = Office.Controls.Utils.htmlEncode(message);
-        },
-
         displayLoadingIcon: function (searchingName) {
-            this.changeAlertMessage(Office.Controls.peoplePickerTemplates.getString('PP_Searching'));
             this.autofill.openSearchingLoadingStatus(searchingName);
         },
 
@@ -665,7 +653,6 @@
                     self.onDataFetchError(error);
                 }
             });
-            this.validateMultipleEntryAllowed();
         },
 
         addUnresolvedPrincipal: function (input, triggerUserListener) {
@@ -694,7 +681,6 @@
                     self.onDataFetchError(error);
                 }
             });
-            this.validateMultipleEntryAllowed();
         },
 
         addValidationError: function (err) {
@@ -721,20 +707,6 @@
                 this.onError(this, this.errors[0]);
             } else {
                 this.displayValidationErrors();
-            }
-        },
-
-        validateMultipleEntryAllowed: function () {
-            if (!this.allowMultiple) {
-                if (this.selectedItems.length > 1) {
-                    if (!this.hasMultipleEntryValidationError) {
-                        this.addValidationError(Office.Controls.PeoplePicker.ValidationError.createMultipleEntryError());
-                        this.hasMultipleEntryValidationError = true;
-                    }
-                } else if (this.hasMultipleEntryValidationError) {
-                    this.removeValidationError('MultipleEntry');
-                    this.hasMultipleEntryValidationError = false;
-                }
             }
         },
 
@@ -1169,11 +1141,6 @@
             if (!Office.Controls.Utils.containClass(this.parent.actualRoot, 'is-active')) {
                 Office.Controls.Utils.addClass(this.parent.actualRoot, 'is-active');
             }
-            if ((this.cachedEntries.length + this.serverEntries.length) > 0) {
-                this.parent.changeAlertMessage(Office.Controls.peoplePickerTemplates.getString('PP_SuggestionsAvailable'));
-            } else {
-                this.parent.changeAlertMessage(Office.Controls.peoplePickerTemplates.getString('PP_NoSuggestionsAvailable'));
-            }
         },
 
         close: function () {
@@ -1303,12 +1270,6 @@
         var err = new Office.Controls.PeoplePicker.ValidationError();
         err.errorName = 'MultipleMatch';
         err.localizedErrorMessage = Office.Controls.peoplePickerTemplates.getString('PP_MultipleMatch');
-        return err;
-    };
-    Office.Controls.PeoplePicker.ValidationError.createMultipleEntryError = function () {
-        var err = new Office.Controls.PeoplePicker.ValidationError();
-        err.errorName = 'MultipleEntry';
-        err.localizedErrorMessage = Office.Controls.peoplePickerTemplates.getString('PP_MultipleEntry');
         return err;
     };
     Office.Controls.PeoplePicker.ValidationError.createNoMatchError = function () {
@@ -1574,8 +1535,12 @@
         var footerText;
         if (count >= maxCount) {
             footerText = Office.Controls.Utils.formatString(Office.Controls.peoplePickerTemplates.getString('PP_ShowingTopNumberOfResults'), maxCount.toString());
+        } else if (count > 1) {
+            footerText = Office.Controls.Utils.formatString(Office.Controls.peoplePickerTemplates.getString('PP_MultipleResults'), count.toString());
+        } else if (count > 0) {
+            footerText = Office.Controls.Utils.formatString(Office.Controls.peoplePickerTemplates.getString('PP_SingleResult'), count.toString());
         } else {
-            footerText = Office.Controls.Utils.formatString(Office.Controls.Utils.getLocalizedCountValue(Office.Controls.peoplePickerTemplates.getString('PP_Results'), Office.Controls.peoplePickerTemplates.getString('PP_ResultsIntervals'), count), count.toString());
+            footerText = Office.Controls.peoplePickerTemplates.getString('PP_NoResult');
         }
         footerText = Office.Controls.Utils.htmlEncode(footerText);
         footerHtml += '<div class=\"ms-PeoplePicker-searchMorePrimary ms-PeoplePicker-searchMorePrimaryAdded\">' + footerText + '</div>';
@@ -1968,23 +1933,20 @@
     Office.Controls.PeoplePicker.autofillContainer.currentOpened = null;
     Office.Controls.PeoplePicker.autofillContainer.boolBodyHandlerAdded = false;
     Office.Controls.PeoplePicker.ValidationError.multipleMatchName = 'MultipleMatch';
-    Office.Controls.PeoplePicker.ValidationError.multipleEntryName = 'MultipleEntry';
     Office.Controls.PeoplePicker.ValidationError.noMatchName = 'NoMatch';
     Office.Controls.PeoplePicker.ValidationError.serverProblemName = 'ServerProblem';
     Office.Controls.PeoplePicker.mruCache.instance = null;
-    Office.Controls.PeoplePickerResourcesDefaults.PP_SuggestionsAvailable = 'Suggestions Available';
     Office.Controls.PeoplePickerResourcesDefaults.PP_NoMatch = 'We couldn\'t find an exact match.';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_ShowingTopNumberOfResults = 'Show top {0} results';
     Office.Controls.PeoplePickerResourcesDefaults.PP_ServerProblem = 'Sorry, we\'re having trouble reaching the server.';
     Office.Controls.PeoplePickerResourcesDefaults.PP_DefaultMessagePlural = 'Enter names or email addresses...';
     Office.Controls.PeoplePickerResourcesDefaults.PP_MultipleMatch = 'Multiple entries matched, please click to resolve.';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_Results = 'No results found||Show {0} result||Show {0} results';
+    Office.Controls.PeoplePickerResourcesDefaults.PP_NoResult = 'No results found';
+    Office.Controls.PeoplePickerResourcesDefaults.PP_SingleResult = 'Showing {0} result';
+    Office.Controls.PeoplePickerResourcesDefaults.PP_MultipleResults = 'Showing {0} results';
+    Office.Controls.PeoplePickerResourcesDefaults.PP_ShowingTopNumberOfResults = 'Showing top {0} results';
     Office.Controls.PeoplePickerResourcesDefaults.PP_Searching = 'Searching...';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_ResultsIntervals = '0||1||2-';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_NoSuggestionsAvailable = 'No Suggestions Available';
     Office.Controls.PeoplePickerResourcesDefaults.PP_RemovePerson = 'Remove person or group {0}';
     Office.Controls.PeoplePickerResourcesDefaults.PP_DefaultMessage = 'Enter a name or email address...';
-    Office.Controls.PeoplePickerResourcesDefaults.PP_MultipleEntry = 'You can only enter one name.';
     Office.Controls.PeoplePickerResourcesDefaults.PP_SearchResultRecentGroup = 'Recent';
     Office.Controls.PeoplePickerResourcesDefaults.PP_SearchResultMoreGroup = 'More';
     Office.Controls.Runtime.context = null;
