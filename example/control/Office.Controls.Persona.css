@@ -24,6 +24,7 @@
   height: 50px;
   margin-right: 10px;
   width: 50px;
+  -webkit-clip-path: circle(50%, 50%, 50%);
 }
 .ms-Persona .ms-Persona-image.ms-Persona-image--doughboy {
   background-color: #a6a6a6;
