@@ -38,7 +38,85 @@
         Office.Controls.Runtime.context = new Office.Controls.Context(parameterObject);
     };
 
+    Office.Controls.Browser = function (browserType) {
+        this.browserType = browserType;
+        this.userAgent = navigator.userAgent.toLowerCase();
+    } ;
+
+    Office.Controls.Browser.prototype = {
+        /**
+         * Check the type of current browser
+         * @return {Boolean}
+         */
+        isExpectedBrowser: function() {
+            var isExpected = (this.userAgent.indexOf(this.browserType.toString()) !== -1);
+
+            switch (this.browserType) {
+                case Browser.TypeEnum.IE:
+                case Browser.TypeEnum.Firefox:
+                case Browser.TypeEnum.Opera:
+                    return isExpected;
+                case Browser.TypeEnum.Safari:
+                    // The part of Chrome UserAgent value is AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36
+                    return isExpected && (!this.isContainChromeStr());
+                case Browser.TypeEnum.Chrome:
+                    // The part of Opera UserAgent value is Chrome/31.0.1650.63 Safari/537.36 OPR/18.0.1284.68
+                    return isExpected && (!this.isContainOperaStr());
+                default:
+                    return false;
+            }
+        },
+
+        isContainChromeStr: function() {
+            return (this.userAgent.indexOf(Browser.TypeEnum.Chrome.toString()) !== -1);
+        },
+
+        isContainOperaStr: function() {
+            return (this.userAgent.indexOf(Browser.TypeEnum.Opera.toString()) !== -1);
+        }
+    };
+
+    // The browser type
+    Office.Controls.Browser.TypeEnum = {
+        // The article of search
+        IE: "trident",
+        // Table of contents, means the chapter of current search article
+        Chrome: "chrome",
+        // The images in current search article
+        Firefox: "firefox",
+        // The infobox tables in current search article
+        Safari: "safari",
+        // The reference of current search article
+        Opera: "opr"
+    };
+
     Office.Controls.Utils = function () { };
+    // Construct browser in different browser type
+    Office.Controls.Utils.isIE = function () {
+        var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.IE);
+        return browser.isExpectedBrowser();
+    };
+
+    Office.Controls.Utils.isChrome = function () {
+        var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.Chrome);
+        return browser.isExpectedBrowser();
+    };
+
+    Office.Controls.Utils.isSafari = function () {
+        var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.Safari);
+        return browser.isExpectedBrowser();
+    };
+
+    Office.Controls.Utils.isFirefox = function () {
+        var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.Firefox);
+        return browser.isExpectedBrowser();
+    };
+
+    Office.Controls.Utils.isOpera = function () {
+        var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.Opera);
+        return browser.isExpectedBrowser();
+    };
+    
     Office.Controls.Utils.deserializeJSON = function (data) {
         if (Office.Controls.Utils.isNullOrEmptyString(data)) {
             return {};

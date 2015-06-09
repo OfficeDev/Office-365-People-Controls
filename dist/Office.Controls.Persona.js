@@ -335,12 +335,12 @@
                 break;
             case 0:
             case 4:
-                // if (Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isInternetExplorer() || Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isFirefox()) {
-                //     returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
-                // }
-                // else {
+                if (Office.Controls.Utils.isIE() || Office.Controls.Utils.isFirefox()) {
+                    returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
+                }
+                else {
                     returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 27, 0, 40, 42 ];
-                // }
+                }
                 break;
             default:
                 returnValue = null;
