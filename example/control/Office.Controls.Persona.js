@@ -84,12 +84,16 @@
          * @return {null}
          */
         loadTemplateAsync: function (templatePath, callback) {
-            if (Office.Controls.Utils.isNullOrUndefined(templatePath)) {
-                Office.Controls.Utils.errorConsole('Wrong template path');
-                return;
-            }
-
             var self = this;
+            var cachedTemplate = Office.Controls.Persona.PersonaHelper.getCachedTemplate(templatePath);
+
+            if (cachedTemplate !== null)
+            {
+               self.parseTemplate(cachedTemplate);
+               callback(self.rootNode, null);
+               return;
+            } 
+
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", templatePath, true);
             xmlhttp.onreadystatechange = function() {
@@ -97,7 +101,7 @@
                 // if (this.status !== 200) return; // or whatever error handling you want
                 if (this.readyState === 4) {
                     if (this.status === 200) {
-                        var parser, xmlDoc
+                        var parser, xmlDoc;
                         if (window.DOMParser) {
                            parser = new DOMParser();
                            xmlDoc = parser.parseFromString(this.responseText,"text/xml");
@@ -106,6 +110,9 @@
                            xmlDoc.async = false;
                            xmlDoc.loadXML(this.responseText); 
                         }  
+
+                        // Save xmlDoc to cache
+                        Office.Controls.Persona.PersonaHelper.setCachedTemplate(templatePath, xmlDoc);
                         self.parseTemplate(xmlDoc);
                         callback(self.rootNode, null); 
                     }
@@ -124,11 +131,6 @@
          */
         parseTemplate: function (xmlDoc) {
             try {
-                if (typeof xmlDoc !== 'object' || (Office.Controls.Utils.isNullOrUndefined(xmlDoc))) {
-                    Office.Controls.Utils.errorConsole('Invalid template document');
-                    return;
-                }
-                
                 var templateNode = xmlDoc.getElementById(this.templateID);
                 var templateElement = document.createElement("div");
                 this.hiddenNode(templateElement, this.isHidden);
@@ -260,6 +262,36 @@
         personaInstance.loadTemplateAsync(templatePath, callback);
     };
 
+    Office.Controls.Persona.PersonaHelper.getCachedTemplate = function (templatePath) {
+        if ((templatePath === "") || Office.Controls.Utils.isNullOrUndefined(templatePath)) {
+            Office.Controls.Utils.errorConsole('Wrong template path');
+            return;
+        }
+
+        var cacheIndex = templatePath.toLowerCase();
+        var cachedTemplate = Office.Controls.Persona.PersonaHelper._cachedTemplates[cacheIndex];
+        if (Office.Controls.Utils.isNullOrUndefined(cachedTemplate)) {
+            return null;
+        } else {
+            return cachedTemplate;
+        }
+    };
+
+    Office.Controls.Persona.PersonaHelper.setCachedTemplate = function (templatePath, xmlDoc) {
+        if ((templatePath === "") || Office.Controls.Utils.isNullOrUndefined(templatePath)) {
+            Office.Controls.Utils.errorConsole('Wrong template path');
+            return;
+        }
+
+        if (typeof xmlDoc !== 'object' || (Office.Controls.Utils.isNullOrUndefined(xmlDoc))) {
+            Office.Controls.Utils.errorConsole('Invalid template document');
+            return;
+        }
+
+        var cacheIndex = templatePath.toLowerCase();
+        Office.Controls.Persona.PersonaHelper._cachedTemplates[cacheIndex] = xmlDoc;
+    };
+
     Office.Controls.Persona.PersonaHelper.getPersonaType = function () { 
         var personaType = {
             "NameOnly": "nameonly",
@@ -303,12 +335,12 @@
                 break;
             case 0:
             case 4:
-                // if (Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isInternetExplorer() || Microsoft.Office.Access.RichTextEditor.RteUtilityCommon.isFirefox()) {
-                //     returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
-                // }
-                // else {
+                if (Office.Controls.Utils.isIE() || Office.Controls.Utils.isFirefox()) {
+                    returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
+                }
+                else {
                     returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 27, 0, 40, 42 ];
-                // }
+                }
                 break;
             default:
                 returnValue = null;
@@ -342,7 +374,7 @@
     Office.Controls.Persona.Strings.suspensionPoints = '...';
     Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = null;
     Office.Controls.Persona.StringUtils._currentPersonaType = 0;
-    Office.Controls.Persona.res = {};
+    Office.Controls.Persona.PersonaHelper._cachedTemplates = {};
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";

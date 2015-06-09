@@ -1,15 +1,32 @@
-function showAll()
+var tempPath = "control/templates/template.htm";
+var dataProvider = sampleJsonBetter();
+var personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameOnly;
+var nameImage = null;
+var isShow = true;
+
+function showPersonaCard()
 {	
-	var tempPath = "control/templates/template.htm";
-	var dataProvider = sampleJsonBetter();
-
-	var root = document.getElementById('nameOnlyRoot');
-	var nameOnly = new Office.Controls.Persona(root, 'nameonly', dataProvider, true);
-	var nameImage = null;
-	var isShow = true;
-	var personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameOnly;
-
+	var pcRoot = document.getElementById('personaCardRoot');
 	// Method 1:
+	// var personaCard = new Office.Controls.Persona(pcRoot, 'personacard', dataProvider, true);
+	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
+
+	// });
+
+	// Method 2:
+	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard;
+	Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, tempPath, personaType, dataProvider, true, callbackForPersonaCard);
+	function callbackForPersonaCard(rootNode, error) {
+
+	}
+}
+
+function showNameOnly () {
+	var root = document.getElementById('nameOnlyRoot');
+	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameOnly;
+	
+	// Method 1:
+	// var nameOnly = new Office.Controls.Persona(root, 'nameonly', dataProvider, true);
 	// nameOnly.loadTemplateAsync(tempPath, function (rootNode, error) {
  //        if (rootNode !== null) {
  //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
@@ -46,20 +63,6 @@ function showAll()
         } else {
             // error handling
         }
-	}
-	
-	var pcRoot = document.getElementById('personaCardRoot');
-	// Method 1:
-	// var personaCard = new Office.Controls.Persona(pcRoot, 'personacard', dataProvider, true);
-	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
-
-	// });
-
-	// Method 2:
-	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard;
-	Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, tempPath, personaType, dataProvider, true, callbackForPersonaCard);
-	function callbackForPersonaCard(rootNode, error) {
-
 	}
 }
 
