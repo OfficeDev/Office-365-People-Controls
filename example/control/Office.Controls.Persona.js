@@ -262,6 +262,37 @@
         personaInstance.loadTemplateAsync(templatePath, callback);
     };
 
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, templatePath, dataProvider, eventType) {
+        var personaCard = null;
+        var isShow = true;
+
+        var personaInstance = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage, dataProvider, true);
+        personaInstance.loadTemplateAsync(templatePath, function callback(rootNode, error) {
+            if (eventType === "click") {
+                if (rootNode !== null) {
+                    Office.Controls.Utils.addEventListener(rootNode, eventType, function (e) {
+                        if (personaCard == null) {
+                            personaCard = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+                            personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
+                                isShow = false;
+                            }); 
+                        } else {
+                            personaCard.hiddenNode(personaCard.get_rootNode(), isShow);
+                            isShow = isShow ? false : true;
+                        }
+                    });
+                } else {
+                    Office.Controls.Utils.errorConsole('Wrong template path');
+                }
+            } 
+        });
+        return personaInstance;
+    };
+
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, templatePath, dataProvider, callback) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, templatePath, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true, callback);
+    };
+
     Office.Controls.Persona.PersonaHelper.getCachedTemplate = function (templatePath) {
         if ((templatePath === "") || Office.Controls.Utils.isNullOrUndefined(templatePath)) {
             Office.Controls.Utils.errorConsole('Wrong template path');

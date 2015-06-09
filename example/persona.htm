@@ -11,7 +11,7 @@
     <script type="text/javascript" src="control/office.controls.persona.js"></script> 
     <script type="text/javascript" src="control/personasample.js"></script> 
 </head>
-<body onload="showPersonaCard()">
+<body onload="showPersonaCard();showInlinePersona();">
     <!-- Playground -->
     <div>
         <h3>Playground</h3>
@@ -20,8 +20,9 @@
         	<div id="personaCardRoot"></div>
         </p><br><br><br><br><br><br><br><br>
         <p>
-            <u>Name Only with Name Image:<input type="button" value="click" onclick="showNameOnly()"></u>
+            <u>Name Image with Persona Card:<input type="button" value="Add Click Event" onclick="addClickEventForInlinePersona()"></u>
             <div id='nameOnlyRoot'></div>
+            <span id="eventDescription"></span>
         </p>
     </div>
 </body>

@@ -1,12 +1,14 @@
 var tempPath = "control/templates/template.htm";
 var dataProvider = sampleJsonBetter();
-var personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameOnly;
+var personaType;
 var nameImage = null;
 var isShow = true;
+var ips, ipc;
 
-function showPersonaCard()
-{	
+function showPersonaCard () {	
 	var pcRoot = document.getElementById('personaCardRoot');
+	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard;
+
 	// Method 1:
 	// var personaCard = new Office.Controls.Persona(pcRoot, 'personacard', dataProvider, true);
 	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
@@ -14,16 +16,21 @@ function showPersonaCard()
 	// });
 
 	// Method 2:
-	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard;
-	Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, tempPath, personaType, dataProvider, true, callbackForPersonaCard);
+	// Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, tempPath, personaType, dataProvider, true, callbackForPersonaCard);
+	// function callbackForPersonaCard(rootNode, error) {
+
+	// }
+
+	// Method 3:
+	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, tempPath, dataProvider, callbackForPersonaCard);
 	function callbackForPersonaCard(rootNode, error) {
 
 	}
 }
 
-function showNameOnly () {
+function showInlinePersona () {
 	var root = document.getElementById('nameOnlyRoot');
-	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameOnly;
+	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage;
 	
 	// Method 1:
 	// var nameOnly = new Office.Controls.Persona(root, 'nameonly', dataProvider, true);
@@ -46,29 +53,59 @@ function showNameOnly () {
  //    });
 	
 	// Method 2:
-    Office.Controls.Persona.PersonaHelper.createPersona(root, tempPath, personaType, dataProvider, true, callbackForNameOnly);
-	function callbackForNameOnly(rootNode, error) {
-		if (rootNode !== null) {
-            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
-            	if (nameImage == null) {
-            		nameImage = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage, dataProvider, true);
-		        	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
-		        		isShow = false;
-		        	});	
-            	} else {
-            		nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
-            		isShow = isShow ? false : true;
-            	}
-		    });
-        } else {
-            // error handling
-        }
-	}
+ //    Office.Controls.Persona.PersonaHelper.createPersona(root, tempPath, personaType, dataProvider, true, callbackForNameOnly);
+	// function callbackForNameOnly(rootNode, error) {
+	// 	if (rootNode !== null) {
+ //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
+ //            	if (nameImage == null) {
+ //            		nameImage = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+	// 	        	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
+	// 	        		isShow = false;
+	// 	        	});	
+ //            	} else {
+ //            		nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
+ //            		isShow = isShow ? false : true;
+ //            	}
+	// 	    });
+ //        } else {
+ //            // error handling
+ //        }
+	// }
+
+	// Method 3:
+	ips = Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, dataProvider);
+	event.target.disabled = true;
+}
+
+var isClickAdded = false;
+function addClickEventForInlinePersona() 
+{
+   var eventSpan = document.getElementById('eventDescription');
+   if (!isClickAdded) {
+   		isClickAdded = true; 
+   		// event.target.value = "Add Click Event";
+   		eventSpan.innerText = "Click Event has been added.";
+   		Office.Controls.Utils.addEventListener(ips.get_rootNode(), 'click', function (e) {
+			if (nameImage == null) {
+				nameImage = new Office.Controls.Persona(ips.root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+		    	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
+		    		isShow = false;
+		    	});	
+			} else {
+				nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
+				isShow = isShow ? false : true;
+			}
+		});
+   } else {
+   		isClickAdded = false;
+   		eventSpan.innerText = "Click Event has been removed.";
+   		// event.target.value = "Remove Click Event";
+   		Office.Controls.Utils.removeEventListener(ips.get_rootNode(), 'click', function (e) {});
+   }
 }
 
 
-function samplePersonInfo()
-{
+function samplePersonInfo() {
     // User Profile
     return displayInfo = {
             ImageUrl: 'control/images/icon.png',
@@ -83,8 +120,7 @@ function samplePersonInfo()
         };
 }
 
-function sampleJsonBetter()
-{
+function sampleJsonBetter() {
 	var persona = {
 		"Id": "***REMOVED***",
 		"Main":

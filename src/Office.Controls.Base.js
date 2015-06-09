@@ -116,7 +116,7 @@
         var browser = new Office.Controls.Browser(Office.Controls.Browser.TypeEnum.Opera);
         return browser.isExpectedBrowser();
     };
-    
+
     Office.Controls.Utils.deserializeJSON = function (data) {
         if (Office.Controls.Utils.isNullOrEmptyString(data)) {
             return {};
@@ -205,6 +205,21 @@
             element.addEventListener(eventName, h, false);
         } else if (!Office.Controls.Utils.isNullOrUndefined(element.attachEvent)) {
             element.attachEvent('on' + eventName, h);
+        }
+    };
+
+    Office.Controls.Utils.removeEventListener = function (element, eventName, handler) {
+        var h = function (e) {
+            try {
+                return handler(e);
+            } catch (ex) {
+                throw ex;
+            }
+        };
+        if (!Office.Controls.Utils.isNullOrUndefined(element.removeEventListener)) {
+            element.removeEventListener(eventName, h, false);
+        } else if (!Office.Controls.Utils.isNullOrUndefined(element.detachEvent )) {  // For IE
+            element.detachEvent ('on' + eventName, h);
         }
     };
 
