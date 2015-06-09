@@ -22,6 +22,7 @@
         displayName: null,
         Description: null,
         PersonId: null,
+        imgSrc: null,
         principalInfo: null
     }
 
@@ -54,6 +55,9 @@
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showValidationErrors)) {
                     this.showValidationErrors = (String(parameterObject.showValidationErrors) === "true");
+                }
+                if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.showImage)) {
+                    this.showImage = (String(parameterObject.showImage) === "true");
                 }
                 if (!Office.Controls.Utils.isNullOrUndefined(parameterObject.onAdded)) {
                     this.onAdded = parameterObject.onAdded;
@@ -97,6 +101,7 @@
         record.DisplayName = info.DisplayName;
         record.Description = info.Description;
         record.PersonId = info.PersonId;
+        record.imgSrc = info.imgSrc;
         record.principalInfo = info;
     };
 
@@ -132,6 +137,7 @@
         onError: null,
         dataProvider: null,
         showValidationErrors: true,
+        showImage: false,
         showInputHint: true,
         inputTabindex: 0,
         searchingTimes: 0,
@@ -877,7 +883,7 @@
 
         add: function () {
             var holderDiv = document.createElement('div');
-            holderDiv.innerHTML = Office.Controls.peoplePickerTemplates.generateRecordTemplate(this.Record, this.parent.allowMultiple);
+            holderDiv.innerHTML = Office.Controls.peoplePickerTemplates.generateRecordTemplate(this.Record, this.parent.allowMultiple, this.parent.showImage);
             var recordElement = holderDiv.firstChild,
             removeButtonElement = recordElement.querySelector('div.ms-PeoplePicker-personaRemove'),
             self = this;
@@ -1129,7 +1135,7 @@
         },
 
         renderList: function (handler) {
-            this.root.innerHTML = Office.Controls.peoplePickerTemplates.generateAutofillListTemplate(this.cachedEntries, this.serverEntries, this.parent.numberOfResults);
+            this.root.innerHTML = Office.Controls.peoplePickerTemplates.generateAutofillListTemplate(this.cachedEntries, this.serverEntries, this.parent.numberOfResults, this.parent.showImage);
             var isTabKey = false,
             autofillElementsLinkTags = this.root.querySelectorAll('a'),
             self = this, i;
@@ -1149,7 +1155,21 @@
             if (autofillElementsLiTags.length > 0) {
                 Office.Controls.Utils.addClass(autofillElementsLiTags[0], 'ms-PeoplePicker-resultAddedForSelect');
             }
-
+            if (this.parent.showImage) {
+                for (i = 0; i < autofillElementsLiTags.length; i++) {
+                    var li = autofillElementsLiTags[i];
+                    var image = li.querySelector('img');
+                    var personId = this.getPersonIdFromListElement(li);
+                    (function (self, image, personId) {
+                        self.parent.dataProvider.getImageAsync(personId, function (error, imgSrc) {
+                            if (imgSrc != null) {
+                                image.style.backgroundImage = "url('" + imgSrc + "')";
+                                self.entries[personId].imgSrc = imgSrc;
+                            }
+                        });
+                    })(this, image, personId);
+                }
+            }
         },
 
         flushContent: function () {
@@ -1517,11 +1537,18 @@
         return innerHtml;
     };
 
-    Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate = function (principal, source) {
+    Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate = function (principal, isCached, showImage) {
         var titleText = Office.Controls.Utils.htmlEncode((Office.Controls.Utils.isNullOrEmptyString(principal.Email)) ? '' : principal.Email),
         itemHtml = '<li tabindex=\"0\" class=\"ms-PeoplePicker-result\" data-office-peoplepicker-value=\"' + Office.Controls.Utils.htmlEncode(principal.PersonId) + '\" title=\"' + titleText + '\">';
-        itemHtml += '<div  class=\"ms-Persona ms-PersonaAdded\">';
-        itemHtml += '<div  class=\"ms-Persona-details\">';
+        itemHtml += '<div class=\"ms-Persona ms-PersonaAdded\">';
+        if (showImage) {
+            if (isCached && !Office.Controls.Utils.isNullOrUndefined(principal.imgSrc)) {
+                itemHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + principal.imgSrc + '\')\">';
+            } else {
+                itemHtml += '<img class=\"ms-Persona-image\">';
+            }
+        }
+        itemHtml += '<div class=\"ms-Persona-details\">';
         itemHtml += '<a onclick=\"return false;\" href=\"#\" tabindex=\"-1\">';
         itemHtml += '<div class=\"ms-Persona-primaryText\" >' + Office.Controls.Utils.htmlEncode(principal.DisplayName) + '</div>';
         if (!Office.Controls.Utils.isNullOrEmptyString(principal.Description)) {
@@ -1531,7 +1558,7 @@
         return itemHtml;
     };
 
-    Office.Controls.peoplePickerTemplates.generateAutofillListTemplate = function (cachedEntries, serverEntries, maxCount) {
+    Office.Controls.peoplePickerTemplates.generateAutofillListTemplate = function (cachedEntries, serverEntries, maxCount, showImage) {
         var html = '<div class=\"ms-PeoplePicker-resultGroups\">',
         actualCount = cachedEntries.length + serverEntries.length;
         if (Office.Controls.Utils.isNullOrUndefined(cachedEntries)) {
@@ -1543,14 +1570,14 @@
         if (actualCount > maxCount && cachedEntries.length < maxCount) {
             serverEntries = serverEntries.slice(0, maxCount - cachedEntries.length);
         }
-        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(cachedEntries, 1, true);
-        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(serverEntries, 0, false);
+        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(cachedEntries, true, showImage);
+        html += Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate(serverEntries, false, showImage);
         html += '</div>';
         html += Office.Controls.peoplePickerTemplates.generateAutofillFooterTemplate(actualCount, maxCount);
         return html;
     };
 
-    Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate = function (principals, source, isCached) {
+    Office.Controls.peoplePickerTemplates.generateAutofillGroupTemplate = function (principals, isCached, showImage) {
         var listHtml = '',
         cachedGrouptTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultRecentGroup')),
         searchedGroupTitile = Office.Controls.Utils.htmlEncode(Office.Controls.peoplePickerTemplates.getString('PP_SearchResultMoreGroup')), i,
@@ -1562,7 +1589,7 @@
         listHtml += '<div class=\"ms-PeoplePicker-resultGroupTitle\">' + groupTitle + '</div>';
         listHtml += '<ul class=\"ms-PeoplePicker-resultList\" id=\"' + groupTitle + '\">';
         for (i = 0; i < principals.length; i++) {
-            listHtml += Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate(principals[i], source);
+            listHtml += Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate(principals[i], isCached, showImage);
         }
         listHtml += '</ul></div>';
         return listHtml;
@@ -1592,7 +1619,7 @@
         return searchingLoadingHtml;
     };
 
-    Office.Controls.peoplePickerTemplates.generateRecordTemplate = function (record, allowMultiple) {
+    Office.Controls.peoplePickerTemplates.generateRecordTemplate = function (record, allowMultiple, showImage) {
         var recordHtml;
         var userRecordClass = 'ms-PeoplePicker-persona';
         if (!allowMultiple) {
@@ -1604,10 +1631,21 @@
             recordHtml = '<div class=\"' + userRecordClass + ' ' + 'has-error' + '\" tabindex=\"0\">';
         }
         recordHtml += '<div class=\"ms-Persona ms-Persona--xs\" >';
+        if (showImage) {
+            if (Office.Controls.Utils.isNullOrUndefined(record.imgSrc)) {
+                recordHtml += '<img class=\"ms-Persona-image\">';
+            } else  {
+                recordHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + record.imgSrc + '\')\">';
+            }
+        }
         recordHtml += '<div class=\"ms-Persona-details\">';
         recordHtml += '<div class=\"ms-Persona-primaryText ms-Persona-primaryTextForResolvedUserAdded\">' + Office.Controls.Utils.htmlEncode(record.text);
         recordHtml += '</div></div></div>';
-        recordHtml += '<div class=\"ms-PeoplePicker-personaRemove\">';
+        if (showImage) {
+            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove ms-PeoplePicker-personaRemoveWithImage\">';
+        } else {
+            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove ms-PeoplePicker-personaRemoveNoImage\">';
+        }
         recordHtml += '<i tabindex=\"0\" class=\"ms-Icon ms-Icon--x ms-Icon-added\">';
         recordHtml += '</i></div>';
         recordHtml += '</div>';
@@ -1895,7 +1933,7 @@
         getPrincipals: function (input, callback) {
 
             var self = this;
-            self.authContext.acquireToken('00000002-0000-0000-c000-000000000000', function (error, token) {
+            self.authContext.acquireToken(Office.Controls.Utils.aadGraphResourceId, function (error, token) {
 
                 // Handle ADAL Errors
                 if (error || !token) {
@@ -1911,7 +1949,7 @@
                 }
 
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://graph.windows.net/' + tenant + '/users?api-version=2013-11-08' + "&$filter=startswith(displayName," +
+                xhr.open('GET', 'https://graph.windows.net/' + tenant + '/users?api-version=1.5' + "&$filter=startswith(displayName," +
                     encodeURIComponent("'" + input + "') or ") + "startswith(userPrincipalName," + encodeURIComponent("'" + input + "')"), true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
@@ -1925,6 +1963,7 @@
                     }
                     if (xhr.status !== 200) {
                         callback('Unknown error', null);
+                        return;
                     }
                     var result = JSON.parse(xhr.responseText), people = [];
                     if (result["odata.error"] !== undefined) {
@@ -1943,6 +1982,51 @@
                         people = people.slice(0, self.maxResult);
                     }
                     callback(null, people);
+                };
+                xhr.send('');
+            });
+        },
+
+        getImageAsync: function (personId, callback) {
+
+            var self = this;
+            self.authContext.acquireToken(Office.Controls.Utils.aadGraphResourceId, function (error, token) {
+
+                // Handle ADAL Errors
+                if (error || !token) {
+                    callback('Error', null);
+                    return;
+                }
+                var parsed = self.authContext._extractIdToken(token);
+                var tenant = '';
+                if (parsed) {
+                    if (parsed.hasOwnProperty('tid')) {
+                        tenant = parsed.tid;
+                    }
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://graph.windows.net/' + tenant + '/users/' + personId + '/thumbnailPhoto?api-version=1.5');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                xhr.responseType = "blob";
+                xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
+                    callback('Error', null);
+                };
+                xhr.onload = function () {
+                    if (xhr.status === 401) {
+                        callback('Unauthorized', null);
+                        return;
+                    }
+                    if (xhr.status !== 200) {
+                        callback('Unknown error', null);
+                        return;
+                    }
+                    var reader = new FileReader();
+                    reader.addEventListener("loadend", function() {
+                        callback(null, reader.result);
+                    });
+                    reader.readAsDataURL(xhr.response);
                 };
                 xhr.send('');
             });
@@ -1990,5 +2074,6 @@
     Office.Controls.Runtime.context = null;
     Office.Controls.Utils.oDataJSONAcceptString = 'application/json;odata=verbose';
     Office.Controls.Utils.clientTagHeaderName = 'X-ClientService-ClientTag';
+    Office.Controls.Utils.aadGraphResourceId = '00000002-0000-0000-c000-000000000000';
 })();
 
