@@ -58,6 +58,7 @@
         mainNode: null,
         actionNodes: null,
         actionDetailNodes: null,
+
         oriID: "",
 
         get_rootNode: function() {
@@ -76,8 +77,13 @@
             return this.actionDetailNodes;
         },
 
-        loadTemplateAsync: function (templatePath, callback)
-        {
+        /**
+         * Load template file from the give path
+         * @templatePath  {string}
+         * @callback  {Function}
+         * @return {null}
+         */
+        loadTemplateAsync: function (templatePath, callback) {
             if (Office.Controls.Utils.isNullOrUndefined(templatePath)) {
                 Office.Controls.Utils.errorConsole('Wrong template path');
                 return;
@@ -108,8 +114,15 @@
             xmlhttp.send();
         },
 
-        parseTemplate: function (xmlDoc)
-        {
+        /**
+         * Parse the persona content loading from template that includes 3 parts:
+         *     1. Main: It's a detail card
+         *     2. Action bar: It includes the action icons and the click event listener is also attached to each icon.
+         *     3. The detail content of each Action icon: When click the icon, the detail shows up.
+         * @param  {[DocumentElment} xmlDoc The document loading from template
+         * @return {null}
+         */
+        parseTemplate: function (xmlDoc) {
             try {
                 if (typeof xmlDoc !== 'object' || (Office.Controls.Utils.isNullOrUndefined(xmlDoc))) {
                     Office.Controls.Utils.errorConsole('Invalid template document');
@@ -157,9 +170,12 @@
             }
         },
 
-        // Bind data to template
-        bindData: function (htmlStr)
-        {
+        /**
+         * Bind data to template
+         * @htmlStr  {string}
+         * @return {string}
+         */
+        bindData: function (htmlStr) {
             var regExp = /\$\{([^\}\{]+)\}/g;
             var resultStr = htmlStr;
 
@@ -176,14 +192,16 @@
             return resultStr;
         },
 
-        // Parse the json object to get the corresponding value
-        getValueFromJSONObject: function (objectName)
-        {
+        /**
+         * Parse the json object to get the corresponding value
+         * @objectName  {string}
+         * @return {object}
+         */
+        getValueFromJSONObject: function (objectName) {
             return Office.Controls.Utils.getObjectFromJSONObjectName(this.dataProvider, objectName);
         },
 
-        hiddenNode: function (node, isHidden)
-        {
+        hiddenNode: function (node, isHidden) {
             if (isHidden)
             {
                 node.style.visibility = "";
@@ -196,12 +214,14 @@
             }
         },
 
-        removeDetailCard: function ()
-        {
+        removeDetailCard: function () {
         },
 
-        setActiveStyle: function (event)
-        {
+        /**
+         * [setActiveStyle description]
+         * @param {[type]}
+         */
+        setActiveStyle: function (event) {
             // Get the element triggers the event
             var e = event || window.event;
             // var currentNode = e.target || e.srcElement;

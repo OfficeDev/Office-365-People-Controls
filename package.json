@@ -18,7 +18,7 @@
     "ejs-locals": "~1.0.2"
   },
   "devDependencies": {
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-jshint": "^1.11.0",
     "gulp-jshint-file-reporter": "0.0.1",
