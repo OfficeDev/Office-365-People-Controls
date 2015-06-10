@@ -44,7 +44,8 @@
   float: left;
   height: 38px;
   outline: none;
-  width: 100%;
+  max-width: 100%;
+  min-width: 106px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-persona {
   display: inline-block;
