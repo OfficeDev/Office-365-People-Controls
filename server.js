@@ -74,6 +74,10 @@ app.get('/', function (req, res) {
     res.redirect('example/index.html');
 });
 
+app.get('/persona', function (req, res) {
+    res.redirect('persona.htm');
+});
+
 app.get('/login', function (req, res) {
     res.redirect('/authcode');
 });
