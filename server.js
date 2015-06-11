@@ -17,7 +17,7 @@ var url = require('url');
 
 // retrieve configuration values from azure env or config file.
 var deploy_config = {};
-if (path.existsSync("config.json")) {
+if (fs.existsSync("config.json")) {
     deploy_config = JSON.parse(fs.readFileSync(path.resolve(__dirname, "config.json")));
 }
 var config_authorityHostUrl = process.env.AUTHORITYHOST || deploy_config.authorityHostUrl;
@@ -138,7 +138,7 @@ app.get('/accesstoken', function (req, res) {
     }
 });
 
-app.use('/api', function (req, res) {
+app.use('/users', function (req, res) {
     var header_buf = "";
     if (req.method === 'GET') {
         req.pipe(through(
@@ -147,7 +147,7 @@ app.use('/api', function (req, res) {
         }, function (buf) {
             var uploaded_header = header_buf.length === 0 ? req.headers : JSON.parse(header_buf);
             var tenantid = req.session.ad_tenantid;
-            console.log('/api tenantid:' + tenantid);
+            console.log('/users tenantid:' + tenantid);
             if (typeof(tenantid) == 'undefined') {
                 res.status(401).send('Not authenticated.');
                 return;
@@ -159,7 +159,7 @@ app.use('/api', function (req, res) {
                 targeturl += "&$filter=startswith(displayName," + encodeURIComponent("'" + keyword + "') or ")
                                 + "startswith(userPrincipalName," + encodeURIComponent("'" + keyword + "')");
             }
-            console.log('/api targeturl:'+targeturl);
+            console.log('/users targeturl:'+targeturl);
 
             var header = {};
             header['Authorization'] = decodeURIComponent(req.session.ad_accesstoken);
@@ -171,11 +171,9 @@ app.use('/api', function (req, res) {
                 headers : header
             }, function(response) {
               console.log("statusCode: ", response.statusCode);
-              //console.log("headers: ", response.headers);
 
               var res_body = "";
               response.on('data', function(d) {
-                //console.log(d.length);
                 res_body += d;
               });
               response.on('end', function() {
@@ -183,8 +181,52 @@ app.use('/api', function (req, res) {
               });
 
             }).on('error', function(e) {
-                console.log("/api error: " + e);
-                console.log('/api targeturl:' + targeturl);
+                console.log("/users error: " + e);
+                console.log('/users targeturl:' + targeturl);
+            });
+        }));
+    }
+});
+
+app.use('/image', function (req, res) {
+    var header_buf = "";
+    if (req.method === 'GET') {
+        req.pipe(through(
+        function (buf) {
+            header_buf += buf.toString();
+        }, function (buf) {
+            var uploaded_header = header_buf.length === 0 ? req.headers : JSON.parse(header_buf);
+            var tenantid = req.session.ad_tenantid;
+            console.log('/image tenantid:' + tenantid);
+            if (typeof(tenantid) == 'undefined') {
+                res.status(401).send('Not authenticated.');
+                return;
+            }
+            var personId = req.query.personId;
+            var targeturl = 'https://graph.windows.net/'+tenantid+'/users/'+personId+'/thumbnailPhoto?api-version=1.5';
+            console.log('/image targeturl:'+targeturl);
+            var header = {};
+            header['Authorization'] = decodeURIComponent(req.session.ad_accesstoken);
+            https.get({
+                host : url.parse(targeturl).host,
+                path : url.parse(targeturl).path,
+                headers : header
+            }, function(response) {
+            console.log("statusCode: ", response.statusCode);
+            if (response.statusCode != 200) {
+                res.status(response.statusCode).send(null);
+                return;
+            }
+            var buffers = [];
+            response.on('data', function(d) {
+            buffers.push(d);
+            });
+            response.on('end', function() {
+                var image = Buffer.concat(buffers);
+                res.end(image);
+            });
+            }).on('error', function(e) {
+                console.log("/image error: " + e);
             });
         }));
     }

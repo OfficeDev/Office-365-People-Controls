@@ -65,11 +65,19 @@
                         callback(result["odata.error"], null);
                         return;
                     }
+
                     result.value.forEach(
                         function (e) {
                             var person = {};
                             person.displayName = e.displayName;
                             person.department = e.department;
+                            person.jobTitle = e.jobTitle;
+                            person.mail = e.mail;
+                            person.workPhone = e.telephoneNumber;
+                            person.mobile = e.mobile;
+                            person.office = e.physicalDeliveryOfficeName;
+                            person.sipAddress = e.userPrincipalName;
+                            person.alias = e.mailNickname;
                             person.personId = e.objectId;
                             people.push(person);
                         });

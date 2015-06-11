@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
 
     AadDataProvider = function () {
     }
@@ -6,10 +6,40 @@
     AadDataProvider.prototype = {
         maxResult: 50,
         lastErrorMessage: null,
-        severHost: 'yihcaow1001:3000',
+        severHost: 'localhost:3000',
+        getImageAsync: function (personId, callback) {
+            var xhr = new XMLHttpRequest(), self = this;
+            xhr.open('GET', 'http://' + this.serverHost + '/image?personId=' + encodeURIComponent(personId), true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.withCredentials = true;
+            xhr.responseType = "blob";
+            
+            xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
+                self.lastErrorMessage = 'Search error. Try login first.';
+                callback('Error', null);
+            };
+            xhr.onload = function () {
+                if (xhr.status === 401) {
+                    self.lastErrorMessage = 'Unauthorized. You need login first.';
+                    callback('Unauthorized', null);
+                    return;
+                }
+                if (xhr.status !== 200) {
+                    self.lastErrorMessage = 'Unknown error. Status code: ' + xhr.statusCode;
+                    callback('Unknown error', null);
+                return;
+            }
+            var reader = new FileReader();
+            reader.addEventListener("loadend", function() {
+                callback(null, reader.result);
+            });
+            reader.readAsDataURL(xhr.response);
+            };
+            xhr.send('');
+        },
         getPrincipals: function (input, callback) {
             var xhr = new XMLHttpRequest(), self = this;
-            xhr.open('GET', 'http://' + this.serverHost + '/api?keyword=' + encodeURIComponent(input), true);
+            xhr.open('GET', 'http://' + this.serverHost + '/users?keyword=' + encodeURIComponent(input), true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.withCredentials = true;
             xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
