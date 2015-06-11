@@ -52,14 +52,14 @@
             var isExpected = (this.userAgent.indexOf(this.browserType.toString()) !== -1);
 
             switch (this.browserType) {
-                case Browser.TypeEnum.IE:
-                case Browser.TypeEnum.Firefox:
-                case Browser.TypeEnum.Opera:
+                case Office.Controls.Browser.TypeEnum.IE:
+                case Office.Controls.Browser.TypeEnum.Firefox:
+                case Office.Controls.Browser.TypeEnum.Opera:
                     return isExpected;
-                case Browser.TypeEnum.Safari:
+                case Office.Controls.Browser.TypeEnum.Safari:
                     // The part of Chrome UserAgent value is AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36
                     return isExpected && (!this.isContainChromeStr());
-                case Browser.TypeEnum.Chrome:
+                case Office.Controls.Browser.TypeEnum.Chrome:
                     // The part of Opera UserAgent value is Chrome/31.0.1650.63 Safari/537.36 OPR/18.0.1284.68
                     return isExpected && (!this.isContainOperaStr());
                 default:
@@ -68,11 +68,11 @@
         },
 
         isContainChromeStr: function() {
-            return (this.userAgent.indexOf(Browser.TypeEnum.Chrome.toString()) !== -1);
+            return (this.userAgent.indexOf(Office.Controls.Browser.TypeEnum.Chrome.toString()) !== -1);
         },
 
         isContainOperaStr: function() {
-            return (this.userAgent.indexOf(Browser.TypeEnum.Opera.toString()) !== -1);
+            return (this.userAgent.indexOf(Office.Controls.Browser.TypeEnum.Opera.toString()) !== -1);
         }
     };
 
