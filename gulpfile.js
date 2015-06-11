@@ -68,5 +68,5 @@ gulp.task('cpfiles', function() {
 });
 
 gulp.task('default', function () {
-    gulp.start('runjshint', 'cpfiles', 'minifycss', 'minifyjs');
+    gulp.start('runjshint', 'minifycss', 'minifyjs', 'cpfiles');
 });
