@@ -7,10 +7,10 @@ var ips, ipc;
 
 function showPersonaCard () {	
 	var pcRoot = document.getElementById('personaCardRoot');
-	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard;
+	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard;
 
 	// Method 1:
-	// var personaCard = new Office.Controls.Persona(pcRoot, 'personacard', dataProvider, true);
+	// var personaCard = new Office.Controls.Persona(pcRoot, personaType, dataProvider, true);
 	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
 
 	// });
@@ -30,15 +30,15 @@ function showPersonaCard () {
 
 function showInlinePersona () {
 	var root = document.getElementById('nameOnlyRoot');
-	personaType = Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage;
+	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.NameImage;
 	
 	// Method 1:
-	// var nameOnly = new Office.Controls.Persona(root, 'nameonly', dataProvider, true);
+	// var nameOnly = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaType.TypeEnum.NameOnly, dataProvider, true);
 	// nameOnly.loadTemplateAsync(tempPath, function (rootNode, error) {
  //        if (rootNode !== null) {
  //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
  //            	if (nameImage == null) {
- //            		nameImage = new Office.Controls.Persona(root, 'nameimage', dataProvider, true);
+ //            		nameImage = new Office.Controls.Persona(root, personaType, dataProvider, true);
 	// 	        	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
 	// 	        		isShow = false;
 	// 	        	});	
@@ -58,7 +58,7 @@ function showInlinePersona () {
 	// 	if (rootNode !== null) {
  //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
  //            	if (nameImage == null) {
- //            		nameImage = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+ //            		nameImage = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, dataProvider, true);
 	// 	        	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
 	// 	        		isShow = false;
 	// 	        	});	
@@ -87,7 +87,7 @@ function addClickEventForInlinePersona()
    		eventSpan.innerText = "Click Event has been added.";
    		Office.Controls.Utils.addEventListener(ips.get_rootNode(), 'click', function (e) {
 			if (nameImage == null) {
-				nameImage = new Office.Controls.Persona(ips.root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+				nameImage = new Office.Controls.Persona(ips.root, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, dataProvider, true);
 		    	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
 		    		isShow = false;
 		    	});	
@@ -147,7 +147,7 @@ function createPersonaWithAadData() {
     loadingImg.style.display = "";
     
 
-    serverHost = '***REMOVED***';
+    var serverHost = '***REMOVED***';
 
     var pageUri = window.location.href;
     pageUri = pageUri.split("?")[0];
@@ -160,7 +160,7 @@ function createPersonaWithAadData() {
     }
 
     // AAD data
-    var aadDataProvider = new Office.Controls.PeopleAadDataProvider();
+    var aadDataProvider = new Office.Controls.PeopleAadDataProvider(null);
     aadDataProvider.serverHost = serverHost;
 	aadDataProvider.getPrincipals(inputValue, function (error, addUsers) {
 	    if (addUsers !== null) {
@@ -168,7 +168,6 @@ function createPersonaWithAadData() {
 	        var personaObjs = Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects(addUsers);
 	        if (personaObjs !== null) {
 	        	personaObjs.forEach(function (personaObj) {
-	        		personaObj.Main.ImageUrl = "control/images/doughboy.png";
 		            Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, personaObj);
 		        });
 	        }
@@ -182,33 +181,33 @@ function createPersonaWithAadData() {
 function sampleJsonBetter() {
 	var persona = {
 		"Id": "***REMOVED***",
-		"Main":
+		"ImageUrl": "control/images/icon.png",
+		"PrimaryText": '***REMOVED*** Chen',
+	    "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
+	    "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+
+	    "Actions":
 			{
-				"ImageUrl": "control/images/icon.png",
-				"PrimaryText": '***REMOVED*** Chen',
-	            "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
-	            "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+				"Email": "***REMOVED***@microsoft.com",
+			    "WorkPhone": "+86(10) 59173216", 
+			    "Mobile" : "+86 1861-2947-014",
+			    "Skype" : "***REMOVED***@microsoft.com",
 			},
-
-		"Action":
+	    
+		"Strings":
 			{
-				"Email":{
-							"Protocol": "mailto:",
-							"Work": { "Label": "Work: ", "Value": "***REMOVED***@microsoft.com" }
+				"Label":{
+							"Email": "Work: ",
+							"WorkPhone": "Work: ",
+							"Mobile": "Mobile: ",
+							"Skype": "Skype: "
 						},
 
-			    "Phone": 
-			    		{
-							"Protocol": "tel:",
-							"Work": { "Label": "Work: ", "Value": "+86(10) 59173216" },
-							"Mobile": { "Label": "Mobile: ", "Value": "+86 1861-2947-014" }
-						},
-
-	    		"Chat": 
-			    		{
-							"Protocol": "sip:",
-							"Skype": { "Label": "Skype: ", "Value": "***REMOVED***@microsoft.com" },
-						}
+				"Protocol": {
+								"Email": "mailto:",
+								"Phone": "tel:",
+								"Skype": "sip:",
+							}
 			}
 	};
 	return persona;

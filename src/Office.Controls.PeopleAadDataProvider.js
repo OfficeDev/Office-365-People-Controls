@@ -13,7 +13,8 @@
         }
     }
 
-    Office.Controls.PeopleAadDataProvider = function () {
+    Office.Controls.PeopleAadDataProvider = function (authContext) {
+        this.authContext = authContext;
     }
 
     Office.Controls.PeopleAadDataProvider.prototype = {
