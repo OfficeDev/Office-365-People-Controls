@@ -9,12 +9,26 @@
     <link rel="stylesheet" type="text/css" href="control/office.controls.persona.css">
     <script type="text/javascript" src="control/office.controls.base.js"></script> 
     <script type="text/javascript" src="control/office.controls.persona.js"></script> 
+    <script type="text/javascript" src="control/office.controls.peopleaaddataprovider.js"></script> 
     <script type="text/javascript" src="control/personasample.js"></script> 
 </head>
 <body onload="showPersonaCard();showInlinePersona();">
     <!-- Playground -->
     <div>
         <h3>Playground</h3>
+        <u><a href="/">Go PeoplePicker</a></u>
+        <p>
+            <u>Integrate with AAD data:</u>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
+            <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer;position:relative;top:5px" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="logged_user"></span>
+        </p>
+        <p>
+            <u>AAD Data</u>
+            <u><input type="textbox" id="keyword" onkeyup="isCreatePersona()" autofocus><input type="button" value="Search" onclick="createPersonaWithAadData()"></u>
+            <div><image id="loadingImg" src="control/images/thinking32_grey.gif" style="display:none"></image></div>
+            <div id='aadUserRoot' style='max-width:600px;'></div>
+        </p>
         <p>
         	<u>Persona Card:</u>
         	<div id="personaCardRoot"></div>

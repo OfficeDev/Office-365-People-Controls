@@ -104,20 +104,79 @@ function addClickEventForInlinePersona()
    }
 }
 
+/**
+ * Integrate with AAD Data
+ */
+function showLoginInstructions() {
+    var display = document.getElementById('login_instructions').style.display;
+    document.getElementById('login_instructions').style.display = (display === 'none') ? 'inherit' : 'none';
+}
 
-function samplePersonInfo() {
-    // User Profile
-    return displayInfo = {
-            ImageUrl: 'control/images/icon.png',
-            PrimaryText: '***REMOVED*** Chen',
-            SecondaryText: 'Software Engineer 2, ASG EA China', // JobTitle, Department
-            TertiaryText: 'BEIJING-BJW-1/12329', // Office
-            Email: '***REMOVED***@microsoft.com',
-            SipAddress: '***REMOVED***@microsoft.com',
-            MobilePhone: '+86 1861-2947-014',
-            WorkPhone: '+86(10) 59173216',
-            Id: '***REMOVED***',
-        };
+function getQueryString() {
+    var result = {}, queryString = location.search.slice(1),
+        re = /([^&=]+)=([^&]*)/g, m;
+
+    while (m = re.exec(queryString)) {
+        result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+
+    return result;
+}
+
+function isCreatePersona() {
+	if(event.keyCode === 13){
+       createPersonaWithAadData();
+    }
+}
+
+function createPersonaWithAadData() {
+	var input = document.getElementById('keyword');
+	var inputValue = input.value.trim();
+    if (inputValue === "")
+    {
+    	alert('please input the keyword!');
+    	return;
+    }
+
+	var root = document.getElementById('aadUserRoot');
+	while (root.firstChild) {
+		root.removeChild(root.firstChild);
+	};
+
+    var loadingImg = document.getElementById('loadingImg');
+    loadingImg.style.display = "";
+    
+
+    serverHost = '***REMOVED***';
+
+    var pageUri = window.location.href;
+    pageUri = pageUri.split("?")[0];
+
+    document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+
+    var userId = getQueryString()["userId"];
+    if (typeof (userId) !== 'undefined') {
+        document.getElementById('logged_user').innerText = "logged as " + userId;
+    }
+
+    // AAD data
+    var aadDataProvider = new Office.Controls.PeopleAadDataProvider();
+    aadDataProvider.serverHost = serverHost;
+	aadDataProvider.getPrincipals(inputValue, function (error, addUsers) {
+	    if (addUsers !== null) {
+	    	loadingImg.style.display = "none";
+	        var personaObjs = Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects(addUsers);
+	        if (personaObjs !== null) {
+	        	personaObjs.forEach(function (personaObj) {
+	        		personaObj.Main.ImageUrl = "control/images/doughboy.png";
+		            Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, personaObj);
+		        });
+	        }
+
+	    } else {
+
+	    }
+	});
 }
 
 function sampleJsonBetter() {
@@ -134,18 +193,21 @@ function sampleJsonBetter() {
 		"Action":
 			{
 				"Email":{
-							"Work": { "Label": "Work: ", "Protocol": "mailto:", "Value": "***REMOVED***@microsoft.com" }
+							"Protocol": "mailto:",
+							"Work": { "Label": "Work: ", "Value": "***REMOVED***@microsoft.com" }
 						},
 
 			    "Phone": 
 			    		{
-							"Work": { "Label": "Work: ", "Protocol": "mailto:", "Value": "+86(10) 59173216" },
-							"Mobile": { "Label": "Mobile: ", "Protocol": "mailto:", "Value": "+86 1861-2947-014" }
+							"Protocol": "tel:",
+							"Work": { "Label": "Work: ", "Value": "+86(10) 59173216" },
+							"Mobile": { "Label": "Mobile: ", "Value": "+86 1861-2947-014" }
 						},
 
 	    		"Chat": 
 			    		{
-							"Lync": { "Label": "Lync: ", "Protocol": "sip:", "Value": "***REMOVED***@microsoft.com" },
+							"Protocol": "sip:",
+							"Skype": { "Label": "Skype: ", "Value": "***REMOVED***@microsoft.com" },
 						}
 			}
 	};

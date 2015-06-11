@@ -13,7 +13,7 @@
     }
 
     /*
-    *  The format of DataProvider:
+    *  The format of personaObject:
     *  {
             "Id": "***REMOVED***",
             "Main":
@@ -40,15 +40,15 @@
                 }
         };
     */
-    Office.Controls.Persona = function (root, templateID, dataProvider, isHidden) {
-        if (typeof root !== 'object' || typeof dataProvider !== 'object' || (Office.Controls.Utils.isNullOrUndefined(templateID))) {
+    Office.Controls.Persona = function (root, templateID, personaObject, isHidden) {
+        if (typeof root !== 'object' || typeof personaObject !== 'object' || (Office.Controls.Utils.isNullOrUndefined(templateID))) {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
         }
             
         this.root = root;
         this.templateID = templateID;
-        this.dataProvider = dataProvider;
+        this.personaObject = personaObject;
         this.isHidden = isHidden;
     };
 
@@ -80,13 +80,14 @@
         /**
          * Load template file from the give path
          * @templatePath  {string}
-         * @callback  {Function}
+         * @callback  {Function} callback(errorMessage, elementNode)
          * @return {null}
          */
         loadTemplateAsync: function (templatePath, callback) {
             var self = this;
             var cachedTemplate = Office.Controls.Persona.PersonaHelper.getCachedTemplate(templatePath);
 
+            // Get cache
             if (cachedTemplate !== null)
             {
                self.parseTemplate(cachedTemplate);
@@ -94,11 +95,9 @@
                return;
             } 
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", templatePath, true);
-            xmlhttp.onreadystatechange = function() {
-                // if (this.readyState !== 4) return;
-                // if (this.status !== 200) return; // or whatever error handling you want
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", templatePath, true);
+            xhr.onreadystatechange = function() {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
                         var parser, xmlDoc;
@@ -115,10 +114,13 @@
                         Office.Controls.Persona.PersonaHelper.setCachedTemplate(templatePath, xmlDoc);
                         self.parseTemplate(xmlDoc);
                         callback(self.rootNode, null); 
+                    } else {
+                        callback(null, "Unknown error");
+                        return; 
                     }
                 }
             };
-            xmlhttp.send();
+            xhr.send();
         },
 
         /**
@@ -200,9 +202,15 @@
          * @return {object}
          */
         getValueFromJSONObject: function (objectName) {
-            return Office.Controls.Utils.getObjectFromJSONObjectName(this.dataProvider, objectName);
+            return Office.Controls.Utils.getObjectFromJSONObjectName(this.personaObject, objectName);
         },
 
+        /**
+         * [hiddenNode description]
+         * @param  {[type]}
+         * @param  {Boolean}
+         * @return {[type]}
+         */
         hiddenNode: function (node, isHidden) {
             if (isHidden)
             {
@@ -216,6 +224,10 @@
             }
         },
 
+        /**
+         * [removeDetailCard description]
+         * @return {[type]}
+         */
         removeDetailCard: function () {
         },
 
@@ -257,22 +269,22 @@
     };
 
     Office.Controls.Persona.PersonaHelper = function () { };
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, templatePath, personaType, dataProvider, isHidden, callback) {
-        var personaInstance = new Office.Controls.Persona(root, personaType, dataProvider, isHidden);
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, templatePath, personaType, personaObject, isHidden, callback) {
+        var personaInstance = new Office.Controls.Persona(root, personaType, personaObject, isHidden);
         personaInstance.loadTemplateAsync(templatePath, callback);
     };
 
-    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, templatePath, dataProvider, eventType) {
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, templatePath, personaObject, eventType) {
         var personaCard = null;
         var isShow = true;
 
-        var personaInstance = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage, dataProvider, true);
+        var personaInstance = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().NameImage, personaObject, true);
         personaInstance.loadTemplateAsync(templatePath, function callback(rootNode, error) {
             if (eventType === "click") {
                 if (rootNode !== null) {
                     Office.Controls.Utils.addEventListener(rootNode, eventType, function (e) {
                         if (personaCard == null) {
-                            personaCard = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true);
+                            personaCard = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, personaObject, true);
                             personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
                                 isShow = false;
                             }); 
@@ -289,9 +301,71 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, templatePath, dataProvider, callback) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, templatePath, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, dataProvider, true, callback);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, templatePath, personaObject, callback) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, templatePath, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, personaObject, true, callback);
     };
+
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, templatePath, personaObject, callback) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, templatePath, Office.Controls.Persona.PersonaHelper.getPersonaType().PersonaCard, personaObject, true, callback);
+    };
+
+    /**
+     * [convertAadUserDataToPersonaObject description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
+    Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject = function(aadUserObject) {
+        if (typeof aadUserObject !== 'object' || (Office.Controls.Utils.isNullOrUndefined(aadUserObject))) {
+            Office.Controls.Utils.errorConsole('AAD user data is null.');
+            return;
+        }
+            
+        var personaObj = {};
+        personaObj.Id = aadUserObject.personId;
+
+        personaObj.Main = {};
+        personaObj.Main.ImageUrl = "";
+        personaObj.Main.PrimaryText = aadUserObject.displayName;
+        personaObj.Main.SecondaryText = aadUserObject.jobTitle + "," + aadUserObject.department;
+        personaObj.Main.TertiaryText = aadUserObject.office;
+
+        personaObj.Action = {};
+        personaObj.Action.Email = {};
+        personaObj.Action.Email.Protocol = "mailto:";
+        personaObj.Action.Email.Work = {};
+        personaObj.Action.Email.Work.Lable = "Work:";
+        personaObj.Action.Email.Work.Value = aadUserObject.mail;
+
+        personaObj.Action.Phone = {};
+        personaObj.Action.Phone.Protocol = "tel:";
+        personaObj.Action.Phone.Work = {};
+        personaObj.Action.Phone.Work.Lable = "Work:";
+        personaObj.Action.Phone.Work.Value = aadUserObject.workPhone;
+        personaObj.Action.Phone.Mobile = {};
+        personaObj.Action.Phone.Mobile.Lable = "Mobile:";
+        personaObj.Action.Phone.Mobile.Value = aadUserObject.mobile;
+
+        personaObj.Action.Chat = {};
+        personaObj.Action.Chat.Protocol = "sip:";
+        personaObj.Action.Chat.Skype = {};
+        personaObj.Action.Chat.Skype.Lable = "Skype:";
+        personaObj.Action.Chat.Skype.Value = aadUserObject.sipAddress;
+
+        return personaObj;
+    }
+
+    Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects = function(aadUsers) {
+        if (typeof aadUsers !== 'object' || (Office.Controls.Utils.isNullOrUndefined(aadUsers))) {
+            Office.Controls.Utils.errorConsole('AAD user collection is null.');
+            return;
+        }
+
+        var personaObjects = [];
+        aadUsers.forEach(function (aadUser) {
+            personaObjects.push(Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(aadUser));
+        });
+        return personaObjects;
+    }
 
     Office.Controls.Persona.PersonaHelper.getCachedTemplate = function (templatePath) {
         if ((templatePath === "") || Office.Controls.Utils.isNullOrUndefined(templatePath)) {
