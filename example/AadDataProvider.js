@@ -27,7 +27,7 @@
                 if (xhr.status !== 200) {
                     self.lastErrorMessage = 'Unknown error. Status code: ' + xhr.statusCode;
                     callback('Unknown error', null);
-                return;
+                    return;
             }
             var reader = new FileReader();
             reader.addEventListener("loadend", function() {
@@ -55,6 +55,7 @@
                 if (xhr.status !== 200) {
                     self.lastErrorMessage = 'Unknown error. Status code: ' + xhr.statusCode;
                     callback('Unknown error', null);
+                    return;
                 }
                 var result = JSON.parse(xhr.responseText), people = [];
                 if (result["odata.error"] !== undefined) {
