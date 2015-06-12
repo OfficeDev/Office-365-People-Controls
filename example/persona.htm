@@ -12,15 +12,14 @@
     <script type="text/javascript" src="control/office.controls.peopleaaddataprovider.js"></script> 
     <script type="text/javascript" src="control/personasample.js"></script> 
 </head>
-<body onload="showPersonaCard();showInlinePersona();">
+<body onload="init();showPersonaCard();showInlinePersona();">
     <!-- Playground -->
     <div>
         <h3>Playground</h3>
         <u><a href="/">Go PeoplePicker</a></u>
         <p>
             <u>Integrate with AAD data:</u>
-            &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
-            <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer;position:relative;top:5px" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user" href="">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="logged_user"></span>
         </p>
         <p>
@@ -30,14 +29,14 @@
             <div id='aadUserRoot' style='max-width:600px;'></div>
         </p>
         <p>
-        	<u>Persona Card:</u>
+        	<u>Persona Card:<input type="button" value="Changes in Living" onclick="changesInLiving()"><input type="button" value="Stop" onclick="StopLiving()"></u>
         	<div id="personaCardRoot"></div>
         </p><br><br><br><br><br><br><br><br>
         <p>
             <u>Name Image with Persona Card:<input type="button" value="Add Click Event" onclick="addClickEventForInlinePersona()"></u>
             <div id='nameOnlyRoot'></div>
-            <span id="eventDescription"></span>
         </p>
+        <p id="eventDescription" class="ms-Persona" style="color:red"></p>
     </div>
 </body>
 </html>

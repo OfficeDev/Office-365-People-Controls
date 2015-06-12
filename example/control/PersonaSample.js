@@ -5,6 +5,7 @@ var nameImage = null;
 var isShow = true;
 var ips, ipc;
 
+
 function showPersonaCard () {	
 	var pcRoot = document.getElementById('personaCardRoot');
 	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard;
@@ -25,7 +26,37 @@ function showPersonaCard () {
 	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, tempPath, dataProvider, callbackForPersonaCard);
 	function callbackForPersonaCard(rootNode, error) {
 
-	}
+	} 
+}
+
+var interval;
+function changesInLiving() {
+	var pcRoot = document.getElementById('personaCardRoot');
+	var keywords = ["zhongzhong li", "jonathan tang", "wenbo shi", "***REMOVED***", "jichen", "jiayuan", "abe ge"]; 
+
+	interval = setInterval(function () {
+		getAadDataDataForPersona(keywords[getRandomInt(0, 7)], pcRoot, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, function(rootNode, error){
+
+			});
+	}, 4000);
+}
+
+function StopLiving()
+{
+	var pcRoot = document.getElementById('personaCardRoot');
+	clearInterval(interval);
+	while (pcRoot.firstChild) {
+		pcRoot.removeChild(pcRoot.firstChild);
+	};
+	Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, tempPath, dataProvider, function(rootNode, error) {});
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function showInlinePersona () {
@@ -43,7 +74,7 @@ function showInlinePersona () {
 	// 	        		isShow = false;
 	// 	        	});	
  //            	} else {
- //            		nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
+ //            		nameImage.showNode(nameImage.get_rootNode(), isShow);
  //            		isShow = isShow ? false : true;
  //            	}
 	// 	    });
@@ -63,7 +94,7 @@ function showInlinePersona () {
 	// 	        		isShow = false;
 	// 	        	});	
  //            	} else {
- //            		nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
+ //            		nameImage.showNode(nameImage.get_rootNode(), isShow);
  //            		isShow = isShow ? false : true;
  //            	}
 	// 	    });
@@ -80,6 +111,7 @@ function showInlinePersona () {
 var isClickAdded = false;
 function addClickEventForInlinePersona() 
 {
+   var showNodeQueue = [];
    var eventSpan = document.getElementById('eventDescription');
    if (!isClickAdded) {
    		isClickAdded = true; 
@@ -89,11 +121,26 @@ function addClickEventForInlinePersona()
 			if (nameImage == null) {
 				nameImage = new Office.Controls.Persona(ips.root, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, dataProvider, true);
 		    	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
-		    		isShow = false;
+		    		showNodeQueue.push(nameImage);
 		    	});	
 			} else {
-				nameImage.hiddenNode(nameImage.get_rootNode(), isShow);
-				isShow = isShow ? false : true;
+				if (showNodeQueue.length !== 0) {
+					nameImage.showNode(nameImage.get_rootNode(), false);
+					showNodeQueue.pop(nameImage);
+				} else 
+				{
+					nameImage.showNode(nameImage.get_rootNode(), true);
+					showNodeQueue.push(nameImage);
+				}
+			}
+		});
+		document.addEventListener('click', function () {
+			if (event.target.tagName.toLowerCase() === "html") 
+			{
+				if (showNodeQueue.length !== 0) {
+					nameImage.showNode(nameImage.get_rootNode(), false);
+					showNodeQueue.pop(nameImage);
+				}
 			}
 		});
    } else {
@@ -107,9 +154,17 @@ function addClickEventForInlinePersona()
 /**
  * Integrate with AAD Data
  */
-function showLoginInstructions() {
-    var display = document.getElementById('login_instructions').style.display;
-    document.getElementById('login_instructions').style.display = (display === 'none') ? 'inherit' : 'none';
+var serverHost = '***REMOVED***';
+function init() {
+    var pageUri = window.location.href;
+    pageUri = pageUri.split("?")[0];
+
+    document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+
+    var userId = getQueryString()["userId"];
+    if (typeof (userId) !== 'undefined') {
+        document.getElementById('logged_user').innerText = "logged as " + userId;
+    }
 }
 
 function getQueryString() {
@@ -145,24 +200,15 @@ function createPersonaWithAadData() {
 
     var loadingImg = document.getElementById('loadingImg');
     loadingImg.style.display = "";
-    
 
-    var serverHost = '***REMOVED***';
+    getAadDataDataForPersona(inputValue, root, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
+}
 
-    var pageUri = window.location.href;
-    pageUri = pageUri.split("?")[0];
-
-    document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
-
-    var userId = getQueryString()["userId"];
-    if (typeof (userId) !== 'undefined') {
-        document.getElementById('logged_user').innerText = "logged as " + userId;
-    }
-
+function getAadDataDataForPersona(keyword, rootNode, personaType, callback) {
     // AAD data
     var aadDataProvider = new Office.Controls.PeopleAadDataProvider(null);
     aadDataProvider.serverHost = serverHost;
-	aadDataProvider.getPrincipals(inputValue, function (error, addUsers) {
+	aadDataProvider.getPrincipals(keyword, function (error, addUsers) {
 	    if (addUsers !== null) {
 	    	loadingImg.style.display = "none";
 	        var personaObjs = Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects(addUsers);
@@ -173,7 +219,7 @@ function createPersonaWithAadData() {
                             personaObj.ImageUrl = imgSrc; // Get user imamge
                         }
                         // Create persona of nameimage
-                        Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, personaObj);
+                        Office.Controls.Persona.PersonaHelper.createPersona(rootNode, tempPath, personaType, personaObj, true, callback);
                     });
 		        });
 	        }
@@ -189,6 +235,7 @@ function sampleJsonBetter() {
 		"ImageUrl": "control/images/icon.png",
 		"PrimaryText": '***REMOVED*** Chen',
 	    "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
+	    "SecondaryTextShort": 'Software Engineer 2, ASG EA China', // JobTitle, Department
 	    "TertiaryText": 'BEIJING-BJW-1/12329', // Office
 
 	    "Actions":
