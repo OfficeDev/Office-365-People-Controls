@@ -1136,7 +1136,9 @@
                         self.parent.dataProvider.getImageAsync(personId, function (error, imgSrc) {
                             if (imgSrc != null) {
                                 image.style.backgroundImage = "url('" + imgSrc + "')";
-                                self.entries[personId].imgSrc = imgSrc;
+                                if (!Office.Controls.Utils.isNullOrUndefined(self.entries[personId])) {
+                                    self.entries[personId].imgSrc = imgSrc;
+                                }
                             }
                         });
                     })(this, image, personId);
