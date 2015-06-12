@@ -168,10 +168,15 @@ function createPersonaWithAadData() {
 	        var personaObjs = Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects(addUsers);
 	        if (personaObjs !== null) {
 	        	personaObjs.forEach(function (personaObj) {
-		            Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, personaObj);
+	        		aadDataProvider.getImageAsync(personaObj.Id, function (error, imgSrc) {
+                        if (imgSrc != null) {
+                            personaObj.ImageUrl = imgSrc; // Get user imamge
+                        }
+                        // Create persona of nameimage
+                        Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, personaObj);
+                    });
 		        });
 	        }
-
 	    } else {
 
 	    }
