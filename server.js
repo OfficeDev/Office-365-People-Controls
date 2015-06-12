@@ -15,6 +15,9 @@ var express_session = require('express-session');
 var AuthenticationContext = require('adal-node').AuthenticationContext;
 var url = require('url');
 
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
+
 // retrieve configuration values from azure env or config file.
 var deploy_config = {};
 if (fs.existsSync("config.json")) {
@@ -158,7 +161,7 @@ app.use('/users', function (req, res) {
             }
             
             var keyword = req.query.keyword;
-            var targeturl = 'https://graph.windows.net/' + tenantid + "/users?api-version=2013-11-08";
+            var targeturl = 'https://graph.windows.net/' + tenantid + "/users?api-version=1.5";
             if (typeof(keyword) != undefined && keyword.length > 0) {
                 targeturl += "&$filter=startswith(displayName," + encodeURIComponent("'" + keyword + "') or ")
                                 + "startswith(userPrincipalName," + encodeURIComponent("'" + keyword + "')");
@@ -187,6 +190,7 @@ app.use('/users', function (req, res) {
             }).on('error', function(e) {
                 console.log("/users error: " + e);
                 console.log('/users targeturl:' + targeturl);
+                res.status(505).send();
             });
         }));
     }
@@ -231,6 +235,7 @@ app.use('/image', function (req, res) {
             });
             }).on('error', function(e) {
                 console.log("/image error: " + e);
+                res.status(505).send();
             });
         }));
     }
