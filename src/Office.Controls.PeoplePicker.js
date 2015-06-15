@@ -1455,7 +1455,7 @@
     };
     Office.Controls.peoplePickerTemplates.getString = function (stringName) {
         var newName = 'PeoplePicker' + stringName.substr(3);
-        if (Office.Controls.PeoplePicker.res.hasOwnProperty("newName")) {
+        if (Office.Controls.PeoplePicker.res.hasOwnProperty(newName)) {
             return Office.Controls.PeoplePicker.res[newName];
         }
         return Office.Controls.Utils.getStringFromResource('PeoplePicker', stringName);
