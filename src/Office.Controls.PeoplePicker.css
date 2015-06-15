@@ -27,6 +27,7 @@
   min-height: 40px;
   box-sizing: border-box;
   *zoom: 1;
+  padding-left: 4px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-searchBox:before,
 .ms-PeoplePicker .ms-PeoplePicker-searchBox:after {
@@ -46,6 +47,7 @@
   outline: none;
   max-width: 100%;
   min-width: 106px;
+  padding-left: 4px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-persona {
   display: inline-block;
