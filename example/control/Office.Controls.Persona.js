@@ -17,16 +17,17 @@
     * {
             "Id": "[guid]",
             "ImageUrl": "control/images/icon.png",
-            "PrimaryText": '***REMOVED*** Chen',
-            "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
-            "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+            "PrimaryText": 'Cat Miao',
+            "SecondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
+            "TertiaryText": 'BEIJING-Building1-1/XXX', // Office
 
             "Actions":
-            {
-                "Email": "***REMOVED***@microsoft.com",
-                "WorkPhone": "+86(10) 59173216", 
-                "Mobile" : "+86 1861-2947-014",
-                "Skype" : "***REMOVED***@microsoft.com",
+                {
+                    "Email": "catmiao@companya.com",
+                    "WorkPhone": "+86(10) 12345678", 
+                    "Mobile" : "+86 1861-0000-000",
+                    "Skype" : "catmiao@companya.com",
+                }
             }
         };
     */
@@ -94,7 +95,7 @@
                         if (window.DOMParser) {
                            parser = new DOMParser();
                            xmlDoc = parser.parseFromString(this.responseText,"text/xml");
-                        } else { // code for < IE9
+                        } else { // code for IE prior to 9
                            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
                            xmlDoc.async = false;
                            xmlDoc.loadXML(this.responseText); 
@@ -308,7 +309,6 @@
         setActiveStyle: function (event) {
             // Get the element triggers the event
             var e = event || window.event;
-            // var currentNode = e.target || e.srcElement;
             var currentNode = e.currentTarget;
 
             var changedClassName = "is-active";
@@ -339,23 +339,24 @@
     };
 
     Office.Controls.Persona.PersonaHelper = function () { };
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, templatePath, personaType, personaObject, isHidden, callback) {
-        var personaInstance = new Office.Controls.Persona(root, personaType, personaObject, isHidden);
-        personaInstance.loadTemplateAsync(templatePath, callback);
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType, callback) {
+        var personaInstance = new Office.Controls.Persona(root, personaType, personaObject, true);
+        personaInstance.loadTemplateAsync(Office.Controls.Persona.Templates.Default, callback);
+        return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, templatePath, personaObject, eventType) {
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personaObject, eventType) {
         var personaCard = null;
         var isShow = true;
 
         var personaInstance = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, personaObject, true);
-        personaInstance.loadTemplateAsync(templatePath, function callback(rootNode, error) {
+        personaInstance.loadTemplateAsync(Office.Controls.Persona.Templates.Default, function callback(rootNode, error) {
             if (eventType === "click") {
                 if (rootNode !== null) {
                     Office.Controls.Utils.addEventListener(rootNode, eventType, function (e) {
                         if (personaCard == null) {
                             personaCard = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, personaObject, true);
-                            personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
+                            personaCard.loadTemplateAsync(Office.Controls.Persona.Templates.Default, function (rootNode, error) {
                                 isShow = false;
                             }); 
                         } else {
@@ -371,8 +372,8 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, templatePath, personaObject, callback) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, templatePath, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, personaObject, true, callback);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personaObject, callback) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, callback);
     };
 
     /**
@@ -382,16 +383,16 @@
      * {
      *  "Id": "[guid]",
         "ImageUrl": "control/images/icon.png",
-        "PrimaryText": '***REMOVED*** Chen',
-        "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
-        "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+        "PrimaryText": 'Cat Miao',
+        "SecondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
+        "TertiaryText": 'BEIJING-Building1-1/XXX', // Office
 
         "Actions":
             {
-                "Email": "***REMOVED***@microsoft.com",
-                "WorkPhone": "+86(10) 59173216", 
-                "Mobile" : "+86 1861-2947-014",
-                "Skype" : "***REMOVED***@microsoft.com",
+                "Email": "catmiao@companya.com",
+                "WorkPhone": "+86(10) 12345678", 
+                "Mobile" : "+86 1861-0000-000",
+                "Skype" : "catmiao@companya.com",
             }
         }
      */
@@ -527,6 +528,9 @@
     Office.Controls.Persona.Strings = function() {
     }
 
+    Office.Controls.Persona.Templates = function() {
+    }
+
     Office.Controls.PersonaResources = function () {
     };
 
@@ -558,4 +562,5 @@
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
+    Office.Controls.Persona.Templates.Default = 'http://controls.azurewebsites.net/control/templates/template.htm';
 })();

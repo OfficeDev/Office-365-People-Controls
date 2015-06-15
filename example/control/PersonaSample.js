@@ -11,19 +11,19 @@ function showPersonaCard () {
 	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard;
 
 	// Method 1:
-	// var personaCard = new Office.Controls.Persona(pcRoot, personaType, dataProvider, true);
+	// var personaCard = new Office.Controls.Persona(pcRoot, dataProvider, personaType, true);
 	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
 
 	// });
 
 	// Method 2:
-	// Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, tempPath, personaType, dataProvider, true, callbackForPersonaCard);
+	// Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, dataProvider, personaType, callbackForPersonaCard);
 	// function callbackForPersonaCard(rootNode, error) {
 
 	// }
 
 	// Method 3:
-	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, tempPath, dataProvider, callbackForPersonaCard);
+	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider, callbackForPersonaCard);
 	function callbackForPersonaCard(rootNode, error) {
 
 	} 
@@ -36,7 +36,6 @@ function changesInLiving() {
 
 	interval = setInterval(function () {
 		getAadDataDataForPersona(keywords[getRandomInt(0, 7)], pcRoot, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, function(rootNode, error){
-
 			});
 	}, 4000);
 }
@@ -48,7 +47,7 @@ function StopLiving()
 	while (pcRoot.firstChild) {
 		pcRoot.removeChild(pcRoot.firstChild);
 	};
-	Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, tempPath, dataProvider, function(rootNode, error) {});
+	Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider, function(rootNode, error) {});
 }
 
 /**
@@ -84,7 +83,7 @@ function showInlinePersona () {
  //    });
 	
 	// Method 2:
- //    Office.Controls.Persona.PersonaHelper.createPersona(root, tempPath, personaType, dataProvider, true, callbackForNameOnly);
+ //    Office.Controls.Persona.PersonaHelper.createPersona(root, dataProvider, personaType, callbackForNameOnly);
 	// function callbackForNameOnly(rootNode, error) {
 	// 	if (rootNode !== null) {
  //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
@@ -104,7 +103,7 @@ function showInlinePersona () {
 	// }
 
 	// Method 3:
-	ips = Office.Controls.Persona.PersonaHelper.createInlinePersona(root, tempPath, dataProvider);
+	ips = Office.Controls.Persona.PersonaHelper.createInlinePersona(root, dataProvider);
 	event.target.disabled = true;
 }
 
@@ -231,19 +230,19 @@ function getAadDataDataForPersona(keyword, rootNode, personaType, callback) {
 
 function sampleJsonBetter() {
 	var persona = {
-		"Id": "***REMOVED***",
+		"Id": "f567d710-09d8-458d-902f-d786234ed0d6",
 		"ImageUrl": "control/images/icon.png",
-		"PrimaryText": '***REMOVED*** Chen',
-	    "SecondaryText": 'Software Engineer 2, ASG EA China', // JobTitle, Department
-	    "SecondaryTextShort": 'Software Engineer 2, ASG EA China', // JobTitle, Department
-	    "TertiaryText": 'BEIJING-BJW-1/12329', // Office
+		"PrimaryText": 'Cat Miao',
+	    "SecondaryText": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
+	    "SecondaryTextShort": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
+	    "TertiaryText": 'BEIJING-Building1-1/12345', // Office
 
 	    "Actions":
 			{
-				"Email": "***REMOVED***@microsoft.com",
-			    "WorkPhone": "+86(10) 59173216", 
-			    "Mobile" : "+86 1861-2947-014",
-			    "Skype" : "***REMOVED***@microsoft.com",
+				"Email": "catmiao@companya.com",
+			    "WorkPhone": "+86(10) 12345678", 
+			    "Mobile" : "+86 1861-0000-000",
+			    "Skype" : "catmiao@companya.com",
 			},
 	    
 		"Strings":
