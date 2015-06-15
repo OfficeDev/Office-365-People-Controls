@@ -4,6 +4,7 @@
             DisplayName: string;
             Description: string;
             PersonId: string;
+            ImgSrc: string;
             constructor();
         }
         export class ValidationError {
@@ -12,6 +13,7 @@
         }
         export interface DataProvider {
             getPrincipals(keyword: string, callback: (error: string, results: Office.Controls.PeoplePickerRecord[]) => void): void;
+            getImageAsync(personId: string, callback: (error: string, imgSrc: string) => void): void;
         }
         export interface PeoplePickerOptions {
             allowMultipleSelections?: boolean;
@@ -21,6 +23,7 @@
             numberOfResults?: number;
             inputHint?: string;
             showValidationErrors?: boolean;
+            showImage?: boolean;
             onAdded?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onRemoved?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onChange?: (control: Office.Controls.PeoplePicker) => void;
@@ -37,6 +40,7 @@
             numberOfResults: number;
             inputHint: string;
             showValidationErrors: boolean;
+            showImage?: boolean;
             onAdded: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onRemoved: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onChange: (control: Office.Controls.PeoplePicker) => void;
