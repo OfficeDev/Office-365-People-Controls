@@ -562,5 +562,5 @@
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
-    Office.Controls.Persona.Templates.Default = 'http://controls.azurewebsites.net/control/templates/template.htm';
+    Office.Controls.Persona.Templates.Default = 'http://***REMOVED***/control/templates/template.htm'; // support cors
 })();
