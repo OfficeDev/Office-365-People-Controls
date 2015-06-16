@@ -1455,7 +1455,7 @@
     };
     Office.Controls.peoplePickerTemplates.getString = function (stringName) {
         var newName = 'PeoplePicker' + stringName.substr(3);
-        if (Office.Controls.PeoplePicker.res.hasOwnProperty("newName")) {
+        if (Office.Controls.PeoplePicker.res.hasOwnProperty(newName)) {
             return Office.Controls.PeoplePicker.res[newName];
         }
         return Office.Controls.Utils.getStringFromResource('PeoplePicker', stringName);
@@ -1503,6 +1503,7 @@
     Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate = function (principal, isCached, showImage) {
         var titleText = Office.Controls.Utils.htmlEncode((Office.Controls.Utils.isNullOrEmptyString(principal.Email)) ? '' : principal.Email),
         itemHtml = '<li tabindex=\"0\" class=\"ms-PeoplePicker-result\" data-office-peoplepicker-value=\"' + Office.Controls.Utils.htmlEncode(principal.PersonId) + '\" title=\"' + titleText + '\">';
+        itemHtml += '<a onclick=\"return false;\" href=\"#\" tabindex=\"-1\">';
         itemHtml += '<div class=\"ms-Persona ms-PersonaAdded\">';
         if (showImage) {
             if (isCached && !Office.Controls.Utils.isNullOrUndefined(principal.imgSrc)) {
@@ -1510,14 +1511,15 @@
             } else {
                 itemHtml += '<img class=\"ms-Persona-image\">';
             }
+        } else {
+            itemHtml += '<div class=\"ms-Persona-image-placeholder\"></div>';
         }
         itemHtml += '<div class=\"ms-Persona-details\">';
-        itemHtml += '<a onclick=\"return false;\" href=\"#\" tabindex=\"-1\">';
         itemHtml += '<div class=\"ms-Persona-primaryText\" >' + Office.Controls.Utils.htmlEncode(principal.DisplayName) + '</div>';
         if (!Office.Controls.Utils.isNullOrEmptyString(principal.Description)) {
             itemHtml += '<div class=\"ms-Persona-secondaryText\" >' + Office.Controls.Utils.htmlEncode(principal.Description) + '</div>';
         }
-        itemHtml += '</a></div></div></li>';
+        itemHtml += '</div></div></a></li>';
         return itemHtml;
     };
 
