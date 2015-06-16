@@ -535,7 +535,6 @@
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
-<<<<<<< HEAD
     Office.Controls.Persona.Templates.DefaultDefinition = {
         "nameonly": 
         {
@@ -554,7 +553,4 @@
             value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${SecondaryText}\">${SecondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Email}</span><a href=\"${Strings.Protocol.Email}${Actions.Email}\">${Actions.Email}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.WorkPhone}</span><a href=\"${Strings.Protocol.Phone}${Actions.WorkPhone}\">${Actions.WorkPhone}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Mobile}</span><a href=\"${Strings.Protocol.Phone}${Actions.Mobile}\">${Actions.Mobile}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Skype}</span><a href=\"${Strings.Protocol.Skype}${Actions.Skype}\">${Actions.Skype}</a></div></div></div>",
         },
     };
-=======
-    Office.Controls.Persona.Templates.Default = 'http://***REMOVED***/control/templates/template.htm'; // support cors
->>>>>>> 87fa2e514f22fcde1e3d340fed50a9f2e1b68669
 })();
