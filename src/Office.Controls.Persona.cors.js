@@ -41,8 +41,6 @@
         this.templateID = personaType.toString();
         this.personaObject = personaObject;
         this.isHidden = isHidden;
-        // Load template & bind data
-        this.loadDefaultTemplate(this.templateID);
     };
 
     Office.Controls.Persona.prototype = {
@@ -71,16 +69,49 @@
         },
 
         /**
-         * Load the given default template
-         * @return {[type]}             [description]
+         * Load template file from the give path
+         * @templatePath  {string}
+         * @callback  {Function} callback(errorMessage, elementNode)
+         * @return {null}
          */
-        loadDefaultTemplate: function (templateID) {
-            var templateNode = Office.Controls.Persona.Templates.DefaultDefinition[templateID].value;
-            if (templateNode === "" || (Office.Controls.Utils.isNullOrUndefined(templateNode))) {
-                alert('Fail to get the corret template content in loadDefaultTemplate');
-                return;
-            }
-            this.parseTemplate(templateNode);
+        loadTemplateAsync: function (templatePath, callback) {
+            var self = this;
+            var cachedTemplate = Office.Controls.Persona.PersonaHelper.getLocalCache(templatePath);
+
+            // Get cache
+            if (cachedTemplate !== null)
+            {
+               self.parseTemplate(cachedTemplate);
+               callback(self.rootNode, null);
+               return;
+            } 
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", templatePath, true);
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        var parser, xmlDoc;
+                        if (window.DOMParser) {
+                           parser = new DOMParser();
+                           xmlDoc = parser.parseFromString(this.responseText,"text/xml");
+                        } else { // code for IE prior to 9
+                           xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                           xmlDoc.async = false;
+                           xmlDoc.loadXML(this.responseText); 
+                        }  
+
+                        // Save xmlDoc to cache
+                        Office.Controls.Persona.PersonaHelper.setLocalCache(templatePath, xmlDoc);
+                        self.parseTemplate(xmlDoc);
+                        callback(self.rootNode, null); 
+                    } else {
+                        callback(null, "Unknown error");
+                        return; 
+                    }
+                }
+            };
+            xhr.send();
         },
 
         /**
@@ -90,8 +121,9 @@
          *     3. The detail content of each Action icon: When click the icon, the detail shows up.
          * @xmlDoc  {[DomElment} xmlDoc The document loading from template
          */
-        parseTemplate: function (templatedContent) {
+        parseTemplate: function (xmlDoc) {
             try {
+                var templateNode = xmlDoc.getElementById(this.templateID);
                 var templateElement = document.createElement("div");
                 this.showNode(templateElement, this.isHidden);
 
@@ -100,7 +132,7 @@
                 if (cachedViewWithConstants === null)
                 {
                     // Replace the constant strings
-                    cachedViewWithConstants = this.replaceConstantStrings(templatedContent);
+                    cachedViewWithConstants = this.replaceConstantStrings(templateNode.innerHTML);
                     // Save view to local cache
                     Office.Controls.Persona.PersonaHelper.setLocalCache(this.templateID, cachedViewWithConstants);
                 }
@@ -307,46 +339,52 @@
     };
 
     Office.Controls.Persona.PersonaHelper = function () { };
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType) {
-        return new Office.Controls.Persona(root, personaType, personaObject, true);
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType, callback) {
+        var personaInstance = new Office.Controls.Persona(root, personaType, personaObject, true);
+        personaInstance.loadTemplateAsync(Office.Controls.Persona.Templates.Default, callback);
+        return personaInstance;
     };
 
     Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personaObject, eventType) {
         var personaCard = null;
         var showNodeQueue = [];
-        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
-        if (eventType === "click") {
-            if (personaInstance.rootNode !== null) {
-                Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
-                    if (personaCard == null) {
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personaObject);
-                        showNodeQueue.push(personaCard);
-                    } else {
-                        personaCard.showNode(personaCard.get_rootNode(), (showNodeQueue.length == 0));
-                        if (showNodeQueue.length !== 0) {
-                            showNodeQueue.pop(personaCard);
+
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, function (rootNode, error) {
+            if (eventType === "click") {
+                if (rootNode !== null) {
+                    Office.Controls.Utils.addEventListener(rootNode, eventType, function (e) {
+                        if (personaCard == null) {
+                            personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personaObject, function (rootNode, error) {
+                                showNodeQueue.push(personaCard);
+                            });
                         } else {
-                            showNodeQueue.push(personaCard);
+                            personaCard.showNode(personaCard.get_rootNode(), (showNodeQueue.length == 0));
+                            if (showNodeQueue.length !== 0) {
+                                showNodeQueue.pop(personaCard);
+                            } else {
+                                showNodeQueue.push(personaCard);
+                            }
                         }
-                    }
-                });
-                Office.Controls.Utils.addEventListener(document, eventType, function () {
-                    if (event.target.tagName.toLowerCase() === "html") {
-                        if (showNodeQueue.length !== 0) {
-                            personaCard.showNode(personaCard.get_rootNode(), false);
-                            showNodeQueue.pop(personaCard);
+                    });
+                    Office.Controls.Utils.addEventListener(document, 'click', function () {
+                        if (event.target.tagName.toLowerCase() === "html") 
+                        {
+                            if (showNodeQueue.length !== 0) {
+                                personaCard.showNode(personaCard.get_rootNode(), false);
+                                showNodeQueue.pop(personaCard);
+                            }
                         }
-                    }
-                });
-            } else {
-                Office.Controls.Utils.errorConsole('Wrong template path');
-            }
-        } 
+                    });
+                } else {
+                    Office.Controls.Utils.errorConsole('Wrong template path');
+                }
+            } 
+        });
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personaObject) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personaObject, callback) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, callback);
     };
 
     /**
@@ -535,22 +573,5 @@
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
-    Office.Controls.Persona.Templates.DefaultDefinition = {
-        "nameonly": 
-        {
-            value: "<div class=\"ms-Persona ms-Persona--tiny readOnly clickStyle\" AriaTabIndex=\"0\"><div class=\"ms-Persona-primaryText nameOnlyText\"><Label Text=\"${PrimaryText}\">${PrimaryText}</Label></div></div>",
-        },
-        "nameimage": 
-        {
-            value: "<div class=\"ms-Persona\"><image class=\"imageOfNameImage image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" Text=\"${PrimaryText}\" Title=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\" Title=\"${SecondaryText}\">${SecondaryText}</Label></div></div></div>",
-        },
-        "detailcard": 
-        {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\">${SecondaryText}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div></div>",
-        },
-        "personacard": 
-        {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${SecondaryText}\">${SecondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Email}</span><a href=\"${Strings.Protocol.Email}${Actions.Email}\">${Actions.Email}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.WorkPhone}</span><a href=\"${Strings.Protocol.Phone}${Actions.WorkPhone}\">${Actions.WorkPhone}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Mobile}</span><a href=\"${Strings.Protocol.Phone}${Actions.Mobile}\">${Actions.Mobile}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Skype}</span><a href=\"${Strings.Protocol.Skype}${Actions.Skype}\">${Actions.Skype}</a></div></div></div>",
-        },
-    };
+    Office.Controls.Persona.Templates.Default = 'https://controls.azurewebsites.net/control/templates/template.htm'; // support localhost cors
 })();

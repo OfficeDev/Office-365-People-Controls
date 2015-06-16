@@ -8,15 +8,25 @@ var ips, ipc;
 
 function showPersonaCard () {	
 	var pcRoot = document.getElementById('personaCardRoot');
+	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard;
 
 	// Method 1:
-	// ipc= new Office.Controls.Persona(pcRoot, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, dataProvider, true);
+	// var personaCard = new Office.Controls.Persona(pcRoot, personaType, dataProvider, true);
+	// personaCard.loadTemplateAsync(tempPath, function (rootNode, error) {
+
+	// });
 
 	// Method 2:
-	// Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, dataProvider, personaType);
+	// Office.Controls.Persona.PersonaHelper.createPersona(pcRoot, dataProvider, personaType, callbackForPersonaCard);
+	// function callbackForPersonaCard(rootNode, error) {
+
+	// }
 
 	// Method 3:
-	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider);
+	ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider, callbackForPersonaCard);
+	function callbackForPersonaCard(rootNode, error) {
+
+	} 
 }
 
 var interval;
@@ -25,7 +35,8 @@ function changesInLiving() {
 	var keywords = ["zhongzhong li", "jonathan tang", "wenbo shi", "***REMOVED***", "jichen", "jiayuan", "abe ge"]; 
 
 	interval = setInterval(function () {
-		getAadDataDataForPersona(keywords[getRandomInt(0, 7)], pcRoot, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
+		getAadDataDataForPersona(keywords[getRandomInt(0, 7)], pcRoot, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, function(rootNode, error){
+			});
 	}, 4000);
 }
 
@@ -36,7 +47,7 @@ function StopLiving()
 	while (pcRoot.firstChild) {
 		pcRoot.removeChild(pcRoot.firstChild);
 	};
-	Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider);
+	Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider, function(rootNode, error) {});
 }
 
 /**
@@ -52,7 +63,7 @@ function showInlinePersona () {
 	// personaType = Office.Controls.Persona.PersonaType.TypeEnum.NameImage;
 	
 	// Method 1:
-	// var nameOnly = new Office.Controls.Persona(root, dataProvider, Office.Controls.Persona.PersonaType.TypeEnum.NameOnly);
+	// var nameOnly = new Office.Controls.Persona(root, Office.Controls.Persona.PersonaType.TypeEnum.NameOnly, dataProvider, true);
 	// nameOnly.loadTemplateAsync(tempPath, function (rootNode, error) {
  //        if (rootNode !== null) {
  //            Office.Controls.Utils.addEventListener(rootNode, 'click', function (e) {
@@ -93,7 +104,7 @@ function showInlinePersona () {
 
 	// Method 3:
 	ips = Office.Controls.Persona.PersonaHelper.createInlinePersona(root, dataProvider);
-	// event.target.disabled = true;
+	event.target.disabled = true;
 }
 
 var isClickAdded = false;
@@ -107,8 +118,10 @@ function addClickEventForInlinePersona()
    		eventSpan.innerText = "Click Event has been added.";
    		Office.Controls.Utils.addEventListener(ips.get_rootNode(), 'click', function (e) {
 			if (nameImage == null) {
-				nameImage = Office.Controls.Persona.PersonaHelper.createPersonaCard(ips.root, dataProvider);
-		    	showNodeQueue.push(nameImage);
+				nameImage = new Office.Controls.Persona(ips.root, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, dataProvider, true);
+		    	nameImage.loadTemplateAsync(tempPath, function (rootNode, error) {
+		    		showNodeQueue.push(nameImage);
+		    	});	
 			} else {
 				if (showNodeQueue.length !== 0) {
 					nameImage.showNode(nameImage.get_rootNode(), false);
@@ -191,7 +204,7 @@ function createPersonaWithAadData() {
     getAadDataDataForPersona(inputValue, root, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
 }
 
-function getAadDataDataForPersona(keyword, rootNode, personaType) {
+function getAadDataDataForPersona(keyword, rootNode, personaType, callback) {
     // AAD data
     var aadDataProvider = new Office.Controls.PeopleAadDataProvider(null);
     aadDataProvider.serverHost = serverHost;
@@ -206,7 +219,7 @@ function getAadDataDataForPersona(keyword, rootNode, personaType) {
                             personaObj.ImageUrl = imgSrc; // Get user imamge
                         }
                         // Create persona of nameimage
-                        Office.Controls.Persona.PersonaHelper.createPersona(rootNode, personaObj, personaType);
+                        Office.Controls.Persona.PersonaHelper.createPersona(rootNode, tempPath, personaType, personaObj, true, callback);
                     });
 		        });
 	        }
