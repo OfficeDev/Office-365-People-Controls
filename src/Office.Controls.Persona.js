@@ -542,7 +542,7 @@
         },
         "nameimage": 
         {
-            value: "<div class=\"ms-Persona\"><image class=\"imageOfNameImage image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" Text=\"${PrimaryText}\" Title=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\" Title=\"${SecondaryText}\">${SecondaryText}</Label></div></div></div>",
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" Text=\"${PrimaryText}\" Title=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\" Title=\"${SecondaryText}\">${SecondaryText}</Label></div></div></div>",
         },
         "detailcard": 
         {
