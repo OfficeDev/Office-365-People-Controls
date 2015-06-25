@@ -64,6 +64,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;<a href="TestPage.html">Test Cases</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;<a href="ts/tssample.html">TypeScript Sample</a>
                     </p>
+                    <p><b><a id="login_admin">As an Admin to Consent on Behalf of All Users</a></b>&nbsp;&nbsp;&nbsp;&nbsp;Please do it with an <b style="color: #0000EE">Admin</b> account first.</p>
                 </div>
             </td>
             <td style="text-align:right; vertical-align:top">
@@ -101,6 +102,7 @@
             pageUri = pageUri.split("?")[0];
 
             document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+            document.getElementById('login_admin').href = 'http://' + serverHost + '/authcode?userType=admin&redirect_uri=' + pageUri;
 
             var userId = getQueryString()["userId"];
             if (typeof (userId) !== 'undefined') {

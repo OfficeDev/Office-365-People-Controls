@@ -109,6 +109,13 @@ app.get('/accesstoken', function (req, res) {
             res.status(400).send('error: state does not match');
             return;
         }
+        
+        if (req.query.error) {
+            if (typeof(req.cookies.redirect_uri) != 'undefined' && req.cookies.redirect_uri != 'undefined') {
+                res.redirect(req.cookies.redirect_uri);
+                return;
+            }
+        }
 
         var authenticationContext = new AuthenticationContext(authorityUrl);
         authenticationContext.acquireTokenWithAuthorizationCode(
