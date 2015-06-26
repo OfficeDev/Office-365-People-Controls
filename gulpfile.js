@@ -63,7 +63,7 @@ gulp.task('cpfiles', function() {
     gulp.src("src/templates/*")
     .pipe(gulp.dest('dist/templates/'));
     
-    gulp.src("dist/**")
+    gulp.src("dist/**/*")
     .pipe(gulp.dest('example/control/'));
 });
 
