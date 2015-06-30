@@ -37,9 +37,9 @@
             };
             xhr.send('');
         },
-        getPrincipals: function (input, callback) {
+        getPrincipals: function (keyword, callback) {
             var xhr = new XMLHttpRequest(), self = this;
-            xhr.open('GET', 'http://' + this.serverHost + '/users?keyword=' + encodeURIComponent(input), true);
+            xhr.open('GET', 'http://' + this.serverHost + '/users?keyword=' + encodeURIComponent(keyword), true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.withCredentials = true;
             xhr.onabort = xhr.onerror = xhr.ontimeout = function () {
@@ -66,9 +66,16 @@
                 result.value.forEach(
                     function (e) {
                         var person = {};
-                        person.DisplayName = e.displayName;
-                        person.Description = e.department;
-                        person.PersonId = e.objectId;
+                        person.displayName = e.displayName;
+                        person.description = person.department = e.department;
+                        person.jobTitle = e.jobTitle;
+                        person.mail = e.mail;
+                        person.workPhone = e.telephoneNumber;
+                        person.mobile = e.mobile;
+                        person.office = e.physicalDeliveryOfficeName;
+                        person.sipAddress = e.userPrincipalName;
+                        person.alias = e.mailNickname;
+                        person.personId = e.objectId;
                         people.push(person);
                     });
                 if (people.length > self.maxResult) {

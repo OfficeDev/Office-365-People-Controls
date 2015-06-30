@@ -9,14 +9,15 @@
             width: 200px;
         }
     </style>
+    <script type="text/javascript" src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.js"></script>
     <script type="text/javascript" src="DetectVersion.js"></script>
-    <script type="text/javascript" src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.min.js"></script>
 
 </head>
 <body>
     <a href="index.html">Playground</a>/Use Single Page Application
 
     <h2>PeoplePicker for Implicit Grant</h2>
+    <u><a href="/spapersona.html">Go Persona</a></u>
 
     <table style="width: 100%; border: 0px">
         <tr>
@@ -95,8 +96,7 @@
             });
 
             // AAD data
-            var aadDataProvider = new Office.Controls.PeoplePickerAadDataProvider();
-            aadDataProvider.authContext = authContext;
+            var aadDataProvider = new Office.Controls.PeopleAadDataProvider(authContext);
 
             params = new Object();
             params.allowMultipleSelections = true;

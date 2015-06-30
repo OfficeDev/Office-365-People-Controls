@@ -6,11 +6,11 @@
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" type="text/css" href="http://controls.azurewebsites.net/control/office.controls.persona.css">
-    <script type="text/javascript" src="http://controls.azurewebsites.net/control/office.controls.base.js"></script> 
+    <link rel="stylesheet" type="text/css" href="control/office.controls.persona.css">
+    <script type="text/javascript" src="control/office.controls.base.js"></script> 
     <script type="text/javascript" src="control/office.controls.persona.js"></script> 
-    <script type="text/javascript" src="http://controls.azurewebsites.net/control/office.controls.peopleaaddataprovider.js"></script> 
-    <script type="text/javascript" src="control/personasample.js"></script> 
+    <script type="text/javascript" src="control/office.controls.peopleaaddataprovider.js"></script> 
+    <script type="text/javascript" src="personasample.js"></script> 
 </head>
 <body onload="init();showPersonaCard();showInlinePersona();">
     <!-- Playground -->
@@ -25,7 +25,7 @@
         <p>
             <u>AAD Data</u>
             <u><input type="textbox" id="keyword" onkeyup="isCreatePersona()" autofocus><input type="button" value="Search" onclick="createPersonaWithAadData()"></u>
-            <div><image id="loadingImg" src="http://controls.azurewebsites.net/control/images/thinking32_grey.gif" style="display:none"></image></div>
+            <div><image id="loadingImg" src="images/thinking32_grey.gif" style="display:none"></image></div>
             <div id='aadUserRoot' style='max-width:600px;'></div>
         </p>
         <p>

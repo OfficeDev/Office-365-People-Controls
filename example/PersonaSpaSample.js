@@ -141,28 +141,36 @@ function addClickEventForInlinePersona()
 /**
  * Integrate with AAD Data
  */
-var serverHost = '***REMOVED***';
+var authContext = null;
 function init() {
-    var pageUri = window.location.href;
-    pageUri = pageUri.split("?")[0];
 
-    document.getElementById('login_user').href = 'http://' + serverHost + '/authcode?redirect_uri=' + pageUri;
+    // AAD authentication
 
-    var userId = getQueryString()["userId"];
-    if (typeof (userId) !== 'undefined') {
-        document.getElementById('logged_user').innerText = "logged as " + userId;
+    window.config = {
+        instance: 'https://login.microsoftonline.com/',
+        clientId: '***REMOVED***',
+        postLogoutRedirectUri: window.location,
+        cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
+    };
+    authContext = new AuthenticationContext(config);
+
+    // Check For & Handle Redirect From AAD After Login
+    var isCallback = authContext.isCallback(window.location.hash);
+    authContext.handleWindowCallback();
+
+    var user = authContext.getCachedUser();
+    if (user) {
+        document.getElementById('logged_user').innerText = "logged as " + user.userName;
+        document.getElementById('login_user').textContent = 'Logout';
     }
-}
 
-function getQueryString() {
-    var result = {}, queryString = location.search.slice(1),
-        re = /([^&=]+)=([^&]*)/g, m;
-
-    while (m = re.exec(queryString)) {
-        result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-    }
-
-    return result;
+    document.getElementById('login_user').addEventListener("click", function () {
+        if (user) {
+            authContext.logOut();
+        } else {
+            authContext.login();
+        }
+    });
 }
 
 function isCreatePersona() {
@@ -193,8 +201,7 @@ function createPersonaWithAadData() {
 
 function getAadDataDataForPersona(keyword, rootNode, personaType) {
     // AAD data
-    var aadDataProvider = new AadDataProvider(null);
-    aadDataProvider.serverHost = serverHost;
+    var aadDataProvider = new Office.Controls.PeopleAadDataProvider(authContext);
 	aadDataProvider.getPrincipals(keyword, function (error, addUsers) {
 	    if (addUsers !== null) {
 	    	loadingImg.style.display = "none";
