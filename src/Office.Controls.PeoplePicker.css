@@ -1,10 +1,6 @@
 ﻿@font-face {
-  font-family: 'office365icons';
-  src: url('css/office365icons.eot?');
-  src: url('css/office365icons.eot?#iefix') format('embedded-opentype'),
-       url('css/office365icons.woff?') format('woff'),
-       url('css/office365icons.ttf?') format('truetype'),
-       url('css/office365icons.svg?#office365icons') format('svg');
+  font-family: 'symbols';
+  src: url('css/symbols.ttf?') format('truetype') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
