@@ -82,11 +82,11 @@
 
 
     <script type="text/javascript">
-        if (typeof Office.Controls.PeoplePicker !== "undefined") {
+        if (typeof Office !== "undefined" && typeof Office.Controls.PeoplePicker !== "undefined") {
             creatPeoplePickers();
         } else {
             var timerId = window.setInterval(function () {
-                if (typeof Office.Controls.PeoplePicker !== "undefined") {
+                if (typeof Office !== "undefined" && typeof Office.Controls.PeoplePicker !== "undefined") {
                     window.clearInterval(timerId);
                     creatPeoplePickers();
                 }
