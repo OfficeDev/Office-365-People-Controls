@@ -405,6 +405,7 @@
         displayCachedEntries: function () {
             var cachedEntries = this.cache.get(this.textInput.value, 5), self = this;
             this.autofill.setCachedEntries(cachedEntries);
+            this.autofill.setServerEntries(new Array(0));
             if (!cachedEntries.length) {
                 return;
             }
