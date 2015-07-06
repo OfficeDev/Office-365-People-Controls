@@ -1613,9 +1613,9 @@
         recordHtml += '<div class=\"ms-Persona-primaryText ms-Persona-primaryTextForResolvedUserAdded\">' + Office.Controls.Utils.htmlEncode(record.text);
         recordHtml += '</div></div></div>';
         if (showImage) {
-            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove ms-PeoplePicker-personaRemoveWithImage\">';
+            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove\">';
         } else {
-            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove ms-PeoplePicker-personaRemoveNoImage\">';
+            recordHtml += '<div class=\"ms-PeoplePicker-personaRemove\">';
         }
         recordHtml += '<i tabindex=\"0\" class=\"ms-Icon ms-Icon--x ms-Icon-added\">';
         recordHtml += '</i></div>';
