@@ -324,7 +324,7 @@
             var keyEvent = Office.Controls.Utils.getEvent(e), self = this;
             if (keyEvent.keyCode === 27) {
                 this.autofill.close();
-            } else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) {
+            } else if ((keyEvent.keyCode === 9 || keyEvent.keyCode === 13) && this.autofill.IsDisplayed) {
                 var focusElement = this.autofillElement.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
                 if (focusElement !== null) {
                     var personId = this.autofill.getPersonIdFromListElement(focusElement);
