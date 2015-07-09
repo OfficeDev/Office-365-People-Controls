@@ -324,7 +324,7 @@
             var keyEvent = Office.Controls.Utils.getEvent(e), self = this;
             if (keyEvent.keyCode === 27) { // 'escape'
                 this.autofill.close();
-            } else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) { // 'tab'
+            } else if ((keyEvent.keyCode === 9 || keyEvent.keyCode === 13) && this.autofill.IsDisplayed) { // 'tab' || 'enter'
                 var focusElement = this.autofillElement.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
                 if (focusElement !== null) {
                     var personId = this.autofill.getPersonIdFromListElement(focusElement);
@@ -979,7 +979,7 @@
                     this.parent.autofill.changeFocus(target, resultList.firstChild);
                     resultList.firstChild.focus();
                 }
-            } else if (key.keyCode === 9) { // 'tab'
+            } else if (key.keyCode === 9 || key.keyCode === 13) { // 'tab' or 'enter'
                 var personId = this.parent.autofill.getPersonIdFromListElement(target);
                 this.onAutofillClick(this.parent.autofill.entries[personId]);
                 Office.Controls.Utils.cancelEvent(e);
@@ -1031,6 +1031,7 @@
             }
             this.parent.validateMultipleMatchError();
             this.parent.autofill.close();
+            this.parent.textInput.focus();
             this.parent.onAdded(this.parent, this.Record.principalInfo);
             this.parent.onChange(this.parent);
         }

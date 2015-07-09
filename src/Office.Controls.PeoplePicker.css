@@ -597,8 +597,7 @@
 }
 
 .ms-PeoplePicker-persona:focus {
-    border:1px solid;
-    border-color:aliceblue;
+    outline:thin dotted;
 }
 
 .ms-PeoplePicker-searchFieldAddedForSingleSelectionHidden {
