@@ -1552,7 +1552,7 @@
         } else {
             itemHtml += '<div class=\"ms-Persona-image-placeholder\"></div>';
         }
-        if (Office.Controls.Utils.isFirefox) {
+        if (Office.Controls.Utils.isFirefox()) {
             itemHtml += '<div class=\"ms-Persona-details\" style=\"max-width:100%; width: auto;\">';
         } else {
             itemHtml += '<div class=\"ms-Persona-details\">';
@@ -1934,7 +1934,7 @@
         }
         return ret;
     };
-    Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined'; /* Firefox 1.0+ */ };
+    Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1; /* Firefox 1.0+ */ };
     Office.Controls.Utils.NOP = function () { };
 
     if (Office.Controls.PrincipalInfo.registerClass) { Office.Controls.PrincipalInfo.registerClass('Office.Controls.PrincipalInfo'); }
