@@ -150,7 +150,7 @@ function init() {
 
     var userId = getQueryString()["userId"];
     if (typeof (userId) !== 'undefined') {
-        document.getElementById('logged_user').innerText = "logged as " + userId;
+        document.getElementById('logged_user').textContent = "logged as " + userId;
     }
 }
 

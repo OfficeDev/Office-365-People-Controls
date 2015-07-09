@@ -160,7 +160,7 @@ function init() {
 
     var user = authContext.getCachedUser();
     if (user) {
-        document.getElementById('logged_user').innerText = "logged as " + user.userName;
+        document.getElementById('logged_user').textContent = "logged as " + user.userName;
         document.getElementById('login_user').textContent = 'Logout';
     }
 
