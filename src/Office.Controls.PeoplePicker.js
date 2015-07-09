@@ -322,9 +322,9 @@
 
         onInputKeyDown: function (e) {
             var keyEvent = Office.Controls.Utils.getEvent(e), self = this;
-            if (keyEvent.keyCode === 27) {
+            if (keyEvent.keyCode === 27) { // 'escape'
                 this.autofill.close();
-            } else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) {
+            } else if (keyEvent.keyCode === 9 && this.autofill.IsDisplayed) { // 'tab'
                 var focusElement = this.autofillElement.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
                 if (focusElement !== null) {
                     var personId = this.autofill.getPersonIdFromListElement(focusElement);
@@ -334,17 +334,17 @@
                     return false;
                 }
                 this.autofill.close();
-            } else if ((keyEvent.keyCode === 40 || keyEvent.keyCode === 38) && this.autofill.IsDisplayed) {
+            } else if ((keyEvent.keyCode === 40 || keyEvent.keyCode === 38) && this.autofill.IsDisplayed) { // 'down arrow' || 'up arrow'
                 this.autofill.onKeyDownFromInput(keyEvent);
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 Office.Controls.Utils.cancelEvent(e);
                 return false;
-            } else if (keyEvent.keyCode === 37 && this.internalSelectedItems.length) {
+            } else if (keyEvent.keyCode === 37 && this.internalSelectedItems.length) { // 'left arrow'
                 this.resolvedListRoot.lastChild.focus();
                 Office.Controls.Utils.cancelEvent(e);
                 return false;
-            } else if (keyEvent.keyCode === 8) {
+            } else if (keyEvent.keyCode === 8) { // 'backspace'
                 var shouldRemove = false;
                 if (!Office.Controls.Utils.isNullOrUndefined(document.selection)) {
                     var range = document.selection.createRange(), selectedText = range.text, caretPos = range.text.length;
@@ -363,6 +363,7 @@
                     Office.Controls.Utils.cancelEvent(e);
                 }
             } else if ((keyEvent.keyCode === 75 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186) || (keyEvent.keyCode === 59) || (keyEvent.keyCode === 13)) {
+                // 'Ctrl + k' || 'semi-colon' (59 on Firefox and 186 on other browsers) || 'enter'
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 this.cancelLastRequest();
@@ -370,13 +371,14 @@
                 Office.Controls.Utils.cancelEvent(e);
                 return false;
             } else if ((keyEvent.keyCode === 86 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186)) {
+                // 'Ctrl + v' || 'semi-colon'
                 this.cancelLastRequest();
                 window.setTimeout(function () {
                     self.textInput.value = Office.Controls.PeoplePicker.parseUserPaste(self.textInput.value);
                     self.attemptResolveInput();
                 }, 0);
                 return true;
-            } else if (keyEvent.keyCode === 13 && keyEvent.shiftKey) {
+            } else if (keyEvent.keyCode === 13 && keyEvent.shiftKey) { // 'shift + enter'
                 this.autofill.open(function (selectedPrincipal) {
                     self.addResolvedPrincipal(selectedPrincipal);
                 });
@@ -939,21 +941,26 @@
         onAutofillKeyDown: function (e) {
             var key = Office.Controls.Utils.getEvent(e),
             target = Office.Controls.Utils.getTarget(key);
-            if (key.keyCode === 38) {
+            if (key.keyCode === 38) { // 'up arrow'
                 if (target.previousSibling !== null) {
                     this.parent.autofill.changeFocus(target, target.previousSibling);
                     target.previousSibling.focus();
+                } else if (target.parentNode.parentNode.previousSibling !== null) {
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
+                    ul = autofillElementsUlTags[0];
+                    this.parent.autofill.changeFocus(target, ul.lastChild);
+                    ul.lastChild.focus();
                 } else if (target.parentNode.parentNode.nextSibling !== null) {
                     var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
                     this.parent.autofill.changeFocus(target, ul.lastChild);
                     ul.lastChild.focus();
                 } else {
-                    var recentList = this.parent.root.querySelector('ul.ms-PeoplePicker-resultList');
-                    this.parent.autofill.changeFocus(target, recentList.lastChild);
-                    recentList.lastChild.focus();
+                    var resultList = this.parent.root.querySelector('ul.ms-PeoplePicker-resultList');
+                    this.parent.autofill.changeFocus(target, resultList.lastChild);
+                    resultList.lastChild.focus();
                 }
-            } else if (key.keyCode === 40) {
+            } else if (key.keyCode === 40) { // 'down arrow'
                 if (target.nextSibling !== null) {
                     this.parent.autofill.changeFocus(target, target.nextSibling);
                     target.nextSibling.focus();
@@ -962,8 +969,17 @@
                     ul = autofillElementsUlTags[1];
                     this.parent.autofill.changeFocus(target, ul.firstChild);
                     ul.firstChild.focus();
+                } else if (target.parentNode.parentNode.previousSibling !== null) {
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
+                    ul = autofillElementsUlTags[0];
+                    this.parent.autofill.changeFocus(target, ul.firstChild);
+                    ul.firstChild.focus();
+                } else {
+                    var resultList = this.parent.root.querySelector('ul.ms-PeoplePicker-resultList');
+                    this.parent.autofill.changeFocus(target, resultList.firstChild);
+                    resultList.firstChild.focus();
                 }
-            } else if (key.keyCode === 9) {
+            } else if (key.keyCode === 9) { // 'tab'
                 var personId = this.parent.autofill.getPersonIdFromListElement(target);
                 this.onAutofillClick(this.parent.autofill.entries[personId]);
                 Office.Controls.Utils.cancelEvent(e);
@@ -1204,26 +1220,46 @@
 
         onKeyDownFromInput: function (key) {
             var target = this.root.querySelector("li.ms-PeoplePicker-resultAddedForSelect");
-            if (key.keyCode === 38) {
+            if (key.keyCode === 38) { // 'up arrow'
                 if (target.previousSibling !== null) {
                     this.changeFocus(target, target.previousSibling);
+                    target.previousSibling.focus();
+                } else if (target.parentNode.parentNode.previousSibling !== null) {
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
+                    ul = autofillElementsUlTags[0];
+                    this.parent.autofill.changeFocus(target, ul.lastChild);
+                    ul.lastChild.focus();
                 } else if (target.parentNode.parentNode.nextSibling !== null) {
-                    var autofillElementsUlTags = this.root.querySelectorAll('ul'),
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
-                    this.changeFocus(target, ul.lastChild);
+                    this.parent.autofill.changeFocus(target, ul.lastChild);
+                    ul.lastChild.focus();
                 } else {
-                    var recentList = this.root.querySelector('ul.ms-PeoplePicker-resultList');
-                    this.changeFocus(target, recentList.lastChild);
+                    var resultList = this.root.querySelector('ul.ms-PeoplePicker-resultList');
+                    this.changeFocus(target, resultList.lastChild);
+                    resultList.lastChild.focus();
                 }
-            } else if (key.keyCode === 40) {
+            } else if (key.keyCode === 40) { // 'down arrow'
                 if (target.nextSibling !== null) {
                     this.changeFocus(target, target.nextSibling);
+                    target.nextSibling.focus();
                 } else if (target.parentNode.parentNode.nextSibling !== null) {
-                    var autofillElementsUlTags = this.root.querySelectorAll('ul'),
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
                     ul = autofillElementsUlTags[1];
-                    this.changeFocus(target, ul.firstChild);
+                    this.parent.autofill.changeFocus(target, ul.firstChild);
+                    ul.firstChild.focus();
+                } else if (target.parentNode.parentNode.previousSibling !== null) {
+                    var autofillElementsUlTags = this.parent.root.querySelectorAll('ul'),
+                    ul = autofillElementsUlTags[0];
+                    this.parent.autofill.changeFocus(target, ul.firstChild);
+                    ul.firstChild.focus();
+                } else {
+                    var resultList = this.root.querySelector('ul.ms-PeoplePicker-resultList');
+                    this.changeFocus(target, resultList.firstChild);
+                    resultList.firstChild.focus();
                 }
             }
+            this.parent.textInput.focus();
             return true;
         },
 
