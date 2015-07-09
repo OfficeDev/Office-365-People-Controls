@@ -963,7 +963,7 @@
                     this.parent.autofill.changeFocus(target, ul.firstChild);
                     ul.firstChild.focus();
                 }
-            } else if (key.keyCode === 9) {
+            } else if (key.keyCode === 9 || key.keyCode === 13) {
                 var personId = this.parent.autofill.getPersonIdFromListElement(target);
                 this.onAutofillClick(this.parent.autofill.entries[personId]);
                 Office.Controls.Utils.cancelEvent(e);
@@ -1015,6 +1015,7 @@
             }
             this.parent.validateMultipleMatchError();
             this.parent.autofill.close();
+            this.parent.textInput.focus();
             this.parent.onAdded(this.parent, this.Record.principalInfo);
             this.parent.onChange(this.parent);
         }
