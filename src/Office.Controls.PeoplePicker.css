@@ -58,6 +58,7 @@
   background-color: #f4f4f4;
   float: left;
   min-height: 30px;
+  height: 30px;
 }
 .ms-PeoplePicker .ms-PeoplePicker-persona.has-error .ms-Persona-primaryText {
   color: #a80f22;
@@ -325,6 +326,7 @@
   font-size: 14px;
   font-weight: normal;
   display: table;
+  table-layout: auto;
   line-height: 1;
   overflow: hidden;
   position: relative;

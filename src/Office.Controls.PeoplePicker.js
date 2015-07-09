@@ -1515,7 +1515,11 @@
         } else {
             itemHtml += '<div class=\"ms-Persona-image-placeholder\"></div>';
         }
-        itemHtml += '<div class=\"ms-Persona-details\">';
+        if (Office.Controls.Utils.isFirefox) {
+            itemHtml += '<div class=\"ms-Persona-details\" style=\"max-width:100%; width: auto;\">';
+        } else {
+            itemHtml += '<div class=\"ms-Persona-details\">';
+        }
         itemHtml += '<div class=\"ms-Persona-primaryText\" >' + Office.Controls.Utils.htmlEncode(principal.displayName) + '</div>';
         if (!Office.Controls.Utils.isNullOrEmptyString(principal.description)) {
             itemHtml += '<div class=\"ms-Persona-secondaryText\" >' + Office.Controls.Utils.htmlEncode(principal.description) + '</div>';
@@ -1893,6 +1897,7 @@
         }
         return ret;
     };
+    Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined'; /* Firefox 1.0+ */ };
     Office.Controls.Utils.NOP = function () { };
 
     if (Office.Controls.PrincipalInfo.registerClass) { Office.Controls.PrincipalInfo.registerClass('Office.Controls.PrincipalInfo'); }
