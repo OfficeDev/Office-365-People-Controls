@@ -434,8 +434,13 @@
                     self.lastSearchQuery = currentValue;
                     if (currentValue.length >= self.startSearchCharLength) {
                         self.searchingTimes++;
-                        self.displayLoadingIcon(currentValue);
                         self.removeValidationError('ServerProblem');
+                        if (self.enableCache) {
+                            self.displayCachedEntries();
+                            self.displayLoadingIcon(currentValue, true);
+                        } else {
+                            self.displayLoadingIcon(currentValue, false);
+                        }
                         var token = new Office.Controls.PeoplePicker.cancelToken();
                         self.currentToken = token;
                         self.dataProvider.getPrincipals(self.textInput.value, function (error, principalsReceived) {
@@ -449,9 +454,9 @@
                         });
                     } else {
                         self.autofill.close();
-                    }
-                    if (self.enableCache) {
-                        self.displayCachedEntries();
+                        if (self.enableCache) {
+                            self.displayCachedEntries();
+                        }
                     }
                 }
             }, self.delaySearchInterval);
@@ -577,8 +582,8 @@
             }
         },
 
-        displayLoadingIcon: function (searchingName) {
-            this.autofill.openSearchingLoadingStatus(searchingName);
+        displayLoadingIcon: function (searchingName, isAppended) {
+            this.autofill.openSearchingLoadingStatus(searchingName, isAppended);
         },
 
         hideLoadingIcon: function () {
@@ -654,7 +659,7 @@
             internalRecord.updateHoverText();
             this.internalSelectedItems.push(internalRecord);
             this.setTextInputDisplayStyle();
-            this.displayLoadingIcon(record.text);
+            this.displayLoadingIcon(record.text, false);
             this.dataProvider.getPrincipals(record.displayName, function (error, ps) {
                 if (ps !== null) {
                     internalRecord = self.onDataReceivedForResolve(ps, internalRecord);
@@ -680,7 +685,7 @@
             this.internalSelectedItems.push(internalRecord);
             this.clearInputField();
             this.setTextInputDisplayStyle();
-            this.displayLoadingIcon(input);
+            this.displayLoadingIcon(input, false);
             this.dataProvider.getPrincipals(input, function (error, ps) {
                 if (ps !== null) {
                     internalRecord = self.onDataReceivedForResolve(ps, internalRecord);
@@ -1190,8 +1195,19 @@
             Office.Controls.Utils.removeClass(this.parent.actualRoot, 'is-active');
         },
 
-        openSearchingLoadingStatus: function (searchingName) {
-            this.root.innerHTML = Office.Controls.peoplePickerTemplates.generateSerachingLoadingTemplate();
+        openSearchingLoadingStatus: function (searchingName, isAppended) {
+            if (isAppended == false) {
+                this.root.innerHTML = Office.Controls.peoplePickerTemplates.generateSerachingLoadingTemplate();
+            }
+            else {
+                var resultNode = this.root.querySelector('div.ms-PeoplePicker-resultGroups')
+                if (resultNode !=null){
+                    resultNode.innerHTML += Office.Controls.peoplePickerTemplates.generateSerachingLoadingTemplate();
+                }
+                else {
+                    this.root.innerHTML = Office.Controls.peoplePickerTemplates.generateSerachingLoadingTemplate();
+                }
+            }
             this.IsDisplayed = true;
             Office.Controls.PeoplePicker.autofillContainer.currentOpened = this;
             if (!Office.Controls.Utils.containClass(this.parent.actualRoot, 'is-active')) {
