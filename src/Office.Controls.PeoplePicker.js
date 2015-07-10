@@ -463,17 +463,19 @@
         },
 
         onDataReceived: function (principalsReceived) {
-            this.currentPrincipalsChoices = {};
-            var self = this, i;
-            for (i = 0; i < principalsReceived.length; i++) {
-                var principal = principalsReceived[i];
-                this.currentPrincipalsChoices[principal.personId] = principal;
+            if (! Office.Controls.Utils.isNullOrUndefined(this.textInput.value ) && this.textInput.value !== " " && this.textInput.value.length>= this.startSearchCharLength) {
+                this.currentPrincipalsChoices = {};
+                var self = this, i;
+                for (i = 0; i < principalsReceived.length; i++) {
+                    var principal = principalsReceived[i];
+                    this.currentPrincipalsChoices[principal.personId] = principal;
+                }
+                this.autofill.setServerEntries(principalsReceived);
+                this.hideLoadingIcon();
+                this.autofill.open(function (selectedPrincipal) {
+                    self.addResolvedPrincipal(selectedPrincipal);
+                });
             }
-            this.autofill.setServerEntries(principalsReceived);
-            this.hideLoadingIcon();
-            this.autofill.open(function (selectedPrincipal) {
-                self.addResolvedPrincipal(selectedPrincipal);
-            });
         },
 
         onPickerClick: function (e) {
@@ -1659,7 +1661,7 @@
         } else {
             recordHtml += '<div class=\"ms-PeoplePicker-personaRemove\">';
         }
-        recordHtml += '<i tabindex=\"0\" class=\"ms-Icon ms-Icon--x ms-Icon-added\">';
+        recordHtml += '<i class=\"ms-Icon ms-Icon--x ms-Icon-added\">';
         recordHtml += '</i></div>';
         recordHtml += '</div>';
         return recordHtml;
