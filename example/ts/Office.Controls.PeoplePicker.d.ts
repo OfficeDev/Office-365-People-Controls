@@ -24,8 +24,8 @@
             inputHint?: string;
             showValidationErrors?: boolean;
             showImage?: boolean;
-            onAdded?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
-            onRemoved?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
+            onAdd?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
+            onRemove?: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onChange?: (control: Office.Controls.PeoplePicker) => void;
             onFocus?: (control: Office.Controls.PeoplePicker) => void;
             onBlur?: (control: Office.Controls.PeoplePicker) => void;
@@ -33,7 +33,7 @@
             resourceStrings?: any;
         }
         export class PeoplePicker {
-            allowMultiple: boolean;
+            allowMultipleSelections: boolean;
             startSearchCharLength: number;
             delaySearchInterval: number;
             enableCache: boolean;
@@ -41,8 +41,8 @@
             inputHint: string;
             showValidationErrors: boolean;
             showImage?: boolean;
-            onAdded: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
-            onRemoved: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
+            onAdd: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
+            onRemove: (control: Office.Controls.PeoplePicker, person: Office.Controls.PeoplePickerRecord) => void;
             onChange: (control: Office.Controls.PeoplePicker) => void;
             onFocus: (control: Office.Controls.PeoplePicker) => void;
             onBlur: (control: Office.Controls.PeoplePicker) => void;
@@ -59,8 +59,8 @@
             clearCacheData(): void;
             getErrorDisplayed(): Office.Controls.ValidationError;
             constructor(root: HTMLElement, dataProvider: Office.Controls.DataProvider);
-            constructor(root: HTMLElement, dataProvider: Office.Controls.DataProvider, parameterObject: PeoplePickerOptions);
-            static create(root: HTMLElement, dataProvider: Office.Controls.DataProvider, parameterObject: PeoplePickerOptions): Office.Controls.PeoplePicker;
+            constructor(root: HTMLElement, dataProvider: Office.Controls.DataProvider, options: PeoplePickerOptions);
+            static create(root: HTMLElement, dataProvider: Office.Controls.DataProvider, options: PeoplePickerOptions): Office.Controls.PeoplePicker;
         }
     }
 }
