@@ -29,10 +29,8 @@ var getArgs = function () {
     return args;
 }
 
-var peoplePickerCSS = "control/Office.Controls.PeoplePicker.min.css";
-var peoplePicerBaseJS = "control/Office.Controls.Base.min.js";
-var peoplePicerJS = "control/Office.Controls.PeoplePicker.min.js";
-var peoplePicerProviderJS = "control/Office.Controls.PeopleAadDataProvider.min.js";
+var peoplePickerCSS = "control/Office.Controls.PeopleControl.min.css";
+var peopleControlJS = "control/Office.Controls.PeopleControl.min.js";
 
 // Get URL Parameter and load debug/minify version
 // debug=1 -- debug version; debug=0 --minify version
@@ -40,14 +38,10 @@ var args = getArgs();
 var isdebug = args.debug || "0";
 
 if (isdebug === "1") {
-    peoplePickerCSS = "control/Office.Controls.PeoplePicker.css";
-    peoplePicerBaseJS = "control/Office.Controls.Base.js";
-    peoplePicerJS = "control/Office.Controls.PeoplePicker.js";
-    peoplePicerProviderJS = "control/Office.Controls.PeopleAadDataProvider.js";
+    peoplePickerCSS = "control/Office.Controls.PeopleControl.min.css";
+    peopleControlJS = "control/Office.Controls.PeopleControl.min.js";
 }
 
 loadjscssfile(peoplePickerCSS, "css");
-loadjscssfile(peoplePicerBaseJS, "js");
-loadjscssfile(peoplePicerJS, "js");
-loadjscssfile(peoplePicerProviderJS, "js");
+loadjscssfile(peopleControlJS, "js");
 

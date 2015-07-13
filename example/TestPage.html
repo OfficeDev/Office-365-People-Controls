@@ -36,10 +36,10 @@
             }
 
             if (document.getElementById("7").checked == true) {
-                params.onAdded = listeneAdded;
+                params.onAdd = listeneAdded;
             }
             if (document.getElementById("8").checked == true) {
-                params.onRemoved = listeneRemoved;
+                params.onRemove = listeneRemoved;
             }
             if (document.getElementById("9").checked == true) {
                 params.onFocus = listeneFocus;
@@ -61,13 +61,13 @@
             document.getElementById('PeoplePickerContainer').innerHTML = "";
         }
         function listeneAdded(control, person) {
-            document.getElementById("ListenOutput").innerHTML = "Get OnAdded event:"+ JSON.stringify(person);
+            document.getElementById("ListenOutput").innerHTML = "Get OnAdd event:"+ JSON.stringify(person);
         }
         function listeneRemoved(control, person) {
-            document.getElementById("ListenOutput").innerHTML = "Get OnRemoved event:" + JSON.stringify(person);
+            document.getElementById("ListenOutput").innerHTML = "Get OnRemove event:" + JSON.stringify(person);
         }
         function listeneFocus(control, person) {
-            document.getElementById("ListenOutput").innerHTML = "Get Onfocus event";
+            document.getElementById("ListenOutput").innerHTML = "Get OnFocus event";
         }
         function listeneBlur(control, person) {
             document.getElementById("ListenOutput").innerHTML = "Get OnBlur event";
@@ -133,9 +133,9 @@
             <td><input type="text" id="6" /></td>
         </tr>
         <tr>
-            <td>OnAdded listener:</td>
+            <td>OnAdd listener:</td>
             <td><input type="checkbox" id="7" /></td>
-            <td>OnRemoved listener:</td>
+            <td>OnRemove listener:</td>
             <td><input type="checkbox" id="8" /></td>
         </tr>
         <tr>

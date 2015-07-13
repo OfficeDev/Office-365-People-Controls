@@ -12,12 +12,12 @@
         }
     }
 
-    Office.Controls.Context = function (parameterObject) {
-        if (typeof parameterObject !== 'object') {
+    Office.Controls.Context = function (options) {
+        if (typeof options !== 'object') {
             Office.Controls.Utils.errorConsole('Invalid parameters type');
             return;
         }
-        var sharepointHost = parameterObject.HostUrl;
+        var sharepointHost = options.HostUrl;
         if (Office.Controls.Utils.isNullOrUndefined(sharepointHost)) {
             var param = Office.Controls.Utils.getQueryStringParameter('SPHostUrl');
             if (!Office.Controls.Utils.isNullOrEmptyString(param)) {
@@ -34,8 +34,8 @@
     };
 
     Office.Controls.Runtime = function () { };
-    Office.Controls.Runtime.initialize = function (parameterObject) {
-        Office.Controls.Runtime.context = new Office.Controls.Context(parameterObject);
+    Office.Controls.Runtime.initialize = function (options) {
+        Office.Controls.Runtime.context = new Office.Controls.Context(options);
     };
 
     Office.Controls.Browser = function (browserType) {
@@ -378,6 +378,7 @@
         }
         return ret;
     };
+    Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1; /* Firefox 1.0+ */ };
     Office.Controls.Utils.NOP = function () { };
 
     if (Office.Controls.Context.registerClass) { Office.Controls.Context.registerClass('Office.Controls.Context'); }
