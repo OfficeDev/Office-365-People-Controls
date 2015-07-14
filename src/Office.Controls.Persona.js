@@ -355,26 +355,26 @@
     /**
      * Make sure the data object to be used for creating Persona is legal
      */
-    Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(originalPersonaObj) {
-        if (typeof originalPersonaObj !== 'object' || (Office.Controls.Utils.isNullOrUndefined(originalPersonaObj))) {
+    Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(oriPersonaObj) {
+        if (typeof oriPersonaObj !== 'object' || (Office.Controls.Utils.isNullOrUndefined(oriPersonaObj))) {
             Office.Controls.Utils.errorConsole('persona object is null.');
             return;
         }
             
         var personaObj = {};
-        personaObj.Id = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.Id) ? "" : originalPersonaObj.Id;
-        personaObj.ImageUrl = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.ImageUrl) ? Office.Controls.Persona.PersonaHelper._defaultImage : originalPersonaObj.ImageUrl;
-        personaObj.PrimaryText = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.PrimaryText) ? "" : originalPersonaObj.PrimaryText;
-        personaObj.SecondaryText = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.SecondaryText) ? "" : originalPersonaObj.SecondaryText;
+        personaObj.Id = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Id);
+        personaObj.ImageUrl = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.ImageUrl, Office.Controls.Persona.PersonaHelper._defaultImage);
+        personaObj.PrimaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.PrimaryText);
+        personaObj.SecondaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.SecondaryText);
         personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
-        personaObj.TertiaryText = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.TertiaryText) ? "" : originalPersonaObj.TertiaryText;
+        personaObj.TertiaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.TertiaryText);
         personaObj.TertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.TertiaryTextShort, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
 
         personaObj.Actions = {};
-        personaObj.Actions.Email = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.Actions.Email) ? "" : originalPersonaObj.Actions.Email;
-        personaObj.Actions.WorkPhone = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.Actions.WorkPhone) ? "" : originalPersonaObj.Actions.WorkPhone;
-        personaObj.Actions.Mobile = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.Actions.Mobile) ? "" : originalPersonaObj.Actions.Mobile;
-        personaObj.Actions.Skype = Office.Controls.Utils.isNullOrUndefined(originalPersonaObj.Actions.Skype) ? "" : originalPersonaObj.Actions.Skype;
+        personaObj.Actions.Email = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Email);
+        personaObj.Actions.WorkPhone = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.WorkPhone);
+        personaObj.Actions.Mobile = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Mobile);
+        personaObj.Actions.Skype = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Skype);
         
         return personaObj;
     }
@@ -490,6 +490,12 @@
             return displayText;
         }
     };
+
+    Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty = function (str, value) {
+        var val = ((value === undefined) ? "" : value);
+        return Office.Controls.Utils.isNullOrEmptyString(str) ? val : str;
+    };
+
     Office.Controls.Persona.StringUtils._loadLengthConfiguration = function (personaType) {
         var returnValue; 
 
