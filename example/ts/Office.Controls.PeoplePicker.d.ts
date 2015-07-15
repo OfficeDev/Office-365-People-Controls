@@ -12,7 +12,7 @@
             localizedErrorMessage: string;
         }
         export interface DataProvider {
-            getPrincipals(keyword: string, callback: (error: string, results: Office.Controls.PeoplePickerRecord[]) => void): void;
+            searchPeopleAsync(keyword: string, callback: (error: string, results: Office.Controls.PeoplePickerRecord[]) => void): void;
             getImageAsync(personId: string, callback: (error: string, imgSrc: string) => void): void;
         }
         export interface PeoplePickerOptions {
@@ -60,7 +60,7 @@
             getErrorDisplayed(): Office.Controls.ValidationError;
             constructor(root: HTMLElement, dataProvider: Office.Controls.DataProvider);
             constructor(root: HTMLElement, dataProvider: Office.Controls.DataProvider, options: PeoplePickerOptions);
-            static create(root: HTMLElement, dataProvider: Office.Controls.DataProvider, options: PeoplePickerOptions): Office.Controls.PeoplePicker;
+            static create(root: HTMLElement, authContext: object, options: PeoplePickerOptions): Office.Controls.PeoplePicker;
         }
     }
 }

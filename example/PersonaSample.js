@@ -195,7 +195,7 @@ function getAadDataDataForPersona(keyword, rootNode, personaType) {
     // AAD data
     var aadDataProvider = new AadDataProvider(null);
     aadDataProvider.serverHost = serverHost;
-	aadDataProvider.getPrincipals(keyword, function (error, addUsers) {
+	aadDataProvider.searchPeopleAsync(keyword, function (error, addUsers) {
 	    if (addUsers !== null) {
 	    	loadingImg.style.display = "none";
 	        var personaObjs = Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects(addUsers);

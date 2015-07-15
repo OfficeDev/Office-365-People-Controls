@@ -379,6 +379,10 @@
         return ret;
     };
     Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1; /* Firefox 1.0+ */ };
+    Office.Controls.Utils.isFunction = function (functionToCheck) {
+        var getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
     Office.Controls.Utils.NOP = function () { };
 
     if (Office.Controls.Context.registerClass) { Office.Controls.Context.registerClass('Office.Controls.Context'); }

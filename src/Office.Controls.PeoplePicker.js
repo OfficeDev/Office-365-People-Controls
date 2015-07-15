@@ -119,7 +119,8 @@
     Office.Controls.PeoplePicker.nopAddRemove = function () { };
     Office.Controls.PeoplePicker.nopOperation = function () { };
 
-    Office.Controls.PeoplePicker.create = function (root, dataProvider, options) {
+    Office.Controls.PeoplePicker.create = function (root, contextOrGetTokenAsync, options) {
+        var dataProvider = new Office.Controls.PeopleAadDataProvider(contextOrGetTokenAsync);
         return new Office.Controls.PeoplePicker(root, dataProvider, options);
     };
     Office.Controls.PeoplePicker.prototype = {
@@ -137,7 +138,7 @@
         onError: null,
         dataProvider: null,
         showValidationErrors: true,
-        showImage: false,
+        showImage: true,
         showInputHint: true,
         inputTabindex: 0,
         searchingTimes: 0,
@@ -236,7 +237,7 @@
 
         getUserInfoAsync: function (userInfoHandler, userEmail) {
             var record = new Office.Controls.PeoplePickerRecord();
-            this.dataProvider.getPrincipals(userEmail, function (error, principalsReceived) {
+            this.dataProvider.searchPeopleAsync(userEmail, function (error, principalsReceived) {
                 if (principalsReceived !== null) {
                     Office.Controls.PeoplePicker.copyToRecord(record, principalsReceived[0]);
                     userInfoHandler(record);
@@ -443,7 +444,7 @@
                         }
                         var token = new Office.Controls.PeoplePicker.cancelToken();
                         self.currentToken = token;
-                        self.dataProvider.getPrincipals(self.textInput.value, function (error, principalsReceived) {
+                        self.dataProvider.searchPeopleAsync(self.textInput.value, function (error, principalsReceived) {
                             if (!token.IsCanceled) {
                                 if (principalsReceived !== null) {
                                     self.onDataReceived(principalsReceived);
@@ -660,7 +661,7 @@
             this.internalSelectedItems.push(internalRecord);
             this.setTextInputDisplayStyle();
             this.displayLoadingIcon(record.text, false);
-            this.dataProvider.getPrincipals(record.displayName, function (error, ps) {
+            this.dataProvider.searchPeopleAsync(record.displayName, function (error, ps) {
                 if (ps !== null) {
                     internalRecord = self.onDataReceivedForResolve(ps, internalRecord);
                     self.onAdd(this, internalRecord.Record.principalInfo);
@@ -686,7 +687,7 @@
             this.clearInputField();
             this.setTextInputDisplayStyle();
             this.displayLoadingIcon(input, false);
-            this.dataProvider.getPrincipals(input, function (error, ps) {
+            this.dataProvider.searchPeopleAsync(input, function (error, ps) {
                 if (ps !== null) {
                     internalRecord = self.onDataReceivedForResolve(ps, internalRecord);
                     if (triggerUserListener) {

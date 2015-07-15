@@ -14,18 +14,34 @@
     }
 
     Office.Controls.PeopleAadDataProvider = function (authContext) {
-        this.authContext = authContext;
+        if (Office.Controls.Utils.isFunction(authContext)) {
+            this.getTokenAsync = authContext;
+        } else {
+            this.authContext = authContext;
+            if (this.authContext) {
+                this.getTokenAsync = function(dataProvider, callback) {
+                   this.authContext.acquireToken(this.aadGraphResourceId, function (error, token) {
+                        callback(error, token);
+                    });
+                };
+            }
+        }
     }
 
     Office.Controls.PeopleAadDataProvider.prototype = {
         maxResult: 50,
         authContext: null,
+        getTokenAsync: undefined,
         aadGraphResourceId: '00000002-0000-0000-c000-000000000000',
         apiVersion: 'api-version=1.5', 
-        getPrincipals: function (keyword, callback) {
+        searchPeopleAsync: function (keyword, callback) {
+            if (!this.getTokenAsync) {
+                callback('getTokenAsync not set', null);
+                return;
+            }
 
             var self = this;
-            self.authContext.acquireToken(self.aadGraphResourceId, function (error, token) {
+            self.getTokenAsync(this, function (error, token) {
 
                 // Handle ADAL Errors
                 if (error || !token) {

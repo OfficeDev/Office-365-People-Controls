@@ -7,7 +7,8 @@
 
 gulp.task('minifycss', function () {
     return ['src/Office.Controls.PeoplePicker.css',
-            'src/Office.Controls.Persona.css'
+            'src/Office.Controls.Persona.css',
+            'dist/Office.Controls.People.css'
            ].forEach(
                 function (file) {
                     gulp.src(file)
@@ -21,7 +22,8 @@ gulp.task('minifyjs', function () {
     return ['src/Office.Controls.Base.js',
             'src/Office.Controls.PeopleAadDataProvider.js',
             'src/Office.Controls.PeoplePicker.js',
-            'src/Office.Controls.Persona.js'
+            'src/Office.Controls.Persona.js',
+            'dist/Office.Controls.People.js'
            ].forEach(
                 function (file) {
                     gulp.src(file)
@@ -44,6 +46,16 @@ gulp.task('runjshint', function () {
                 });
 });
 
+gulp.task('concatfiles', function() {
+    gulp.src(['src/Office.Controls.Base.js', 'src/Office.Controls.PeopleAadDataProvider.js', 'src/Office.Controls.PeoplePicker.js', 'src/Office.Controls.Persona.js'])
+    .pipe(concat('Office.Controls.People.js'))
+    .pipe(gulp.dest('dist/'));
+
+    gulp.src(['src/Office.Controls.PeoplePicker.css', 'src/Office.Controls.Persona.css'])
+    .pipe(concat('Office.Controls.People.css'))
+    .pipe(gulp.dest('dist/'));
+});
+
 gulp.task('cpfiles', function() {
     ['src/Office.Controls.Base.js',
      'src/Office.Controls.PeopleAadDataProvider.js',
@@ -63,26 +75,10 @@ gulp.task('cpfiles', function() {
     gulp.src('src/templates/*')
     .pipe(gulp.dest('dist/templates/'));
 
-    gulp.src(['src/Office.Controls.Base.js', 'src/Office.Controls.PeopleAadDataProvider.js', 'src/Office.Controls.PeoplePicker.js', 'src/Office.Controls.Persona.js'])
-    .pipe(concat('Office.Controls.PeopleControl.js'))
-    .pipe(gulp.dest('dist/'));
-
-    gulp.src(['dist/Office.Controls.Base.min.js', 'dist/Office.Controls.PeopleAadDataProvider.min.js', 'dist/Office.Controls.PeoplePicker.min.js', 'dist/Office.Controls.Persona.min.js'])
-    .pipe(concat('Office.Controls.PeopleControl.min.js', {newLine: ';'}))
-    .pipe(gulp.dest('dist/'));
-
-    gulp.src(['src/Office.Controls.PeoplePicker.css', 'src/Office.Controls.Persona.css'])
-    .pipe(concat('Office.Controls.PeopleControl.css'))
-    .pipe(gulp.dest('dist/'));
-
-    gulp.src(['dist/Office.Controls.PeoplePicker.min.css', 'dist/Office.Controls.Persona.min.css'])
-    .pipe(concat('Office.Controls.PeopleControl.min.css', {newLine: ''}))
-    .pipe(gulp.dest('dist/'));
-
     gulp.src('dist/**/*')
     .pipe(gulp.dest('example/control/'));
 });
 
 gulp.task('default', function () {
-    gulp.start('runjshint', 'minifycss', 'minifyjs', 'cpfiles');
+    gulp.start('runjshint', 'concatfiles', 'minifycss', 'minifyjs', 'cpfiles');
 });

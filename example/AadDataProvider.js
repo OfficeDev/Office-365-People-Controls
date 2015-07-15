@@ -37,7 +37,7 @@
             };
             xhr.send('');
         },
-        getPrincipals: function (keyword, callback) {
+        searchPeopleAsync: function (keyword, callback) {
             var xhr = new XMLHttpRequest(), self = this;
             xhr.open('GET', 'http://' + this.serverHost + '/users?keyword=' + encodeURIComponent(keyword), true);
             xhr.setRequestHeader('Content-Type', 'application/json');
