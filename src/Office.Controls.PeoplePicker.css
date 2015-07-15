@@ -1,10 +1,6 @@
 ﻿@font-face {
-  font-family: 'office365icons';
-  src: url('css/office365icons.eot?');
-  src: url('css/office365icons.eot?#iefix') format('embedded-opentype'),
-       url('css/office365icons.woff?') format('woff'),
-       url('css/office365icons.ttf?') format('truetype'),
-       url('css/office365icons.svg?#office365icons') format('svg');
+  font-family: 'symbols';
+  src: url('css/symbols.ttf?') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -168,7 +164,7 @@
   width: 100%;
 }
 .ms-PeoplePicker .ms-Icon--x:before {
-  content: '\e042';
+  content: '\e10a';
 }
 
 .ms-PeoplePicker .ms-Icon {
@@ -241,7 +237,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
-  font-family: 'Office365Icons';
+  font-family: 'symbols';
   font-style: normal;
   font-weight: normal;
   line-height: 1;
@@ -254,7 +250,7 @@
 }
 .ms-PeoplePicker .ms-PeoplePicker-searchMoreIcon:before {
   color: #333333;
-  content: '\e039';
+  content: '\e094';
   font-size: 24px;
   position: absolute;
   text-align: center;
@@ -571,7 +567,7 @@
 }
 
 .ms-Icon-added {
-    font-family: Office365Icons !important;
+    font-family: symbols !important;
 }
 
 .ms-PersonaAdded {
@@ -617,7 +613,7 @@
    -moz-osx-font-smoothing: grayscale;
    -webkit-font-smoothing: antialiased;
    display: inline-block;
-   font-family: 'Office365Icons';
+   font-family: 'symbols';
    font-style: normal;
    font-weight: normal;
    line-height: 1;
