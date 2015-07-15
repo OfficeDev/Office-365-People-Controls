@@ -308,7 +308,10 @@
 
     Office.Controls.Persona.PersonaHelper = function () { };
     Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType) {
-        return new Office.Controls.Persona(root, personaType, personaObject, true);
+        // Make sure the data object is legal.
+        var dataObject = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObject);
+        // Create Persona 
+        return new Office.Controls.Persona(root, personaType, dataObject, true);
     };
 
     Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personaObject, eventType) {
@@ -350,24 +353,36 @@
     };
 
     /**
+     * Make sure the data object to be used for creating Persona is legal
+     */
+    Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(oriPersonaObj) {
+        if (typeof oriPersonaObj !== 'object' || (Office.Controls.Utils.isNullOrUndefined(oriPersonaObj))) {
+            Office.Controls.Utils.errorConsole('persona object is null.');
+            return;
+        }
+            
+        var personaObj = {};
+        personaObj.Id = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Id);
+        personaObj.ImageUrl = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.ImageUrl, Office.Controls.Persona.PersonaHelper._defaultImage);
+        personaObj.PrimaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.PrimaryText);
+        personaObj.SecondaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.SecondaryText);
+        personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.TertiaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.TertiaryText);
+        personaObj.TertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.TertiaryTextShort, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+
+        personaObj.Actions = {};
+        personaObj.Actions.Email = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Email);
+        personaObj.Actions.WorkPhone = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.WorkPhone);
+        personaObj.Actions.Mobile = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Mobile);
+        personaObj.Actions.Skype = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Skype);
+        
+        return personaObj;
+    }
+
+    /**
      * Convert AAD User Data To Persona Object
      * @aadUserObject {JSON Object}
-     * @return {JSON Object}
-     * {
-     *  "Id": "[guid]",
-        "ImageUrl": "control/images/icon.png",
-        "PrimaryText": 'Cat Miao',
-        "SecondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
-        "TertiaryText": 'BEIJING-Building1-1/XXX', // Office
-
-        "Actions":
-            {
-                "Email": "catmiao@companya.com",
-                "WorkPhone": "+86(10) 12345678", 
-                "Mobile" : "+86 1861-0000-000",
-                "Skype" : "catmiao@companya.com",
-            }
-        }
+     * @return {JSON personaObject}
      */
     Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject = function(aadUserObject) {
         if (typeof aadUserObject !== 'object' || (Office.Controls.Utils.isNullOrUndefined(aadUserObject))) {
@@ -379,7 +394,7 @@
             
         var personaObj = {};
         personaObj.Id = aadUserObject.personId;
-        personaObj.ImageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAORQTFRFsbGxv7+/wcHBu7u72dnZ7u7u/////Pz85ubmy8vLtbW1wsLC5OTk/f3939/ft7e34eHh+vr61NTUs7OzwMDA8/Pz7OzsxMTE9PT0vLy8+/v7+fn5urq6vb298fHxtLS0srKyzc3N9/f32NjYtra209PT7e3t7+/v/v7+yMjI3t7e4+Pj6+vr6urq4uLi19fXx8fH0tLS9fX1ubm59vb2z8/PuLi4+Pj429vbzs7O0NDQ4ODg1dXV2tra1tbWzMzMxcXF6enp0dHR8vLyysrKxsbG3d3d6Ojovr6+5eXl5+fn8PDwYCkYCwAAAAFiS0dEBmFmuH0AAAAJcEhZcwAAdTAAAHUwAd0zcs0AAAKgSURBVGje7ZjdVtpQEIUByxCIIRKtYECgSSVULbWopRDBarVq+/7vU1raBcTMmbEzueha7Ous/XEOZ35zuY022mij/0z5QqGQmfnWqyL8VskqV/Tt7W1YkVN1de0rO5BQzdtV9N97Dc+1r3eIegnS1DhQ8rd9SFezpeJ/2ARM7Y6Cf7cIuCwFgAcmvRH7t3wjIBCHXBXMCoX+rkMA/LcywBFQOpIBeiQgkt1QnwSAKNre0f6ylxoyAMcSwAkDsC8BnDIAgQQQMQCOBNBmAECSUotZA95zAJIrGjD8mxLABwagKAGcMQADCYCTiz5KAIxsCnkRwCP9hyJ/uqKJayb1UJ1zIeDc3FXAjtCfCoWa9ADzzv3CBLgU+8/HphLuf6rgn8uVUf/GJxUA2hwFOu37rzOk3tJQawCZy075p7eFTeO6OmHiECN5455Q63OwtG+PdWbM+qQaXx0uL2oa96IoGsxWE+h1bB1P7H9x3wpHi59bNQwZ7p+q3fZeOtR+Wan3DXQ/YS+vzYlf8mjd9Z7RuUr9ajdcS+ZOzE5Ml7Xkm7xJidn8s7bMP2PZd+OUqGom01onTKlF/VsOAJn7vpZXnmZrFqR/dUf7j9Hc5lu39UIlfz+Jh/g3ZA/g4psDlhrU5EwNxqSILuCA0WqZRUzOU6k/gPEldUdyQM8E4HS7lPqmtMSZW0mZSsWNBsA0OQdye+P6oqLhDz4O2FMBAJ6273QAdRRAzxssTVDANx3AFAVYOgB88OQsPxh6QAHCWvBX6GyuEwbzooMBHpUAaKTdKwEA61zHcuuFsMlnpgV4zDbO8FzxpAXA2i/Wio4jbHy+kFsv5CEAcrXCFdJ8uVr+WFXOqwFOMg5k+J5xIGMbebVAhh8ZBzK2KVQLZKituP4EqRB824c6sq4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTQtMTAtMjlUMjA6MjQ6MTktMDU6MDBCpOLkAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE0LTEwLTI5VDIwOjI0OjE5LTA1OjAwM/laWAAAAABJRU5ErkJggg==";
+        personaObj.ImageUrl = Office.Controls.Persona.PersonaHelper._defaultImage;
         personaObj.PrimaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
         
         if (aadUserObject.jobTitle !== null) {
@@ -475,6 +490,12 @@
             return displayText;
         }
     };
+
+    Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty = function (str, value) {
+        var val = ((value === undefined) ? "" : value);
+        return Office.Controls.Utils.isNullOrEmptyString(str) ? val : str;
+    };
+
     Office.Controls.Persona.StringUtils._loadLengthConfiguration = function (personaType) {
         var returnValue; 
 
@@ -532,6 +553,7 @@
     Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = null;
     Office.Controls.Persona.StringUtils._currentPersonaType = 0;
     Office.Controls.Persona.PersonaHelper._localCache = {};
+    Office.Controls.Persona.PersonaHelper._defaultImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAORQTFRFsbGxv7+/wcHBu7u72dnZ7u7u/////Pz85ubmy8vLtbW1wsLC5OTk/f3939/ft7e34eHh+vr61NTUs7OzwMDA8/Pz7OzsxMTE9PT0vLy8+/v7+fn5urq6vb298fHxtLS0srKyzc3N9/f32NjYtra209PT7e3t7+/v/v7+yMjI3t7e4+Pj6+vr6urq4uLi19fXx8fH0tLS9fX1ubm59vb2z8/PuLi4+Pj429vbzs7O0NDQ4ODg1dXV2tra1tbWzMzMxcXF6enp0dHR8vLyysrKxsbG3d3d6Ojovr6+5eXl5+fn8PDwYCkYCwAAAAFiS0dEBmFmuH0AAAAJcEhZcwAAdTAAAHUwAd0zcs0AAAKgSURBVGje7ZjdVtpQEIUByxCIIRKtYECgSSVULbWopRDBarVq+/7vU1raBcTMmbEzueha7Ous/XEOZ35zuY022mij/0z5QqGQmfnWqyL8VskqV/Tt7W1YkVN1de0rO5BQzdtV9N97Dc+1r3eIegnS1DhQ8rd9SFezpeJ/2ARM7Y6Cf7cIuCwFgAcmvRH7t3wjIBCHXBXMCoX+rkMA/LcywBFQOpIBeiQgkt1QnwSAKNre0f6ylxoyAMcSwAkDsC8BnDIAgQQQMQCOBNBmAECSUotZA95zAJIrGjD8mxLABwagKAGcMQADCYCTiz5KAIxsCnkRwCP9hyJ/uqKJayb1UJ1zIeDc3FXAjtCfCoWa9ADzzv3CBLgU+8/HphLuf6rgn8uVUf/GJxUA2hwFOu37rzOk3tJQawCZy075p7eFTeO6OmHiECN5455Q63OwtG+PdWbM+qQaXx0uL2oa96IoGsxWE+h1bB1P7H9x3wpHi59bNQwZ7p+q3fZeOtR+Wan3DXQ/YS+vzYlf8mjd9Z7RuUr9ajdcS+ZOzE5Ml7Xkm7xJidn8s7bMP2PZd+OUqGom01onTKlF/VsOAJn7vpZXnmZrFqR/dUf7j9Hc5lu39UIlfz+Jh/g3ZA/g4psDlhrU5EwNxqSILuCA0WqZRUzOU6k/gPEldUdyQM8E4HS7lPqmtMSZW0mZSsWNBsA0OQdye+P6oqLhDz4O2FMBAJ6273QAdRRAzxssTVDANx3AFAVYOgB88OQsPxh6QAHCWvBX6GyuEwbzooMBHpUAaKTdKwEA61zHcuuFsMlnpgV4zDbO8FzxpAXA2i/Wio4jbHy+kFsv5CEAcrXCFdJ8uVr+WFXOqwFOMg5k+J5xIGMbebVAhh8ZBzK2KVQLZKituP4EqRB824c6sq4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTQtMTAtMjlUMjA6MjQ6MTktMDU6MDBCpOLkAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE0LTEwLTI5VDIwOjI0OjE5LTA1OjAwM/laWAAAAABJRU5ErkJggg==";
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";

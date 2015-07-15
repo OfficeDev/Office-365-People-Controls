@@ -219,10 +219,10 @@ function getAadDataDataForPersona(keyword, rootNode, personaType) {
 function sampleJsonBetter() {
 	var persona = {
 		"Id": "f567d710-09d8-458d-902f-d786234ed0d6",
-		"ImageUrl": "images/icon.png",
+		// "ImageUrl": "images/icon.png",
 		"PrimaryText": 'Cat Miao',
 	    "SecondaryText": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
-	    "SecondaryTextShort": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
+	    // "SecondaryTextShort": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
 	    "TertiaryText": 'BEIJING-Building1-1/12345', // Office
 
 	    "Actions":
