@@ -1,5 +1,5 @@
 var tempPath = "control/templates/template.htm";
-var dataProvider = sampleJsonBetter();
+var dataProvider = sampleJsonBetterLong();
 var personaType;
 var nameImage = null;
 var isShow = true;
@@ -220,7 +220,7 @@ function sampleJsonBetter() {
 	var persona = {
 		"Id": "f567d710-09d8-458d-902f-d786234ed0d6",
 		// "ImageUrl": "images/icon.png",
-		"PrimaryText": 'Cat Miao',
+		"PrimaryText": 'Cat MiaoCat MiaoCat MiaoCat MiaoCat MiaoCat MiaoCat MiaoCat Miao',
 	    "SecondaryText": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
 	    // "SecondaryTextShort": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
 	    "TertiaryText": 'BEIJING-Building1-1/12345', // Office
@@ -231,6 +231,42 @@ function sampleJsonBetter() {
 			    "WorkPhone": "+86(10) 12345678", 
 			    "Mobile" : "+86 1861-0000-000",
 			    "Skype" : "catmiao@companya.com",
+			},
+	    
+		"Strings":
+			{
+				"Label":{
+							"Email": "Work: ",
+							"WorkPhone": "Work: ",
+							"Mobile": "Mobile: ",
+							"Skype": "Skype: "
+						},
+
+				"Protocol": {
+								"Email": "mailto:",
+								"Phone": "tel:",
+								"Skype": "sip:",
+							}
+			}
+	};
+	return persona;
+}
+
+function sampleJsonBetterLong() {
+	var persona = {
+		"Id": "f567d710-09d8-458d-902f-d786234ed0d6",
+		// "ImageUrl": "images/icon.png",
+		"PrimaryText": 'Cat MiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiao',
+	    "SecondaryText": 'Software Engineer 2, DepartmentA ChinaChinaChinaChinaChinaChinaChinaChina', // JobTitle, Department
+	    // "SecondaryTextShort": 'Software Engineer 2, DepartmentA China', // JobTitle, Department
+	    "TertiaryText": 'BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345', // Office
+
+	    "Actions":
+			{
+				"Email": "catmiao@companyacompanyacompanyacompanyacompanyacompanyacompanyacompanyacompanya.com",
+			    "WorkPhone": "+86(10) 123456781234567812345678123456781234567812345678", 
+			    "Mobile" : "+86 1861-0000-000000000000000000000000",
+			    "Skype" : "catmiao@companyacompanyacompanyacompanyacompanyacompanyacompanyacompanyacompanya.com",
 			},
 	    
 		"Strings":
