@@ -15,18 +15,18 @@
     /*
     *  The format of personaObject:
     * {
-            "Id": "[guid]",
-            "ImageUrl": "control/images/icon.png",
-            "PrimaryText": 'Cat Miao',
-            "SecondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
-            "TertiaryText": 'BEIJING-Building1-1/XXX', // Office
+            "id": "person id",
+            "imgSrc": "control/images/icon.png",
+            "primaryText": 'Cat Miao',
+            "secondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
+            "tertiaryText": 'BEIJING-Building1-1/XXX', // Office
 
-            "Actions":
+            "actions":
                 {
-                    "Email": "catmiao@companya.com",
-                    "WorkPhone": "+86(10) 12345678", 
-                    "Mobile" : "+86 1861-0000-000",
-                    "Skype" : "catmiao@companya.com",
+                    "email": "catmiao@companya.com",
+                    "workPhone": "+86(10) 12345678", 
+                    "mobile" : "+86 1861-0000-000",
+                    "skype" : "catmiao@companya.com",
                 }
             }
         };
@@ -161,7 +161,7 @@
             // Init constant strings
             this.initiateStringObject();
 
-            var regExp = /\$\{Strings([^\}\{]+)\}/g;
+            var regExp = /\$\{strings([^\}\{]+)\}/g;
             return this.bindData(htmlStr, regExp, this.constantObject);
         },
 
@@ -197,19 +197,19 @@
         },
 
         /**
-         * Strings:
+         * strings:
          * {
-            "Label":{
-                        "Email": "Work: "
-                        "WorkPhone": "Work: ",
-                        "Mobile": "Mobile: ",
-                        "Skype": "Skype: "
+            "label":{
+                        "email": "Work: "
+                        "workPhone": "Work: ",
+                        "mobile": "Mobile: ",
+                        "skype": "Skype: "
                     },
 
-            "Protocol": {
-                            "Email": "mailto:",
-                            "Phone": "tel:",
-                            "Skype": "sip:",
+            "protocol": {
+                            "email": "mailto:",
+                            "phone": "tel:",
+                            "skype": "sip:",
                         }
             }
          */
@@ -217,17 +217,17 @@
         {
             var colonSpace = Office.Controls.Persona.Strings.Colon + Office.Controls.Persona.Strings.Space;
 
-            this.constantObject.Strings = {};
-            this.constantObject.Strings.Label = {};
-            this.constantObject.Strings.Label.Email = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.Strings.Label.WorkPhone = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.Strings.Label.Mobile = Office.Controls.Persona.Strings.Label_Mobile + colonSpace
-            this.constantObject.Strings.Label.Skype = Office.Controls.Persona.Strings.Label_Skype + colonSpace;
+            this.constantObject.strings = {};
+            this.constantObject.strings.label = {};
+            this.constantObject.strings.label.email = Office.Controls.Persona.Strings.Label_Work + colonSpace;
+            this.constantObject.strings.label.workPhone = Office.Controls.Persona.Strings.Label_Work + colonSpace;
+            this.constantObject.strings.label.mobile = Office.Controls.Persona.Strings.Label_Mobile + colonSpace
+            this.constantObject.strings.label.skype = Office.Controls.Persona.Strings.Label_Skype + colonSpace;
             
-            this.constantObject.Strings.Protocol = {};
-            this.constantObject.Strings.Protocol.Email = Office.Controls.Persona.Strings.Protocol_Mail;
-            this.constantObject.Strings.Protocol.Phone = Office.Controls.Persona.Strings.Protocol_Phone;
-            this.constantObject.Strings.Protocol.Skype = Office.Controls.Persona.Strings.Protocol_Skype;
+            this.constantObject.strings.protocol = {};
+            this.constantObject.strings.protocol.email = Office.Controls.Persona.Strings.Protocol_Mail;
+            this.constantObject.strings.protocol.phone = Office.Controls.Persona.Strings.Protocol_Phone;
+            this.constantObject.strings.protocol.skype = Office.Controls.Persona.Strings.Protocol_Skype;
         },
 
         /**
@@ -300,22 +300,30 @@
     };
 
     Office.Controls.Persona.PersonaHelper = function () { };
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType) {
+    /**
+     * [createPersona description]
+     * @param  {[type]} root         [description]
+     * @param  {[type]} personObject same as peoplepicker's personObject queried from AAD
+     * @param  {[type]} personaType  [description]
+     * @return {[type]}              [description]
+     */
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personObj, personaType) {
         // Make sure the data object is legal.
-        var dataObject = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObject, personaType);
+        var personaObj = Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(personObj);
+        var dataObj = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObj, personaType);
         // Create Persona 
-        return new Office.Controls.Persona(root, personaType, dataObject, true);
+        return new Office.Controls.Persona(root, personaType, dataObj, true);
     };
 
-    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personaObject, eventType) {
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personObject, eventType) {
         var personaCard = null;
         var showNodeQueue = [];
-        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
         if (eventType === "click") {
             if (personaInstance.rootNode !== null) {
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
                     if (personaCard == null) {
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personaObject);
+                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject);
                         showNodeQueue.push(personaCard);
                     } else {
                         personaCard.showNode(personaCard.get_rootNode(), (showNodeQueue.length == 0));
@@ -341,8 +349,8 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personaObject) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
     };
 
     /**
@@ -351,21 +359,21 @@
     Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(oriPersonaObj, personaType) {
         // Get the definition of standard object
         var personaObj = Office.Controls.Persona.PersonaHelper.ensureJsonObjectLegal(Office.Controls.Persona.PersonaHelper.getPersonaObjectDef(), oriPersonaObj);
-        personaObj.ImageUrl = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.ImageUrl, Office.Controls.Persona.PersonaHelper._defaultImage);
+        personaObj.imgSrc = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.imgSrc, Office.Controls.Persona.PersonaHelper._defaultImage);
         
-        personaObj.PrimaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.PrimaryText, personaType, 0);
-        personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, personaType, 2);
-        personaObj.TertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.TertiaryText, personaType, 2);
+        personaObj.primaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.primaryText, personaType, 0);
+        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.secondaryText, personaType, 2);
+        personaObj.tertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.tertiaryText, personaType, 2);
         
-        personaObj.Actions.EmailShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.Actions.Email, personaType, 3);
-        personaObj.Actions.WorkPhoneShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.Actions.WorkPhone, personaType, 3);
-        personaObj.Actions.MobileShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.Actions.Mobile, personaType, 3);
-        personaObj.Actions.SkypeShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.Actions.Skype, personaType, 3);
+        personaObj.actions.emailShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.email, personaType, 3);
+        personaObj.actions.workPhoneShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.workPhone, personaType, 3);
+        personaObj.actions.mobileShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.mobile, personaType, 3);
+        personaObj.actions.skypeShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.skype, personaType, 3);
         return personaObj;
     }
 
     Office.Controls.Persona.PersonaHelper.getPersonaObjectDef = function() {
-        return { "Id": "", "ImageUrl": "", "PrimaryText": "", "SecondaryText": "", "TertiaryText": "", "Actions": { "Email": "", "WorkPhone": "", "Mobile" : "", "Skype" : "" }};
+        return { "id": "", "imgSrc": "", "primaryText": "", "secondaryText": "", "tertiaryText": "", "actions": { "email": "", "workPhone": "", "mobile" : "", "skype" : "" }};
     }
 
     Office.Controls.Persona.PersonaHelper.ensureJsonObjectLegal = function(legalObj, originObj) {
@@ -399,23 +407,23 @@
         var displayName = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.displayName, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, 3);
             
         var personaObj = {};
-        personaObj.Id = aadUserObject.personId;
-        personaObj.ImageUrl = Office.Controls.Persona.PersonaHelper._defaultImage;
-        personaObj.PrimaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
+        personaObj.id = aadUserObject.id;
+        personaObj.imgSrc = (!aadUserObject.imgSrc) ? Office.Controls.Persona.PersonaHelper._defaultImage: aadUserObject.imgSrc;
+        personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
         
         if (aadUserObject.jobTitle !== null) {
-            personaObj.SecondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
+            personaObj.secondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
         } else {
-            personaObj.SecondaryText = aadUserObject.department;   
+            personaObj.secondaryText = aadUserObject.department;   
         }
-        personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
-        personaObj.TertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
 
-        personaObj.Actions = {};
-        personaObj.Actions.Email = aadUserObject.mail;
-        personaObj.Actions.WorkPhone = aadUserObject.workPhone;
-        personaObj.Actions.Mobile = aadUserObject.mobile;
-        personaObj.Actions.Skype = aadUserObject.sipAddress;
+        personaObj.actions = {};
+        personaObj.actions.email = aadUserObject.mail;
+        personaObj.actions.workPhone = aadUserObject.workPhone;
+        personaObj.actions.mobile = aadUserObject.mobile;
+        personaObj.actions.skype = aadUserObject.sipAddress;
         
         return personaObj;
     }
@@ -466,9 +474,7 @@
     // The Persona Type
     Office.Controls.Persona.PersonaType = function() {};
     Office.Controls.Persona.PersonaType.TypeEnum = {
-//        NameOnly: "nameonly",
         NameImage: "nameimage",
-//        DetailCard: "detailcard",
         PersonaCard: "personacard"
     };
 
@@ -531,21 +537,13 @@
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
     Office.Controls.Persona.Templates.DefaultDefinition = {
-//        "nameonly": 
-//        {
-//            value: "<div class=\"ms-Persona ms-Persona--tiny readOnly clickStyle\" AriaTabIndex=\"0\"><div class=\"ms-Persona-primaryText nameOnlyText\"><Label Text=\"${PrimaryText}\">${PrimaryText}</Label></div></div>"
-//        },
         "nameimage": 
         {
-            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" title=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${PrimaryText}\">${PrimaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" title=\"${SecondaryText}\">${SecondaryTextShort}</Label></div></div></div>"
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
         },
-//        "detailcard": 
-//        {
-//            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\">${SecondaryText}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div></div>"
-//        },
         "personacard": 
         {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" title=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" title=\"${PrimaryText}\">${PrimaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${SecondaryText}\">${SecondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${TertiaryText}\">${TertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Email}</span><a href=\"${Strings.Protocol.Email}${Actions.Email}\">${Actions.EmailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.WorkPhone}</span><a href=\"${Strings.Protocol.Phone}${Actions.WorkPhone}\">${Actions.WorkPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Mobile}</span><a href=\"${Strings.Protocol.Phone}${Actions.Mobile}\">${Actions.MobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Skype}</span><a href=\"${Strings.Protocol.Skype}${Actions.Skype}\">${Actions.SkypeShort}</a></div></div></div>"
+            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${strings.label.mobile}</span><a href=\"${strings.protocol.phone}${actions.mobile}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\">${actions.skypeShort}</a></div></div></div>"
         }
     };
 })();
