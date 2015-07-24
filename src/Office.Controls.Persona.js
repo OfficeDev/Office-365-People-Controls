@@ -15,18 +15,18 @@
     /*
     *  The format of personaObject:
     * {
-            "Id": "[guid]",
-            "ImageUrl": "control/images/icon.png",
-            "PrimaryText": 'Cat Miao',
-            "SecondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
-            "TertiaryText": 'BEIJING-Building1-1/XXX', // Office
+            "id": "person id",
+            "imgSrc": "control/images/icon.png",
+            "primaryText": 'Cat Miao',
+            "secondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
+            "tertiaryText": 'BEIJING-Building1-1/XXX', // Office
 
-            "Actions":
+            "actions":
                 {
-                    "Email": "catmiao@companya.com",
-                    "WorkPhone": "+86(10) 12345678", 
-                    "Mobile" : "+86 1861-0000-000",
-                    "Skype" : "catmiao@companya.com",
+                    "email": "catmiao@companya.com",
+                    "workPhone": "+86(10) 12345678", 
+                    "mobile" : "+86 1861-0000-000",
+                    "skype" : "catmiao@companya.com",
                 }
             }
         };
@@ -161,7 +161,7 @@
             // Init constant strings
             this.initiateStringObject();
 
-            var regExp = /\$\{Strings([^\}\{]+)\}/g;
+            var regExp = /\$\{strings([^\}\{]+)\}/g;
             return this.bindData(htmlStr, regExp, this.constantObject);
         },
 
@@ -197,19 +197,19 @@
         },
 
         /**
-         * Strings:
+         * strings:
          * {
-            "Label":{
-                        "Email": "Work: "
-                        "WorkPhone": "Work: ",
-                        "Mobile": "Mobile: ",
-                        "Skype": "Skype: "
+            "label":{
+                        "email": "Work: "
+                        "workPhone": "Work: ",
+                        "mobile": "Mobile: ",
+                        "skype": "Skype: "
                     },
 
-            "Protocol": {
-                            "Email": "mailto:",
-                            "Phone": "tel:",
-                            "Skype": "sip:",
+            "protocol": {
+                            "email": "mailto:",
+                            "phone": "tel:",
+                            "skype": "sip:",
                         }
             }
          */
@@ -217,17 +217,17 @@
         {
             var colonSpace = Office.Controls.Persona.Strings.Colon + Office.Controls.Persona.Strings.Space;
 
-            this.constantObject.Strings = {};
-            this.constantObject.Strings.Label = {};
-            this.constantObject.Strings.Label.Email = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.Strings.Label.WorkPhone = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.Strings.Label.Mobile = Office.Controls.Persona.Strings.Label_Mobile + colonSpace
-            this.constantObject.Strings.Label.Skype = Office.Controls.Persona.Strings.Label_Skype + colonSpace;
+            this.constantObject.strings = {};
+            this.constantObject.strings.label = {};
+            this.constantObject.strings.label.email = Office.Controls.Persona.Strings.Label_Work + colonSpace;
+            this.constantObject.strings.label.workPhone = Office.Controls.Persona.Strings.Label_Work + colonSpace;
+            this.constantObject.strings.label.mobile = Office.Controls.Persona.Strings.Label_Mobile + colonSpace
+            this.constantObject.strings.label.skype = Office.Controls.Persona.Strings.Label_Skype + colonSpace;
             
-            this.constantObject.Strings.Protocol = {};
-            this.constantObject.Strings.Protocol.Email = Office.Controls.Persona.Strings.Protocol_Mail;
-            this.constantObject.Strings.Protocol.Phone = Office.Controls.Persona.Strings.Protocol_Phone;
-            this.constantObject.Strings.Protocol.Skype = Office.Controls.Persona.Strings.Protocol_Skype;
+            this.constantObject.strings.protocol = {};
+            this.constantObject.strings.protocol.email = Office.Controls.Persona.Strings.Protocol_Mail;
+            this.constantObject.strings.protocol.phone = Office.Controls.Persona.Strings.Protocol_Phone;
+            this.constantObject.strings.protocol.skype = Office.Controls.Persona.Strings.Protocol_Skype;
         },
 
         /**
@@ -264,13 +264,6 @@
         },
 
         /**
-         * [removeDetailCard description]
-         * @return {[type]}
-         */
-        removeDetailCard: function () {
-        },
-
-        /**
          * Set the style of ative action button
          * @event {HtmlEvent}
          */
@@ -303,26 +296,34 @@
                     Office.Controls.Utils.removeClass(this.actionDetailNodes[i], changedClassName);
                 } 
             }
-        },
+        }
     };
 
     Office.Controls.Persona.PersonaHelper = function () { };
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personaObject, personaType) {
+    /**
+     * [createPersona description]
+     * @param  {[type]} root         [description]
+     * @param  {[type]} personObject same as peoplepicker's personObject queried from AAD
+     * @param  {[type]} personaType  [description]
+     * @return {[type]}              [description]
+     */
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personObj, personaType) {
         // Make sure the data object is legal.
-        var dataObject = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObject);
+        var personaObj = Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(personObj);
+        var dataObj = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObj, personaType);
         // Create Persona 
-        return new Office.Controls.Persona(root, personaType, dataObject, true);
+        return new Office.Controls.Persona(root, personaType, dataObj, true);
     };
 
-    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personaObject, eventType) {
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personObject, eventType) {
         var personaCard = null;
         var showNodeQueue = [];
-        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
         if (eventType === "click") {
             if (personaInstance.rootNode !== null) {
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
                     if (personaCard == null) {
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personaObject);
+                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject);
                         showNodeQueue.push(personaCard);
                     } else {
                         personaCard.showNode(personaCard.get_rootNode(), (showNodeQueue.length == 0));
@@ -348,35 +349,48 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personaObject) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, personaObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
     };
 
     /**
      * Make sure the data object to be used for creating Persona is legal
      */
-    Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(oriPersonaObj) {
-        if (typeof oriPersonaObj !== 'object' || (Office.Controls.Utils.isNullOrUndefined(oriPersonaObj))) {
-            Office.Controls.Utils.errorConsole('persona object is null.');
+    Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal = function(oriPersonaObj, personaType) {
+        // Get the definition of standard object
+        var personaObj = Office.Controls.Persona.PersonaHelper.ensureJsonObjectLegal(Office.Controls.Persona.PersonaHelper.getPersonaObjectDef(), oriPersonaObj);
+        personaObj.imgSrc = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.imgSrc, Office.Controls.Persona.PersonaHelper._defaultImage);
+        
+        personaObj.primaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.primaryText, personaType, 0);
+        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.secondaryText, personaType, 2);
+        personaObj.tertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.tertiaryText, personaType, 2);
+        
+        personaObj.actions.emailShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.email, personaType, 3);
+        personaObj.actions.workPhoneShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.workPhone, personaType, 3);
+        personaObj.actions.mobileShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.mobile, personaType, 3);
+        personaObj.actions.skypeShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.actions.skype, personaType, 3);
+        return personaObj;
+    }
+
+    Office.Controls.Persona.PersonaHelper.getPersonaObjectDef = function() {
+        return { "id": "", "imgSrc": "", "primaryText": "", "secondaryText": "", "tertiaryText": "", "actions": { "email": "", "workPhone": "", "mobile" : "", "skype" : "" }};
+    }
+
+    Office.Controls.Persona.PersonaHelper.ensureJsonObjectLegal = function(legalObj, originObj) {
+        if (typeof originObj !== 'object') {
+            Office.Controls.Utils.errorConsole('illegal json object');
             return;
         }
-            
-        var personaObj = {};
-        personaObj.Id = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Id);
-        personaObj.ImageUrl = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.ImageUrl, Office.Controls.Persona.PersonaHelper._defaultImage);
-        personaObj.PrimaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.PrimaryText);
-        personaObj.SecondaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.SecondaryText);
-        personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
-        personaObj.TertiaryText = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.TertiaryText);
-        personaObj.TertiaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.TertiaryTextShort, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
 
-        personaObj.Actions = {};
-        personaObj.Actions.Email = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Email);
-        personaObj.Actions.WorkPhone = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.WorkPhone);
-        personaObj.Actions.Mobile = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Mobile);
-        personaObj.Actions.Skype = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(oriPersonaObj.Actions.Skype);
-        
-        return personaObj;
+        var key;
+        for (key in legalObj) {
+            if (typeof legalObj[key] === 'object') {
+                Office.Controls.Persona.PersonaHelper.ensureJsonObjectLegal(legalObj[key], originObj[key]);
+            } else {
+                legalObj[key] = Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty(originObj[key]);
+            }
+        }
+        return legalObj;
     }
 
     /**
@@ -393,23 +407,23 @@
         var displayName = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.displayName, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, 3);
             
         var personaObj = {};
-        personaObj.Id = aadUserObject.personId;
-        personaObj.ImageUrl = Office.Controls.Persona.PersonaHelper._defaultImage;
-        personaObj.PrimaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
+        personaObj.id = aadUserObject.id;
+        personaObj.imgSrc = (!aadUserObject.imgSrc) ? Office.Controls.Persona.PersonaHelper._defaultImage: aadUserObject.imgSrc;
+        personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
         
         if (aadUserObject.jobTitle !== null) {
-            personaObj.SecondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
+            personaObj.secondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
         } else {
-            personaObj.SecondaryText = aadUserObject.department;   
+            personaObj.secondaryText = aadUserObject.department;   
         }
-        personaObj.SecondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
-        personaObj.TertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
 
-        personaObj.Actions = {};
-        personaObj.Actions.Email = aadUserObject.mail;
-        personaObj.Actions.WorkPhone = aadUserObject.workPhone;
-        personaObj.Actions.Mobile = aadUserObject.mobile;
-        personaObj.Actions.Skype = aadUserObject.sipAddress;
+        personaObj.actions = {};
+        personaObj.actions.email = aadUserObject.mail;
+        personaObj.actions.workPhone = aadUserObject.workPhone;
+        personaObj.actions.mobile = aadUserObject.mobile;
+        personaObj.actions.skype = aadUserObject.sipAddress;
         
         return personaObj;
     }
@@ -460,33 +474,23 @@
     // The Persona Type
     Office.Controls.Persona.PersonaType = function() {};
     Office.Controls.Persona.PersonaType.TypeEnum = {
-        NameOnly: "nameonly",
         NameImage: "nameimage",
-        DetailCard: "detailcard",
-        PersonaCard: "personacard",
-    };
-
-    // The Persona Type
-    Office.Controls.Persona.ImageSize = function() {};
-    Office.Controls.Persona.ImageSize.TypeEnum = {
-        s: 0,
-        m: 1,
-        l: 2,
+        PersonaCard: "personacard"
     };
 
     Office.Controls.Persona.StringUtils = function () { };
-    Office.Controls.Persona.StringUtils.getDisplayText = function (displayText, personaType, personaProperty) {
+    Office.Controls.Persona.StringUtils.getDisplayText = function (displayText, personaType, position) {
         if (!displayText) {
             return '';
         }
-        if (!Office.Controls.Persona.StringUtils._propertyDisplayConfiguration || Office.Controls.Persona.StringUtils._currentPersonaType !== personaType) {
-            Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = Office.Controls.Persona.StringUtils._loadLengthConfiguration(personaType);
-            Office.Controls.Persona.StringUtils._currentPersonaType = personaType;
-        }
-        if (Office.Controls.Persona.StringUtils._propertyDisplayConfiguration.length && displayText.length > Office.Controls.Persona.StringUtils._propertyDisplayConfiguration[personaProperty]) {
-            return displayText.substr(0, Office.Controls.Persona.StringUtils._propertyDisplayConfiguration[personaProperty]) + '...';
-        }
-        else {
+        
+        // configurations of inline persona & cersonaCard
+        var displayConfig = ((personaType === Office.Controls.Persona.PersonaType.TypeEnum.NameImage) ? [ 26, 26, 40, 42 ] : [ 18, 30, 36, 32 ]);
+        
+        var len = displayConfig[position];
+        if (displayText.length > len) {
+            return displayText.substr(0, len) + '...';
+        } else {
             return displayText;
         }
     };
@@ -494,29 +498,6 @@
     Office.Controls.Persona.StringUtils.setNullOrUndefinedAsEmpty = function (str, value) {
         var val = ((value === undefined) ? "" : value);
         return Office.Controls.Utils.isNullOrEmptyString(str) ? val : str;
-    };
-
-    Office.Controls.Persona.StringUtils._loadLengthConfiguration = function (personaType) {
-        var returnValue; 
-
-        switch (personaType) {
-            case Office.Controls.Persona.PersonaType.TypeEnum.NameImage:
-                returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 18, 26, 40, 42 ];
-                break;
-            case Office.Controls.Persona.PersonaType.TypeEnum.NameOnly:
-            case Office.Controls.Persona.PersonaType.TypeEnum.DetailCard:
-            case Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard:
-                if (Office.Controls.Utils.isIE() || Office.Controls.Utils.isFirefox()) {
-                    returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
-                }
-                else {
-                    returnValue = Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = [ 30, 0, 40, 42 ];
-                }
-                break;
-            default:
-                returnValue = null;
-        }
-        return returnValue;
     };
 
     Office.Controls.Persona.Strings = function() {
@@ -550,29 +531,19 @@
     Office.Controls.Persona.Strings.Space = ' ';
     Office.Controls.Persona.Strings.SuspensionPoints = '...';
     Office.Controls.Persona.Strings.EmptyDisplayName = 'No Name';
-    Office.Controls.Persona.StringUtils._propertyDisplayConfiguration = null;
-    Office.Controls.Persona.StringUtils._currentPersonaType = 0;
     Office.Controls.Persona.PersonaHelper._localCache = {};
     Office.Controls.Persona.PersonaHelper._defaultImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAORQTFRFsbGxv7+/wcHBu7u72dnZ7u7u/////Pz85ubmy8vLtbW1wsLC5OTk/f3939/ft7e34eHh+vr61NTUs7OzwMDA8/Pz7OzsxMTE9PT0vLy8+/v7+fn5urq6vb298fHxtLS0srKyzc3N9/f32NjYtra209PT7e3t7+/v/v7+yMjI3t7e4+Pj6+vr6urq4uLi19fXx8fH0tLS9fX1ubm59vb2z8/PuLi4+Pj429vbzs7O0NDQ4ODg1dXV2tra1tbWzMzMxcXF6enp0dHR8vLyysrKxsbG3d3d6Ojovr6+5eXl5+fn8PDwYCkYCwAAAAFiS0dEBmFmuH0AAAAJcEhZcwAAdTAAAHUwAd0zcs0AAAKgSURBVGje7ZjdVtpQEIUByxCIIRKtYECgSSVULbWopRDBarVq+/7vU1raBcTMmbEzueha7Ous/XEOZ35zuY022mij/0z5QqGQmfnWqyL8VskqV/Tt7W1YkVN1de0rO5BQzdtV9N97Dc+1r3eIegnS1DhQ8rd9SFezpeJ/2ARM7Y6Cf7cIuCwFgAcmvRH7t3wjIBCHXBXMCoX+rkMA/LcywBFQOpIBeiQgkt1QnwSAKNre0f6ylxoyAMcSwAkDsC8BnDIAgQQQMQCOBNBmAECSUotZA95zAJIrGjD8mxLABwagKAGcMQADCYCTiz5KAIxsCnkRwCP9hyJ/uqKJayb1UJ1zIeDc3FXAjtCfCoWa9ADzzv3CBLgU+8/HphLuf6rgn8uVUf/GJxUA2hwFOu37rzOk3tJQawCZy075p7eFTeO6OmHiECN5455Q63OwtG+PdWbM+qQaXx0uL2oa96IoGsxWE+h1bB1P7H9x3wpHi59bNQwZ7p+q3fZeOtR+Wan3DXQ/YS+vzYlf8mjd9Z7RuUr9ajdcS+ZOzE5Ml7Xkm7xJidn8s7bMP2PZd+OUqGom01onTKlF/VsOAJn7vpZXnmZrFqR/dUf7j9Hc5lu39UIlfz+Jh/g3ZA/g4psDlhrU5EwNxqSILuCA0WqZRUzOU6k/gPEldUdyQM8E4HS7lPqmtMSZW0mZSsWNBsA0OQdye+P6oqLhDz4O2FMBAJ6273QAdRRAzxssTVDANx3AFAVYOgB88OQsPxh6QAHCWvBX6GyuEwbzooMBHpUAaKTdKwEA61zHcuuFsMlnpgV4zDbO8FzxpAXA2i/Wio4jbHy+kFsv5CEAcrXCFdJ8uVr+WFXOqwFOMg5k+J5xIGMbebVAhh8ZBzK2KVQLZKituP4EqRB824c6sq4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTQtMTAtMjlUMjA6MjQ6MTktMDU6MDBCpOLkAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE0LTEwLTI5VDIwOjI0OjE5LTA1OjAwM/laWAAAAABJRU5ErkJggg==";
     Office.Controls.PersonaConstants.SectionTag_Main = "persona-section-tag-main";
     Office.Controls.PersonaConstants.SectionTag_Action = "ms-PersonaCard-action";
     Office.Controls.PersonaConstants.SectionTag_ActionDetail = "ms-PersonaCard-actionDetails";
     Office.Controls.Persona.Templates.DefaultDefinition = {
-        "nameonly": 
-        {
-            value: "<div class=\"ms-Persona ms-Persona--tiny readOnly clickStyle\" AriaTabIndex=\"0\"><div class=\"ms-Persona-primaryText nameOnlyText\"><Label Text=\"${PrimaryText}\">${PrimaryText}</Label></div></div>",
-        },
         "nameimage": 
         {
-            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" Text=\"${PrimaryText}\" Title=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\" Title=\"${SecondaryText}\">${SecondaryText}</Label></div></div></div>",
-        },
-        "detailcard": 
-        {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" Text=\"${SecondaryText}\">${SecondaryText}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div></div>",
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
         },
         "personacard": 
         {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" ImageName=\"${PrimaryText}\" Src=\"${ImageUrl}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" Text=\"${PrimaryText}\">${PrimaryText}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${SecondaryText}\">${SecondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" Text=\"${TertiaryText}\">${TertiaryText}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Email}</span><a href=\"${Strings.Protocol.Email}${Actions.Email}\">${Actions.Email}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.WorkPhone}</span><a href=\"${Strings.Protocol.Phone}${Actions.WorkPhone}\">${Actions.WorkPhone}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Mobile}</span><a href=\"${Strings.Protocol.Phone}${Actions.Mobile}\">${Actions.Mobile}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${Strings.Label.Skype}</span><a href=\"${Strings.Protocol.Skype}${Actions.Skype}\">${Actions.Skype}</a></div></div></div>",
-        },
+            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><image class=\"ms-Persona-image image\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${strings.label.mobile}</span><a href=\"${strings.protocol.phone}${actions.mobile}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\">${actions.skypeShort}</a></div></div></div>"
+        }
     };
 })();

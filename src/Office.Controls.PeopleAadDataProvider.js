@@ -92,7 +92,7 @@
                             person.office = e.physicalDeliveryOfficeName;
                             person.sipAddress = e.userPrincipalName;
                             person.alias = e.mailNickname;
-                            person.personId = e.objectId;
+                            person.id = e.objectId;
                             people.push(person);
                         });
                     if (people.length > self.maxResult) {

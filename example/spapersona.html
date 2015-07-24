@@ -10,7 +10,8 @@
     <script type="text/javascript" src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.js"></script>
     <script type="text/javascript" src="control/office.controls.base.js"></script> 
     <script type="text/javascript" src="control/office.controls.persona.js"></script> 
-    <script type="text/javascript" src="control/office.controls.peopleaaddataprovider.js"></script> 
+    <script type="text/javascript" src="control/office.controls.peopleaaddataprovider.js"></script>
+    <script type="text/javascript" src="personasamplebase.js"></script>
     <script type="text/javascript" src="personaspasample.js"></script> 
 </head>
 <body onload="init();showPersonaCard();showInlinePersona();">
@@ -20,7 +21,7 @@
         <u><a href="/spaindex.html">Go PeoplePicker SPA</a></u>
         <p>
             <u>Integrate with AAD data:</u>
-            &nbsp;&nbsp;&nbsp;&nbsp;<!-- <a id="login_user">Login</a> --><button id="login_user">Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;<button id="login_user">Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="logged_user"></span>
         </p>
         <p>
@@ -30,7 +31,7 @@
             <div id='aadUserRoot' style='max-width:600px;'></div>
         </p>
         <p>
-        	<u>Persona Card:<input type="button" value="Changes in Living" onclick="changesInLiving()"><input type="button" value="Stop" onclick="StopLiving()"></u>
+        	<u>Persona Card:</u>
         	<div id="personaCardRoot"></div>
         </p><br><br><br><br><br><br><br><br>
         <p>
