@@ -1156,7 +1156,7 @@
             if (this.parent.showImage) {
                 for (i = 0; i < autofillElementsLiTags.length; i++) {
                     var li = autofillElementsLiTags[i];
-                    var image = li.querySelector('img');
+                    var image = li.querySelector('.ms-Persona-image');
                     var personId = this.getPersonIdFromListElement(li);
                     (function (self, image, personId) {
                         self.parent.dataProvider.getImageAsync(personId, function (error, imgSrc) {
@@ -1564,9 +1564,17 @@
         itemHtml += '<div class=\"ms-Persona ms-PersonaAdded\">';
         if (showImage) {
             if (isCached && !Office.Controls.Utils.isNullOrUndefined(principal.imgSrc)) {
-                itemHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + principal.imgSrc + '\')\">';
+                if (Office.Controls.Utils.isIE10()) {
+                    itemHtml += '<div class=\"ms-Persona-image\" style=\"display:block;background-image:url(\'' + principal.imgSrc + '\')\"></div>';
+                } else {
+                    itemHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + principal.imgSrc + '\')\">';
+                }
             } else {
-                itemHtml += '<img class=\"ms-Persona-image\">';
+                if (Office.Controls.Utils.isIE10()) {
+                    itemHtml += '<div class=\"ms-Persona-image\" style=\"display:block\"></div>';
+                } else {
+                    itemHtml += '<img class=\"ms-Persona-image\">';
+                }
             }
         } else {
             itemHtml += '<div class=\"ms-Persona-image-placeholder\"></div>';
@@ -1665,9 +1673,17 @@
         recordHtml += '<div class=\"ms-Persona ms-Persona--xs\" >';
         if (showImage) {
             if (Office.Controls.Utils.isNullOrUndefined(record.imgSrc)) {
-                recordHtml += '<img class=\"ms-Persona-image\">';
+                if (Office.Controls.Utils.isIE10()) {
+                    recordHtml += '<div class=\"ms-Persona-image\" style=\"display:block\"></div>';
+                } else {
+                    recordHtml += '<img class=\"ms-Persona-image\">';
+                }
             } else  {
-                recordHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + record.imgSrc + '\')\">';
+                if (Office.Controls.Utils.isIE10()) {
+                    recordHtml += '<div class=\"ms-Persona-image\" style=\"display:block;background-image:url(\'' + record.imgSrc + '\')\"></div>';
+                } else {
+                    recordHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + record.imgSrc + '\')\">';
+                }
             }
         }
         recordHtml += '<div class=\"ms-Persona-details\">';
