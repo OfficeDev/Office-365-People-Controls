@@ -21,7 +21,7 @@
         text: null,
         displayName: null,
         description: null,
-        personId: null,
+        id: null,
         imgSrc: null,
         principalInfo: null
     }
@@ -100,7 +100,7 @@
     Office.Controls.PeoplePicker.copyToRecord = function (record, info) {
         record.displayName = info.displayName;
         record.description = info.description;
-        record.personId = info.personId;
+        record.id = info.id;
         record.imgSrc = info.imgSrc;
         record.principalInfo = info;
     };
@@ -474,7 +474,7 @@
                 var self = this, i;
                 for (i = 0; i < principalsReceived.length; i++) {
                     var principal = principalsReceived[i];
-                    this.currentPrincipalsChoices[principal.personId] = principal;
+                    this.currentPrincipalsChoices[principal.id] = principal;
                 }
                 this.autofill.setServerEntries(principalsReceived);
                 this.hideLoadingIcon();
@@ -911,7 +911,7 @@
             this.principalOptions = {};
             var i;
             for (i = 0; i < options.length; i++) {
-                this.principalOptions[options[i].personId] = options[i];
+                this.principalOptions[options[i].id] = options[i];
             }
             var self = this;
             Office.Controls.Utils.addEventListener(this.Node, 'click', function (e) {
@@ -1098,7 +1098,7 @@
             this.entries = {};
             var length = entries.length, i;
             for (i = 0; i < length; i++) {
-                this.entries[entries[i].personId] = entries[i];
+                this.entries[entries[i].id] = entries[i];
             }
         },
 
@@ -1116,8 +1116,8 @@
                 length = entries.length, i;
                 for (i = 0; i < length; i++) {
                     var currentEntry = entries[i];
-                    if (Office.Controls.Utils.isNullOrUndefined(this.entries[currentEntry.personId])) {
-                        this.entries[entries[i].personId] = entries[i];
+                    if (Office.Controls.Utils.isNullOrUndefined(this.entries[currentEntry.id])) {
+                        this.entries[entries[i].id] = entries[i];
                         newServerEntries.push(currentEntry);
                     }
                 }
@@ -1126,7 +1126,7 @@
                 this.entries = {};
                 var length = entries.length, i;
                 for (i = 0; i < length; i++) {
-                    this.entries[entries[i].personId] = entries[i];
+                    this.entries[entries[i].id] = entries[i];
                 }
                 this.serverEntries = entries;
             }
@@ -1412,7 +1412,7 @@
             alreadyThere = false, i;
             for (i = 0; i < cacheSize; i++) {
                 var cacheEntry = cache[i];
-                if (cacheEntry.personId === entry.personId) {
+                if (cacheEntry.id === entry.id) {
                     cache.splice(i, 1);
                     alreadyThere = true;
                     break;
@@ -1432,7 +1432,7 @@
                 return false;
             }
             key = key.toLowerCase();
-            var userNameKey = candidate.personId;
+            var userNameKey = candidate.id;
             if (Office.Controls.Utils.isNullOrUndefined(userNameKey)) {
                 userNameKey = '';
             }
@@ -1559,7 +1559,7 @@
 
     Office.Controls.peoplePickerTemplates.generateAutofillListItemTemplate = function (principal, isCached, showImage) {
         var titleText = Office.Controls.Utils.htmlEncode((Office.Controls.Utils.isNullOrEmptyString(principal.Email)) ? '' : principal.Email),
-        itemHtml = '<li tabindex=\"0\" class=\"ms-PeoplePicker-result\" data-office-peoplepicker-value=\"' + Office.Controls.Utils.htmlEncode(principal.personId) + '\" title=\"' + titleText + '\">';
+        itemHtml = '<li tabindex=\"0\" class=\"ms-PeoplePicker-result\" data-office-peoplepicker-value=\"' + Office.Controls.Utils.htmlEncode(principal.id) + '\" title=\"' + titleText + '\">';
         itemHtml += '<a onclick=\"return false;\" href=\"#\" tabindex=\"-1\">';
         itemHtml += '<div class=\"ms-Persona ms-PersonaAdded\">';
         if (showImage) {

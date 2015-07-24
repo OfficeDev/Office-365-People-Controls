@@ -379,7 +379,7 @@
         return ret;
     };
     Office.Controls.Utils.isFirefox = function () { return typeof InstallTrigger !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1; /* Firefox 1.0+ */ };
-    Office.Controls.Utils.isIE10 = function () { return Function('/*@cc_on return document.documentMode===10@*/')(); }
+    Office.Controls.Utils.isIE10 = function () { return Function('/*@cc_on return document.documentMode===10@*/')(); } // jshint ignore:line
     Office.Controls.Utils.isFunction = function (functionToCheck) {
         var getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
