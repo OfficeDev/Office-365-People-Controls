@@ -404,7 +404,7 @@
             return;
         }
 
-        var displayName = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.displayName, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, 3);
+        var displayName = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.displayName, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, 0);
             
         var personaObj = {};
         personaObj.id = aadUserObject.id;
@@ -416,8 +416,8 @@
         } else {
             personaObj.secondaryText = aadUserObject.department;   
         }
-        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
-        personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 0);
+        personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
+        personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
 
         personaObj.actions = {};
         personaObj.actions.email = aadUserObject.mail;
@@ -539,7 +539,7 @@
     Office.Controls.Persona.Templates.DefaultDefinition = {
         "nameimage": 
         {
-            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><image class=\"imageOfNameImage\" title=\"${primaryText}\" Src=\"${imgSrc}\"></image></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"clickStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
         },
         "personacard": 
         {
