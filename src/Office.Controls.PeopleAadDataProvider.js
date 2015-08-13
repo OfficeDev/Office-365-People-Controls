@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
 
     "use strict";
 
@@ -48,7 +48,7 @@
                     callback('Error', null);
                     return;
                 }
-                var parsed = self.authContext._extractIdToken(token);
+                var parsed = self.extractIdToken(token);
                 var tenant = '';
 
                 if (parsed) {
@@ -150,6 +150,57 @@
                 };
                 xhr.send('');
             });
+        },
+        
+        extractIdToken: function (encodedIdToken) {
+            // id token will be decoded to get the username
+            var decodedToken = this.decodeJwt(encodedIdToken);
+            if (!decodedToken) {
+                return null;
+            }
+
+            try {
+                var base64IdToken = decodedToken.JWSPayload;
+                var base64Decoded = this.base64DecodeStringUrlSafe(base64IdToken);
+                if (!base64Decoded) {
+                    return null;
+                }
+
+                // ECMA script has JSON built-in support
+                return JSON.parse(base64Decoded);
+            } catch (err) {
+            }
+
+            return null;
+        },
+        
+        decodeJwt: function (jwtToken) {
+            var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
+
+            var matches = idTokenPartsRegex.exec(jwtToken);
+            if (!matches || matches.length < 4) {
+                this._logstatus('The returned id_token is not parseable.');
+                return null;
+            }
+
+            var crackedToken = {
+                header: matches[1],
+                JWSPayload: matches[2],
+                JWSSig: matches[3]
+            };
+
+            return crackedToken;
+        },
+        
+        base64DecodeStringUrlSafe: function (base64IdToken) {
+            // html5 should support atob function for decoding
+            base64IdToken = base64IdToken.replace(/-/g, '+').replace(/_/g, '/');
+            if (window.atob) {
+                return decodeURIComponent(escape(window.atob(base64IdToken))); // jshint ignore:line
+            }
+
+            // TODO add support for this
+            return null;
         }
     };
 })();
