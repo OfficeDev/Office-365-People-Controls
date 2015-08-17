@@ -24,6 +24,7 @@
   height: 50px;
   margin-right: 5px;
   width: 50px;
+  background: center/cover content-box no-repeat;
 }
 .ms-Persona .ms-Persona-image.ms-Persona-image--doughboy {
   background-color: #a6a6a6;
@@ -393,6 +394,7 @@
     color: #fff;
     background: #a6a6a6;
     position: relative;
+    background: center/cover content-box no-repeat;
 }
 
 .ms-Persona-details-nameImage {
