@@ -48,7 +48,7 @@
                     callback('Error', null);
                     return;
                 }
-                var parsed = self.extractIdToken(token);
+                var parsed = self._extractIdToken(token);
                 var tenant = '';
 
                 if (parsed) {
@@ -107,7 +107,7 @@
         getImageAsync: function (personId, callback) {
 
             var self = this;
-            self.authContext.acquireToken(self.aadGraphResourceId, function (error, token) {
+            self.getTokenAsync(self.aadGraphResourceId, function (error, token) {
 
                 // Handle ADAL Errors
                 if (error || !token) {
@@ -115,7 +115,7 @@
                     return;
                 }
 
-                var parsed = self.authContext._extractIdToken(token);
+                var parsed = self._extractIdToken(token);
                 var tenant = '';
 
                 if (parsed) {
@@ -152,16 +152,16 @@
             });
         },
         
-        extractIdToken: function (encodedIdToken) {
+        _extractIdToken: function (encodedIdToken) {
             // id token will be decoded to get the username
-            var decodedToken = this.decodeJwt(encodedIdToken);
+            var decodedToken = this._decodeJwt(encodedIdToken);
             if (!decodedToken) {
                 return null;
             }
 
             try {
                 var base64IdToken = decodedToken.JWSPayload;
-                var base64Decoded = this.base64DecodeStringUrlSafe(base64IdToken);
+                var base64Decoded = this._base64DecodeStringUrlSafe(base64IdToken);
                 if (!base64Decoded) {
                     return null;
                 }
@@ -174,7 +174,7 @@
             return null;
         },
         
-        decodeJwt: function (jwtToken) {
+        _decodeJwt: function (jwtToken) {
             var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
 
             var matches = idTokenPartsRegex.exec(jwtToken);
@@ -192,7 +192,7 @@
             return crackedToken;
         },
         
-        base64DecodeStringUrlSafe: function (base64IdToken) {
+        _base64DecodeStringUrlSafe: function (base64IdToken) {
             // html5 should support atob function for decoding
             base64IdToken = base64IdToken.replace(/-/g, '+').replace(/_/g, '/');
             if (window.atob) {
