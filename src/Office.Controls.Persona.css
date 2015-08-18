@@ -24,6 +24,7 @@
   height: 50px;
   margin-right: 5px;
   width: 50px;
+  background: center/cover content-box no-repeat;
 }
 .ms-Persona .ms-Persona-image.ms-Persona-image--doughboy {
   background-color: #a6a6a6;
@@ -212,50 +213,6 @@
   bottom: -5px;
   left: 15px;
 }
-.ms-PersonaCard-overflow {
-  display: inline-block;
-  cursor: pointer;
-  font-size: 17px;
-  height: 50px;
-  line-height: 32px;
-  padding: 10px;
-  color: #666666;
-  position: relative;
-  box-sizing: border-box;
-  font-size: 14px;
-  font-family: 'Segoe UI Web Semilight', 'Segoe UI Semilight', 'Segoe WP Semilight', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
-  color: #333333;
-  float: right;
-  margin-top: -1px;
-}
-.ms-PersonaCard-overflow:hover {
-  color: #212121;
-}
-.ms-PersonaCard-overflow:active {
-  color: #0078d7;
-}
-.ms-PersonaCard-overflow.is-active {
-  color: #0078d7;
-}
-.ms-PersonaCard-overflow.is-active:after {
-  content: "";
-  width: 10px;
-  height: 10px;
-  border: 1px solid #c8c8c8;
-  background-color: white;
-  box-sizing: border-box;
-  position: absolute;
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
-  border-right: none;
-  border-bottom: none;
-  bottom: -5px;
-  left: 15px;
-}
-.ms-PersonaCard-overflow:hover {
-  color: #0078d7;
-}
 .ms-PersonaCard-actionDetails {
   display: none;
   font-family: 'Segoe UI Web Semilight', 'Segoe UI Semilight', 'Segoe WP Semilight', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
@@ -393,6 +350,7 @@
     color: #fff;
     background: #a6a6a6;
     position: relative;
+    background: center/cover content-box no-repeat;
 }
 
 .ms-Persona-details-nameImage {
