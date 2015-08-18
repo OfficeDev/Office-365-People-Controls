@@ -1156,7 +1156,7 @@
             if (this.parent.showImage) {
                 for (i = 0; i < autofillElementsLiTags.length; i++) {
                     var li = autofillElementsLiTags[i];
-                    var image = li.querySelector('.ms-Persona-image');
+                    var image = li.querySelector('.ms-PeoplePicker-Persona-image');
                     var personId = this.getPersonIdFromListElement(li);
                     (function (self, image, personId) {
                         self.parent.dataProvider.getImageAsync(personId, function (error, imgSrc) {
@@ -1565,15 +1565,15 @@
         if (showImage) {
             if (isCached && !Office.Controls.Utils.isNullOrUndefined(principal.imgSrc)) {
                 if (Office.Controls.Utils.isIE10()) {
-                    itemHtml += '<div class=\"ms-Persona-image\" style=\"display:block;background-image:url(\'' + principal.imgSrc + '\')\"></div>';
+                    itemHtml += '<div class=\"ms-PeoplePicker-Persona-image\" style=\"display:block;background-image:url(\'' + principal.imgSrc + '\')\"></div>';
                 } else {
-                    itemHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + principal.imgSrc + '\')\">';
+                    itemHtml += '<img class=\"ms-PeoplePicker-Persona-image\" style=\"background-image:url(\'' + principal.imgSrc + '\')\">';
                 }
             } else {
                 if (Office.Controls.Utils.isIE10()) {
-                    itemHtml += '<div class=\"ms-Persona-image\" style=\"display:block\"></div>';
+                    itemHtml += '<div class=\"ms-PeoplePicker-Persona-image\" style=\"display:block\"></div>';
                 } else {
-                    itemHtml += '<img class=\"ms-Persona-image\">';
+                    itemHtml += '<img class=\"ms-PeoplePicker-Persona-image\">';
                 }
             }
         } else {
@@ -1674,15 +1674,15 @@
         if (showImage) {
             if (Office.Controls.Utils.isNullOrUndefined(record.imgSrc)) {
                 if (Office.Controls.Utils.isIE10()) {
-                    recordHtml += '<div class=\"ms-Persona-image\" style=\"display:block\"></div>';
+                    recordHtml += '<div class=\"ms-PeoplePicker-Persona-image\" style=\"display:block\"></div>';
                 } else {
-                    recordHtml += '<img class=\"ms-Persona-image\">';
+                    recordHtml += '<img class=\"ms-PeoplePicker-Persona-image\">';
                 }
             } else  {
                 if (Office.Controls.Utils.isIE10()) {
-                    recordHtml += '<div class=\"ms-Persona-image\" style=\"display:block;background-image:url(\'' + record.imgSrc + '\')\"></div>';
+                    recordHtml += '<div class=\"ms-PeoplePicker-Persona-image\" style=\"display:block;background-image:url(\'' + record.imgSrc + '\')\"></div>';
                 } else {
-                    recordHtml += '<img class=\"ms-Persona-image\" style=\"background-image:url(\'' + record.imgSrc + '\')\">';
+                    recordHtml += '<img class=\"ms-PeoplePicker-Persona-image\" style=\"background-image:url(\'' + record.imgSrc + '\')\">';
                 }
             }
         }

@@ -328,7 +328,7 @@
   position: relative;
   border-spacing: 0;
 }
-.ms-Persona .ms-Persona-image {
+.ms-Persona .ms-PeoplePicker-Persona-image {
   display: table-cell;
   height: 50px;
   padding-right: 10px;
