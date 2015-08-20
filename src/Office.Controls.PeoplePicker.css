@@ -416,7 +416,7 @@
 .ms-Persona.ms-Persona--tiny.ms-Persona--readonly .ms-Persona-primaryText:after {
   content: ';';
 }
-.ms-Persona.ms-Persona--xs .ms-Persona-image {
+.ms-Persona.ms-Persona--xs .ms-PeoplePicker-Persona-image {
   height: 30px;
   width: 30px;
 }
