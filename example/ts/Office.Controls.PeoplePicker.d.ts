@@ -1,10 +1,11 @@
 ﻿declare module Office {
     export module Controls {
         export class PeoplePickerRecord {
-            DisplayName: string;
-            Description: string;
-            PersonId: string;
-            ImgSrc: string;
+            displayName: string;
+            description: string;
+            id: string;
+            imgSrc?: string;
+            mail?: string;
             constructor();
         }
         export class ValidationError {
