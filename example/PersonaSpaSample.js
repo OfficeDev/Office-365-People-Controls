@@ -8,7 +8,7 @@ function init() {
 
     window.config = {
         instance: 'https://login.microsoftonline.com/',
-        clientId: '***REMOVED***',
+        clientId: '<ClientId>', // Get this from Azure app you created
         postLogoutRedirectUri: window.location,
         cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
     };

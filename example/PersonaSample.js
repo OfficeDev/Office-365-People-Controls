@@ -1,7 +1,7 @@
 /**
  * Integrate with AAD Data
  */
-var serverHost = '***REMOVED***';
+var serverHost = '<WebsiteName>.azurewebsites.net'; // Get this from Azure website you created
 function init() {
     var pageUri = window.location.href;
     pageUri = pageUri.split("?")[0];

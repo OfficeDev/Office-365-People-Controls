@@ -4,7 +4,6 @@
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     <title>PeoplePicker Playground</title>
     <script type="text/javascript" src="DetectVersion.js"></script>
-    <script type="text/javascript" src="DataProvider.js"></script>
     <script type="text/javascript" src="AadDataProvider.js"></script>
 </head>
 <body>
@@ -20,7 +19,8 @@
                     <h3>Before you start</h3>
                     <ul>
                         <li>Recommend to use <b style="color: #0000EE">InPrivate</b> browsing.</li>
-                        <li>Need <b style="color: #0000EE">login</b> first otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
+                        <li>Need <b style="color: #0000EE">login</b> first with <b>Your Org Account</b> otherwise will get 'Sorry, we're having trouble reaching the server.' error.</li>
+                        <ol>Recommend to use your primary org account (like alias@companya.com) to have a try.You need to do consent at first login.</ol>
                     </ul>
                 </div>
 
@@ -30,7 +30,6 @@
                     <p>
                         <u>AAD data:</u>
                         &nbsp;&nbsp;&nbsp;&nbsp;<a id="login_user">Login</a>&nbsp;&nbsp;
-                        <img src="images/questionmark.png" onclick="showLoginInstructions();" style="cursor:pointer;position:relative;top:5px" /></span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <span id="logged_user"></span>
                     </p>
                     <p>
@@ -46,10 +45,6 @@
                     <p>
                         <u>Show Image</u>
                         <div id='ppc_showImage' style='max-width:600px;'></div>
-                    </p>
-                    <p>
-                        <u>Mock data:</u>&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' onclick='checkbox_ignore_click(this);' />Ignore keyword and show all results.
-                        <div id='ppc_mock' style='max-width:600px;'></div>
                     </p>
                 </div>
 
@@ -67,19 +62,8 @@
                     <p><b><a id="login_admin">As an Admin to Consent on Behalf of All Users</a></b>&nbsp;&nbsp;&nbsp;&nbsp;Please do it with an <b style="color: #0000EE">Admin</b> account first.</p>
                 </div>
             </td>
-            <td style="text-align:right; vertical-align:top">
-                <div id="login_instructions" style="background-color:yellow;display:none">
-                    You need login first to access data with people control.
-                    <h3>Your Org Account</h3>
-                    <p>Recommend to use your primary org account (like alias@microsoft.com) to have a try.</p>
-                    <p>You need to do consent at first login.</p>
-                    <h3>Other Tenant/Account</h3>
-                    <p>We've also prepared demo tenants in <a href="devex.html">Instructions</a> page which has done consent for you.</p>
-                </div>
-            </td>
         </tr>
     </table>
-
 
     <script type="text/javascript">
         if (typeof Office !== "undefined" && typeof Office.Controls.PeoplePicker !== "undefined") {
@@ -96,7 +80,7 @@
         function creatPeoplePickers() {
             var serverHost = 'localhost:3000';
             if (window.location.href.indexOf('azurewebsites.net') != -1) {
-                serverHost = '***REMOVED***';
+                serverHost = '<WebsiteName>.azurewebsites.net'; // Get this from Azure website you created
             }
             var pageUri = window.location.href;
             pageUri = pageUri.split("?")[0];
@@ -108,11 +92,6 @@
             if (typeof (userId) !== 'undefined') {
                 document.getElementById('logged_user').textContent = "logged as " + userId;
             }
-
-            // Mock data
-            var mockDataProvider = new MockDataProvider();
-            var pp = new Office.Controls.PeoplePicker(document.getElementById('ppc_mock'), mockDataProvider, {});
-            document.getElementById('ppc_mock').datapp = pp;
 
             // AAD data
             var aadDataProvider = new AadDataProvider();
@@ -156,14 +135,6 @@
 
             document.getElementById('login_instructions').style.display = 'none';
 
-        }
-        function checkbox_ignore_click(cb) {
-            mockDataProvider.ignoreKeyword = cb.checked;
-        }
-
-        function showLoginInstructions() {
-            var display = document.getElementById('login_instructions').style.display;
-            document.getElementById('login_instructions').style.display = (display === 'none') ? 'inherit' : 'none';
         }
 
         function getQueryString() {

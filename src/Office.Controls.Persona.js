@@ -16,17 +16,17 @@
     *  The format of personaObject:
     * {
             "id": "person id",
-            "imgSrc": "control/images/icon.png",
-            "primaryText": 'Cat Miao',
-            "secondaryText": 'Engineer 2, DepartmentA China', // JobTitle, Department
+            "imgSrc": "",
+            "primaryText": 'Jerry Anderson',
+            "secondaryText": 'Software Engineer, DepartmentA China', // JobTitle, Department
             "tertiaryText": 'BEIJING-Building1-1/XXX', // Office
 
             "actions":
                 {
-                    "email": "catmiao@companya.com",
+                    "email": "jerrya@companya.com",
                     "workPhone": "+86(10) 12345678", 
                     "mobile" : "+86 1861-0000-000",
-                    "skype" : "catmiao@companya.com",
+                    "skype" : "jerrya@companya.com",
                 }
             }
         };

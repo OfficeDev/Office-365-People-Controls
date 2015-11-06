@@ -102,14 +102,14 @@ function getAadDataDataForPersona(keyword, rootNode) {
 function sampleAADObj() {
     var persona = {
 		"id": "f567d710-09d8-458d-902f-d786234ed0d6",
-		"displayName": 'Cat MiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiaoMiao',
-	    "department": 'DepartmentA ChinaChinaChinaChinaChinaChinaChinaChina',
-	    "jobTitle": 'Software Engineer 2',
-	    "office": 'BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345BEIJING-Building1-1/12345', // Office
-		"mail": "catmiao@companyacompanyacompanyacompanyacompanyacompanyacompanyacompanyacompanya.com",
-		"workPhone": "+86(10) 123456781234567812345678123456781234567812345678", 
-		"mobile" : "+86 1861-0000-000000000000000000000000",
-		"sipAddress" : "catmiao@companyacompanyacompanyacompanyacompanyacompanyacompanyacompanyacompanya.com"
+		"displayName": 'Jerry Anderson',
+	    "department": 'DepartmentA China',
+	    "jobTitle": 'Software Engineer',
+	    "office": 'BEIJING-Building1-1/12345', // Office
+		"mail": "jerryanderson@companya.com",
+		"workPhone": "+86(10) 12345678", 
+		"mobile" : "+86 1861-0000-000",
+		"sipAddress" : "jerryanderson@companya.com"
 	};
 	return persona;
 }
