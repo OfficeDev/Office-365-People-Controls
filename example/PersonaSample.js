@@ -29,19 +29,19 @@ function getAadDataDataForPersona(keyword, rootNode) {
     // AAD data
     var aadDataProvider = new AadDataProvider(null);
     aadDataProvider.serverHost = serverHost;
-	aadDataProvider.searchPeopleAsync(keyword, function (error, personObjs) {
-	    if (personObjs !== null) {
-	    	loadingImg.style.display = "none";
-	    	personObjs.forEach(function (person) {
-        		aadDataProvider.getImageAsync(person.id, function (error, imgSrc) {
+    aadDataProvider.searchPeopleAsync(keyword, function (error, personObjs) {
+        if (personObjs !== null) {
+            loadingStr.style.display = "none";
+            personObjs.forEach(function (person) {
+                aadDataProvider.getImageAsync(person.id, function (error, imgSrc) {
                     if (imgSrc != null) {
                         person.imgSrc = imgSrc; // Get user imamge
                     }
                     // Create persona of nameimage
                     Office.Controls.Persona.PersonaHelper.createInlinePersona(rootNode, person);
                 });
-	        });
-	    } else {
-	    }
-	});
+            });
+        } else {
+        }
+    });
 }
