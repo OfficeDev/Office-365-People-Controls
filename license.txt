@@ -1,6 +1,6 @@
 ------------------------------------------ START OF LICENSE -----------------------------------------
 
-O365 People Control
+Office 365 People Controls
 
 Copyright (c) Microsoft Corporation
 
