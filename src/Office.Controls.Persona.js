@@ -359,6 +359,50 @@
         return personaInstance;
     };
 
+    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType) {
+        var personaCard = null;
+        var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.ImageOnly);
+        if (eventType === "click") {
+            if (personaInstance.rootNode !== null) {
+                Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
+                    if (personaCard == null) {
+                        // Close other instances on the same page and keep one instance show at most
+                        if (showNodeQueue.length !== 0) {
+                            var nodeItem = showNodeQueue.pop();
+                            nodeItem.showNode(nodeItem.get_rootNode(), false);
+                        }
+                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject);
+                        showNodeQueue.push(personaCard);
+                    } else {
+                        if (showNodeQueue.length !== 0) {
+                            var nodeItem = showNodeQueue.pop();
+                            nodeItem.showNode(nodeItem.get_rootNode(), false);
+                            if (nodeItem !== personaCard) {
+                                personaCard.showNode(personaCard.get_rootNode(), true);
+                                showNodeQueue.push(personaCard);
+                            }
+                        } else {
+                            personaCard.showNode(personaCard.get_rootNode(), true);
+                            showNodeQueue.push(personaCard);
+                        }
+                    }
+                });
+                Office.Controls.Utils.addEventListener(document, eventType, function () {
+                    if (event.target.tagName.toLowerCase() === "html") {
+                        if (showNodeQueue.length !== 0) {
+                            var nodeItem = showNodeQueue.pop();
+                            nodeItem.showNode(nodeItem.get_rootNode(), false);
+                        }
+                    }
+                });
+            } else {
+                Office.Controls.Utils.errorConsole('Wrong template path');
+            }
+        }
+        return personaInstance;
+    };
+
     Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject) {
         return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
     };
@@ -485,7 +529,8 @@
     Office.Controls.Persona.PersonaType = function() {};
     Office.Controls.Persona.PersonaType.TypeEnum = {
         NameImage: "nameimage",
-        PersonaCard: "personacard"
+        PersonaCard: "personacard",
+        ImageOnly: "imageonly"
     };
 
     Office.Controls.Persona.StringUtils = function () { };
@@ -555,6 +600,10 @@
         "personacard": 
         {
             value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><img class=\"ms-Persona-image image\" style=\"background-image:url(${imgSrc})\"></img><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${strings.label.mobile}</span><a href=\"${strings.protocol.phone}${actions.mobile}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\">${actions.skypeShort}</a></div></div></div>"
-        }
+        },
+        "imageonly":
+        {
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><img class=\"imageOfNameImage\" style=\"background-image:url(${imgSrc})\"></img></div></div>"
+        },
     };
 })();
