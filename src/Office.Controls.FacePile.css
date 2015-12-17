@@ -1,0 +1,90 @@
+﻿/* Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE in the project root for license information. */
+/**
+ * Office UI Fabric 1.1.3
+ * The front-end framework for building experiences for Office 365.
+ **/
+/* '' */
+.ms-Icon--personAdd:before {
+  content: '\e086';
+}
+
+.ms-FacePile {
+  position: relative;
+  height: 32px;
+  width: auto;
+}
+
+.ms-FacePile-itemBtn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  position: relative;
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+  text-align: center;
+  float: left;
+  padding: 0;
+  margin-right: 4px;
+  outline: transparent;
+  border-radius: 50%;
+  vertical-align: top;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--addPerson {
+  background-color: #0078d7;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--addPerson:hover {
+  background-color: #005a9e;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--addPerson:active {
+  background-color: #004578;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--addPerson:disabled {
+  background-color: #c8c8c8;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--overflow {
+  background-color: #eaeaea;
+  color: #666666;
+  display: none;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--overflow.is-active {
+  display: block;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--overflow:hover {
+  color: #212121;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--overflow:active {
+  color: #0078d7;
+}
+
+.ms-FacePile-itemBtn.ms-FacePile-itemBtn--overflow:disabled {
+  color: #c8c8c8;
+}
+
+.ms-FacePile-addPersonIcon {
+  position: relative;
+  top: -1px;
+}
+
+.ms-FacePile-overflowText {
+  font-size: 14px;
+}
+
+.ms-FacePile-panel.ms-FacePile-panel--overflow .ms-PeoplePicker-selectedHeader {
+  font-family: 'Segoe UI Light WestEuropean', 'Segoe UI Light', 'Segoe WP Light', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
+  font-size: 21px;
+  color: #333333;
+  line-height: 82px;
+  height: 74px;
+  text-transform: none;
+}

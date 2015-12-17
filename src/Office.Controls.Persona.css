@@ -61,15 +61,15 @@
   display: none;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-image {
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-image.ms-Persona-image--doughboy {
   font-size: 45px;
   line-height: 100px;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-details {
-  padding-left: 0px;
+  padding-left: 20px;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-primaryText {
   font-size: 21px;
@@ -378,4 +378,30 @@
 .nameOnlyText:hover {
     color: #2a6496 !important;
     text-decoration: underline;
+}
+
+/* new style for the face pile in fabric*/
+.ms-Persona.ms-Persona--xs .ms-Persona-imageArea,
+.ms-Persona.ms-Persona--xs .ms-Persona-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.ms-PersonaCard-persona .ms-Persona .ms-Persona-imageArea {
+  width: 80px;
+  height: 80px;
+  margin: 12px 0 12px 20px;
+}
+
+.ms-Persona-imageArea {
+  position: relative;
+  display: block;
+  background-color: transparent;
+  overflow: hidden;
+  text-align: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #a6a6a6;
 }
