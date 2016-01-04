@@ -64,10 +64,7 @@
         renderControl: function () {
             this.root.innerHTML = Office.Controls.FacePile.Templates.generateFacePileContainerTemplate(this.personObjectArray, this.numberOfDisplayedPerson, this.isShowEdit);
            
-            var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');
-
-            var nameImage = null;
-            var showNodeQueue = [];
+            var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');           
 
             for (var i = 0; i < membersElements.length; i++) {
                 var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click");
@@ -89,6 +86,22 @@
                 }
             }
         },
+
+        updateContent: function(personObjectArray)
+        {
+            if (typeof personObjectArray !== 'object') {
+                Office.Controls.Utils.errorConsole('Invalid parameters type');
+                return;
+            }
+           
+            this.personObjectArray = personObjectArray;
+            this.numberOfAllPerson = personObjectArray.length;
+
+            this.root.innerHTML = "";
+
+            this.renderControl();
+        },
+
         addPerson: function (personaObject) {
 
             /** Increment person count by one */

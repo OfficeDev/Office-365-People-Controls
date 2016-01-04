@@ -464,12 +464,18 @@
         personaObj.id = aadUserObject.id;
         personaObj.imgSrc = (!aadUserObject.imgSrc) ? Office.Controls.Persona.PersonaHelper._defaultImage: aadUserObject.imgSrc;
         personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
-        
+        personaObj.secondaryText = "";
+
         if (aadUserObject.jobTitle !== null) {
-            personaObj.secondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
-        } else {
-            personaObj.secondaryText = aadUserObject.department;   
+            personaObj.secondaryText = aadUserObject.jobTitle;
+            if (aadUserObject.department !== null && aadUserObject.department !== "")
+            {
+               personaObj.secondaryText += Office.Controls.Persona.Strings.Comma + aadUserObject.department;
+            }
+        } else if (aadUserObject.department !== null) {
+            personaObj.secondaryText = aadUserObject.department;
         }
+
         personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
         personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
 
@@ -523,6 +529,14 @@
 
         var cacheIndex = cacheId.toLowerCase();
         Office.Controls.Persona.PersonaHelper._localCache[cacheIndex] = object;
+    };
+
+    Office.Controls.Persona.PersonaHelper.hideOpenedPersonaCard = function () {
+        var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
+        if (showNodeQueue.length !== 0) {
+            var nodeItem = showNodeQueue.pop();
+            nodeItem.showNode(nodeItem.get_rootNode(), false);
+        }
     };
 
     // The Persona Type

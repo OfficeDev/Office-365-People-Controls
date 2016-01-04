@@ -74,6 +74,10 @@
                 if (!Office.Controls.Utils.isNullOrUndefined(options.onBlur)) {
                     this.onBlur = options.onBlur;
                 }
+                if (!Office.Controls.Utils.isNullOrUndefined(options.hideResultRecord)) {
+                    this.hideResultRecord = (String(options.hideResultRecord) === "true");
+                }
+
                 this.onError = options.onError;
 
                 if (!Office.Controls.Utils.isNullOrUndefined(options.resourceStrings)) {
@@ -160,6 +164,7 @@
         hasMultipleMatchValidationError: false,
         hasNoMatchValidationError: false,
         autofill: null,
+        hideResultRecord: false,
 
         reset: function () {
             var record;
@@ -880,8 +885,17 @@
             Office.Controls.Utils.addEventListener(removeButtonElement, 'keydown', function (e) {
                 return self.onRecordRemovalKeyDown(e);
             });
+            
             this.parent.resolvedListRoot.appendChild(recordElement);
-            this.parent.defaultText.className = 'office-hide';
+
+            if (this.parent.hideResultRecord) {
+                recordElement.className = 'office-hide';
+            }
+            else
+            {
+                this.parent.defaultText.className = 'office-hide';
+            }
+            
             this.Node = recordElement;
         },
 
