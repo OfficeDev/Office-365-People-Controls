@@ -204,8 +204,7 @@
   position: relative;
 }
 .ms-PeoplePicker .ms-PeoplePicker-searchMore:hover {
-  background-color: #eaeaea;
-  cursor: pointer;
+  cursor: default;
 }
 .ms-PeoplePicker .ms-PeoplePicker-searchMore:active {
   background-color: #a1caee;
