@@ -31,7 +31,7 @@
             }
         };
     */
-    Office.Controls.FacePile = function (root, personObjectArray, isShowEdit, numberOfDisplayedPerson, addPersonEventHandler, overflowEventHandler) {
+    Office.Controls.FacePile = function (root, personObjectArray, isShowEdit, numberOfDisplayedPerson, editPersonEventHandler, overflowEventHandler, res) {
         if (typeof root !== 'object' || typeof personObjectArray !== 'object') {
             Office.Controls.Utils.errorConsole('Invalid parameters type');
             return;
@@ -44,11 +44,14 @@
         if (numberOfDisplayedPerson !== null)
         { this.numberOfDisplayedPerson = numberOfDisplayedPerson; }
 
-        if (addPersonEventHandler !== null)
-        { this.addPersonEventHandler = addPersonEventHandler; }
+        if (editPersonEventHandler !== null)
+        { this.editPersonEventHandler = editPersonEventHandler; }
 
         if (overflowEventHandler !== null)
-        { this.overflowEventHandler = overflowEventHandler; }        
+        { this.overflowEventHandler = overflowEventHandler; }
+
+        if (res !== null)
+        { this.resourceStrings = res; }
         
         this.renderControl();
     };
@@ -58,8 +61,9 @@
         numberOfDisplayedPerson: 5,
         numberOfAllPerson: 0,
         isShowEdit: false,
-        addPersonEventHandler: null,
+        editPersonEventHandler: null,
         overflowEventHandler: null,
+        resourceStrings:null,
 
         renderControl: function () {
             this.root.innerHTML = Office.Controls.FacePile.Templates.generateFacePileContainerTemplate(this.personObjectArray, this.numberOfDisplayedPerson, this.isShowEdit);
@@ -67,14 +71,14 @@
             var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');           
 
             for (var i = 0; i < membersElements.length; i++) {
-                var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click");
+                var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click", this.resourceStrings);
             }
 
-            if (this.addPersonEventHandler !== null) {
+            if (this.editPersonEventHandler !== null) {
                 var addPersonElements = this.root.querySelector('button.js-addPerson');
                 if (addPersonElements !== null) {
                     var self = this;
-                    Office.Controls.Utils.addEventListener(addPersonElements, 'click', this.addPersonEventHandler);
+                    Office.Controls.Utils.addEventListener(addPersonElements, 'click', this.editPersonEventHandler);
                 }
             }
 
@@ -120,7 +124,7 @@
                 node.title = personaObject.displayName;
                 node.className = "ms-FacePile-itemBtn ms-FacePile-itemBtn--member";
 
-                Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(node, personaObject, "click");
+                Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(node, personaObject, "click", this.resourceStrings);
 
                 var memberListElements = this.root.querySelector('div.ms-FacePile-members');
 
