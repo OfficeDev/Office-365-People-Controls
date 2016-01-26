@@ -31,7 +31,7 @@
             }
         };
     */
-    Office.Controls.Persona = function (root, personaType, personaObject, isHidden) {
+    Office.Controls.Persona = function (root, personaType, personaObject, isHidden, res) {
         if (typeof root !== 'object' || typeof personaType !== 'string' || typeof personaObject !== 'object') {
                 Office.Controls.Utils.errorConsole('Invalid parameters type');
                 return;
@@ -41,6 +41,11 @@
         this.templateID = personaType.toString();
         this.personaObject = personaObject;
         this.isHidden = isHidden;
+        
+        if (!Office.Controls.Utils.isNullOrUndefined(res)) {
+            Office.Controls.Persona.PersonaHelper._resourceStrings = res;
+        } 
+        
         // Load template & bind data
         this.loadDefaultTemplate(this.templateID);
     };
@@ -97,10 +102,12 @@
 
                 // Get cached view
                 var cachedViewWithConstants = Office.Controls.Persona.PersonaHelper.getLocalCache(this.templateID);
+                // Replace the constant strings 
+                // that can't use cache in the case of creating multiple ones
+                cachedViewWithConstants = this.replaceConstantStrings(templatedContent);
+                
                 if (cachedViewWithConstants === null)
                 {
-                    // Replace the constant strings
-                    cachedViewWithConstants = this.replaceConstantStrings(templatedContent);
                     // Save view to local cache
                     Office.Controls.Persona.PersonaHelper.setLocalCache(this.templateID, cachedViewWithConstants);
                 }
@@ -213,21 +220,22 @@
                         }
             }
          */
-        initiateStringObject : function()
-        {
-            var colonSpace = Office.Controls.Persona.Strings.Colon + Office.Controls.Persona.Strings.Space;
-
+        initiateStringObject : function() {
             this.constantObject.strings = {};
             this.constantObject.strings.label = {};
-            this.constantObject.strings.label.email = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.strings.label.workPhone = Office.Controls.Persona.Strings.Label_Work + colonSpace;
-            this.constantObject.strings.label.mobile = Office.Controls.Persona.Strings.Label_Mobile + colonSpace
-            this.constantObject.strings.label.skype = Office.Controls.Persona.Strings.Label_Skype + colonSpace;
+            this.constantObject.strings.label.email = this.getResourceString("Email");
+            this.constantObject.strings.label.workPhone = this.getResourceString("WorkPhone");
+            this.constantObject.strings.label.mobile = this.getResourceString("Mobile");
+            this.constantObject.strings.label.skype = this.getResourceString("Skype");
             
             this.constantObject.strings.protocol = {};
             this.constantObject.strings.protocol.email = Office.Controls.Persona.Strings.Protocol_Mail;
             this.constantObject.strings.protocol.phone = Office.Controls.Persona.Strings.Protocol_Phone;
             this.constantObject.strings.protocol.skype = Office.Controls.Persona.Strings.Protocol_Skype;
+        },
+        
+        getResourceString : function(resName, res) {
+            return Office.Controls.Persona.PersonaHelper.getResourceString(resName, res);
         },
 
         /**
@@ -307,18 +315,18 @@
      * @param  {[type]} personaType  [description]
      * @return {[type]}              [description]
      */
-    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personObj, personaType) {
+    Office.Controls.Persona.PersonaHelper.createPersona = function (root, personObj, personaType, res) {
         // Make sure the data object is legal.
-        var personaObj = Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(personObj);
+        var personaObj = Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(personObj, res);
         var dataObj = Office.Controls.Persona.PersonaHelper.ensurePersonaObjectLegal(personaObj, personaType);
         // Create Persona 
-        return new Office.Controls.Persona(root, personaType, dataObj, true);
+        return new Office.Controls.Persona(root, personaType, dataObj, true, res);
     };
 
-    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personObject, eventType) {
+    Office.Controls.Persona.PersonaHelper.createInlinePersona = function (root, personObject, eventType, res) {
         var personaCard = null;
         var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
-        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage);
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.NameImage, res);
         if (eventType === "click") {
             if (personaInstance.rootNode !== null) {
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
@@ -328,7 +336,7 @@
                             var nodeItem = showNodeQueue.pop();
                             nodeItem.showNode(nodeItem.get_rootNode(), false);
                         }
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject);
+                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject, res);
                         showNodeQueue.push(personaCard);
                     } else {
                         if (showNodeQueue.length !== 0) {
@@ -359,10 +367,10 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType) {
+    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res) {
         var personaCard = null;
         var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
-        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.ImageOnly);
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.ImageOnly, res);
         if (eventType === "click") {
             if (personaInstance.rootNode !== null) {
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
@@ -372,7 +380,7 @@
                             var nodeItem = showNodeQueue.pop();
                             nodeItem.showNode(nodeItem.get_rootNode(), false);
                         }
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject);
+                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject, res);
                         showNodeQueue.push(personaCard);
                     } else {
                         if (showNodeQueue.length !== 0) {
@@ -403,8 +411,8 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject) {
-        return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard);
+    Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject, res) {
+        return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, res);
     };
 
     /**
@@ -452,7 +460,7 @@
      * @aadUserObject {JSON Object}
      * @return {JSON personaObject}
      */
-    Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject = function(aadUserObject) {
+    Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject = function(aadUserObject, res) {
         if (typeof aadUserObject !== 'object' || (Office.Controls.Utils.isNullOrUndefined(aadUserObject))) {
             Office.Controls.Utils.errorConsole('AAD user data is null.');
             return;
@@ -463,7 +471,7 @@
         var personaObj = {};
         personaObj.id = aadUserObject.id;
         personaObj.imgSrc = (!aadUserObject.imgSrc) ? Office.Controls.Persona.PersonaHelper._defaultImage: aadUserObject.imgSrc;
-        personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.Strings.EmptyDisplayName : displayName;
+        personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.PersonaHelper.getResourceString("NoName", res) : displayName;
         personaObj.secondaryText = "";
 
         if (aadUserObject.jobTitle !== null) {
@@ -488,7 +496,7 @@
         return personaObj;
     }
 
-    Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects = function(aadUsers) {
+    Office.Controls.Persona.PersonaHelper.convertAadUsersToPersonaObjects = function(aadUsers, res) {
         if (typeof aadUsers !== 'object' || (Office.Controls.Utils.isNullOrUndefined(aadUsers))) {
             Office.Controls.Utils.errorConsole('AAD user collection is null.');
             return;
@@ -496,7 +504,7 @@
 
         var personaObjects = [];
         aadUsers.forEach(function (aadUser) {
-            personaObjects.push(Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(aadUser));
+            personaObjects.push(Office.Controls.Persona.PersonaHelper.convertAadUserToPersonaObject(aadUser, res));
         });
         return personaObjects;
     }
@@ -530,7 +538,19 @@
         var cacheIndex = cacheId.toLowerCase();
         Office.Controls.Persona.PersonaHelper._localCache[cacheIndex] = object;
     };
-
+    
+    Office.Controls.Persona.PersonaHelper.getResourceString = function (resName, res) {
+        if (!Office.Controls.Utils.isNullOrUndefined(res)) {
+            Office.Controls.Persona.PersonaHelper._resourceStrings = res;
+        }
+        
+        // Check if the resource strings exsit
+        if (Office.Controls.Persona.PersonaHelper._resourceStrings.hasOwnProperty(resName)) {
+            return Office.Controls.Persona.PersonaHelper._resourceStrings[resName];    
+        }
+        return Office.Controls.Utils.getStringFromResource('Persona', resName);
+    };
+    
     Office.Controls.Persona.PersonaHelper.hideOpenedPersonaCard = function () {
         var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
         if (showNodeQueue.length !== 0) {
@@ -575,7 +595,7 @@
     Office.Controls.Persona.Templates = function() {
     }
 
-    Office.Controls.PersonaResources = function () {
+    Office.Controls.PersonaResourcesDefaults = function () {
     };
 
     Office.Controls.PersonaConstants = function () {
@@ -585,21 +605,20 @@
     if (Office.Controls.Persona.registerClass) { Office.Controls.Persona.registerClass('Office.Controls.Persona'); }
     if (Office.Controls.Persona.Strings.registerClass) { Office.Controls.Persona.Strings.registerClass('Office.Controls.Persona.Strings'); }
     if (Office.Controls.PersonaConstants.registerClass) { Office.Controls.PersonaConstants.registerClass('Office.Controls.PersonaConstants'); }
-    if (Office.Controls.PersonaResources.registerClass) { Office.Controls.PersonaResources.registerClass('Office.Controls.PersonaResources'); }
+    if (Office.Controls.PersonaResourcesDefaults.registerClass) { Office.Controls.PersonaResourcesDefaults.registerClass('Office.Controls.PersonaResourcesDefaults'); }
     if (Office.Controls.Persona.PersonaHelper.registerClass) { Office.Controls.Persona.PersonaHelper.registerClass('Office.Controls.Persona.PersonaHelper'); }
     if (Office.Controls.Persona.StringUtils.registerClass) { Office.Controls.Persona.StringUtils.registerClass('Office.Controls.Persona.StringUtils'); }
-    Office.Controls.PersonaResources.PersonaName = 'Persona';
-    Office.Controls.Persona.Strings.Label_Skype = 'Skype';
-    Office.Controls.Persona.Strings.Label_Work = 'Work';
-    Office.Controls.Persona.Strings.Label_Mobile = 'Mobile';
+    Office.Controls.PersonaResourcesDefaults.Email = 'Work: ';
+    Office.Controls.PersonaResourcesDefaults.WorkPhone = 'Work: ';
+    Office.Controls.PersonaResourcesDefaults.Mobile = 'Mobile: ';
+    Office.Controls.PersonaResourcesDefaults.Skype = 'Skype: ';
+    Office.Controls.PersonaResourcesDefaults.NoName = 'No Name';
     Office.Controls.Persona.Strings.Protocol_Mail = 'mailto:';
     Office.Controls.Persona.Strings.Protocol_Phone = 'tel:';
     Office.Controls.Persona.Strings.Protocol_Skype = 'sip:';
-    Office.Controls.Persona.Strings.Colon = ':';
     Office.Controls.Persona.Strings.Comma = ',';
-    Office.Controls.Persona.Strings.Space = ' ';
     Office.Controls.Persona.Strings.SuspensionPoints = '...';
-    Office.Controls.Persona.Strings.EmptyDisplayName = 'No Name';
+    Office.Controls.Persona.PersonaHelper._resourceStrings = {};
     Office.Controls.Persona.PersonaHelper._localCache = {};
     Office.Controls.Persona.PersonaHelper._showNodeQueue = [];
     Office.Controls.Persona.PersonaHelper._defaultImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAORQTFRFsbGxv7+/wcHBu7u72dnZ7u7u/////Pz85ubmy8vLtbW1wsLC5OTk/f3939/ft7e34eHh+vr61NTUs7OzwMDA8/Pz7OzsxMTE9PT0vLy8+/v7+fn5urq6vb298fHxtLS0srKyzc3N9/f32NjYtra209PT7e3t7+/v/v7+yMjI3t7e4+Pj6+vr6urq4uLi19fXx8fH0tLS9fX1ubm59vb2z8/PuLi4+Pj429vbzs7O0NDQ4ODg1dXV2tra1tbWzMzMxcXF6enp0dHR8vLyysrKxsbG3d3d6Ojovr6+5eXl5+fn8PDwYCkYCwAAAAFiS0dEBmFmuH0AAAAJcEhZcwAAdTAAAHUwAd0zcs0AAAKgSURBVGje7ZjdVtpQEIUByxCIIRKtYECgSSVULbWopRDBarVq+/7vU1raBcTMmbEzueha7Ous/XEOZ35zuY022mij/0z5QqGQmfnWqyL8VskqV/Tt7W1YkVN1de0rO5BQzdtV9N97Dc+1r3eIegnS1DhQ8rd9SFezpeJ/2ARM7Y6Cf7cIuCwFgAcmvRH7t3wjIBCHXBXMCoX+rkMA/LcywBFQOpIBeiQgkt1QnwSAKNre0f6ylxoyAMcSwAkDsC8BnDIAgQQQMQCOBNBmAECSUotZA95zAJIrGjD8mxLABwagKAGcMQADCYCTiz5KAIxsCnkRwCP9hyJ/uqKJayb1UJ1zIeDc3FXAjtCfCoWa9ADzzv3CBLgU+8/HphLuf6rgn8uVUf/GJxUA2hwFOu37rzOk3tJQawCZy075p7eFTeO6OmHiECN5455Q63OwtG+PdWbM+qQaXx0uL2oa96IoGsxWE+h1bB1P7H9x3wpHi59bNQwZ7p+q3fZeOtR+Wan3DXQ/YS+vzYlf8mjd9Z7RuUr9ajdcS+ZOzE5Ml7Xkm7xJidn8s7bMP2PZd+OUqGom01onTKlF/VsOAJn7vpZXnmZrFqR/dUf7j9Hc5lu39UIlfz+Jh/g3ZA/g4psDlhrU5EwNxqSILuCA0WqZRUzOU6k/gPEldUdyQM8E4HS7lPqmtMSZW0mZSsWNBsA0OQdye+P6oqLhDz4O2FMBAJ6273QAdRRAzxssTVDANx3AFAVYOgB88OQsPxh6QAHCWvBX6GyuEwbzooMBHpUAaKTdKwEA61zHcuuFsMlnpgV4zDbO8FzxpAXA2i/Wio4jbHy+kFsv5CEAcrXCFdJ8uVr+WFXOqwFOMg5k+J5xIGMbebVAhh8ZBzK2KVQLZKituP4EqRB824c6sq4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTQtMTAtMjlUMjA6MjQ6MTktMDU6MDBCpOLkAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE0LTEwLTI5VDIwOjI0OjE5LTA1OjAwM/laWAAAAABJRU5ErkJggg==";
