@@ -5,6 +5,9 @@ var ips, ipc;
 function showPersonaCard () {	
     var pcRoot = document.getElementById('personaCardRoot');
     ipc = Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot, dataProvider);
+ 
+    var pcRoot2 = document.getElementById('personaCardRoot2');
+    Office.Controls.Persona.PersonaHelper.createPersonaCard(pcRoot2, sampleAADObj2, res);
 }
 
 function showInlinePersona () {
@@ -112,4 +115,24 @@ function sampleAADObj() {
         "sipAddress" : "jerryanderson@companya.com"
     };
     return persona;
+}
+
+var sampleAADObj2 = {
+    "id": "f567d710-09d8-458d-902f-d786234ed0d6",
+    "displayName": '',
+    "department": 'DepartmentA China',
+    "jobTitle": 'Software Engineer',
+    "office": 'BEIJING-Building1-1/12345', // Office
+    "mail": "jerryanderson@companya.com",
+    "workPhone": "+86(10) 12345678", 
+    "mobile" : "+86 1861-0000-000",
+    "sipAddress" : "jerryanderson@companya.com"
+};
+
+var res = {
+    "Email": "工作邮件：",
+    "NoName": '木有名字',
+    "WorkPhone": '单位电话：',
+    "Mobile": '手机号码：',
+    "Skype": 'IM工具：'
 }
