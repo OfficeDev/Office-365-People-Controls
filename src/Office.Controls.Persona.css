@@ -220,6 +220,7 @@
   font-size: 14px;
   color: #666666;
   padding: 9px 20px 9px 20px;
+  width: 100% !important;
 }
 .ms-PersonaCard-actionDetails.is-active {
   display: block;

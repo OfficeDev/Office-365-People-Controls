@@ -367,7 +367,7 @@
         return personaInstance;
     };
 
-    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res) {
+    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res, dataLoader) {
         var personaCard = null;
         var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
         var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.ImageOnly, res);
@@ -380,8 +380,18 @@
                             var nodeItem = showNodeQueue.pop();
                             nodeItem.showNode(nodeItem.get_rootNode(), false);
                         }
-                        personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject, res);
-                        showNodeQueue.push(personaCard);
+                        // If the data loader function defined, need to load the full data before rendering
+                        if (dataLoader != null) {
+                            dataLoader(personObject, function (personObjectFull) {
+                                personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObjectFull, res);
+                                showNodeQueue.push(personaCard);
+                            });
+                        }
+                        else {
+                            personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject, res);
+                            showNodeQueue.push(personaCard);
+                        }
+                        
                     } else {
                         if (showNodeQueue.length !== 0) {
                             var nodeItem = showNodeQueue.pop();

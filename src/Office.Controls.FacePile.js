@@ -31,7 +31,7 @@
             }
         };
     */
-    Office.Controls.FacePile = function (root, personObjectArray, isShowEdit, numberOfDisplayedPerson, editPersonEventHandler, overflowEventHandler, res) {
+    Office.Controls.FacePile = function (root, personObjectArray, isShowEdit, numberOfDisplayedPerson, editPersonEventHandler, overflowEventHandler, fullDataLoader, res) {
         if (typeof root !== 'object' || typeof personObjectArray !== 'object') {
             Office.Controls.Utils.errorConsole('Invalid parameters type');
             return;
@@ -50,6 +50,9 @@
         if (overflowEventHandler !== null)
         { this.overflowEventHandler = overflowEventHandler; }
 
+        if (fullDataLoader !== null)
+        { this.fullDataLoader = fullDataLoader; }
+
         if (res !== null)
         { this.resourceStrings = res; }
         
@@ -63,6 +66,7 @@
         isShowEdit: false,
         editPersonEventHandler: null,
         overflowEventHandler: null,
+        fullDataLoader: null,
         resourceStrings:null,
 
         renderControl: function () {
@@ -71,7 +75,7 @@
             var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');           
 
             for (var i = 0; i < membersElements.length; i++) {
-                var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click", this.resourceStrings);
+                var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click", this.resourceStrings, this.fullDataLoader);
             }
 
             if (this.editPersonEventHandler !== null) {
@@ -124,7 +128,7 @@
                 node.title = personaObject.displayName;
                 node.className = "ms-FacePile-itemBtn ms-FacePile-itemBtn--member";
 
-                Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(node, personaObject, "click", this.resourceStrings);
+                Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(node, personaObject, "click", this.resourceStrings, this.fullDataLoader);
 
                 var memberListElements = this.root.querySelector('div.ms-FacePile-members');
 
