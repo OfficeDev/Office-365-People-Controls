@@ -626,7 +626,7 @@
     Office.Controls.Persona.Strings.Protocol_Mail = 'mailto:';
     Office.Controls.Persona.Strings.Protocol_Phone = 'tel:';
     Office.Controls.Persona.Strings.Protocol_Skype = 'sip:';
-    Office.Controls.Persona.Strings.Comma = ',';
+    Office.Controls.Persona.Strings.Comma = ', ';
     Office.Controls.Persona.Strings.SuspensionPoints = '...';
     Office.Controls.Persona.PersonaHelper._resourceStrings = {};
     Office.Controls.Persona.PersonaHelper._localCache = {};
