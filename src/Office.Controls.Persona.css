@@ -166,17 +166,6 @@
   box-sizing: border-box;
 }
 
-.ms-Icon {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  display: inline-block;
-  font-family: 'Office365Icons';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  speak: none;
-}
-
 .ms-Icon--mail:before {
   content: '\e009';
 }
