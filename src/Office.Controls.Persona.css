@@ -69,7 +69,7 @@
   line-height: 100px;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-details {
-  padding-left: 20px;
+  padding-left: 12px;
 }
 .ms-Persona.ms-Persona--xl .ms-Persona-primaryText {
   font-size: 21px;
@@ -381,7 +381,7 @@
 .ms-PersonaCard-persona .ms-Persona .ms-Persona-imageArea {
   width: 80px;
   height: 80px;
-  margin: 12px 0 12px 20px;
+  margin: 12px 0 12px 12px;
 }
 
 .ms-Persona-imageArea {

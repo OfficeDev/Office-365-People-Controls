@@ -373,7 +373,9 @@
                 keyEvent.preventDefault();
                 keyEvent.stopPropagation();
                 this.cancelLastRequest();
-                this.attemptResolveInput();
+                if (!this.hideResultRecord) {
+                    this.attemptResolveInput();
+                }
                 Office.Controls.Utils.cancelEvent(e);
                 return false;
             } else if ((keyEvent.keyCode === 86 && keyEvent.ctrlKey) || (keyEvent.keyCode === 186)) {
@@ -381,7 +383,9 @@
                 this.cancelLastRequest();
                 window.setTimeout(function () {
                     self.textInput.value = Office.Controls.PeoplePicker.parseUserPaste(self.textInput.value);
-                    self.attemptResolveInput();
+                    if (!self.hideResultRecord) {
+                        self.attemptResolveInput();
+                    }
                 }, 0);
                 return true;
             } else if (keyEvent.keyCode === 13 && keyEvent.shiftKey) { // 'shift + enter'

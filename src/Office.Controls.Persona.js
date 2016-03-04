@@ -484,13 +484,13 @@
         personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.PersonaHelper.getResourceString("NoName", res) : displayName;
         personaObj.secondaryText = "";
 
-        if (aadUserObject.jobTitle !== null) {
+        if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.jobTitle)) {
             personaObj.secondaryText = aadUserObject.jobTitle;
-            if (aadUserObject.department !== null && aadUserObject.department !== "")
+            if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.department))
             {
                personaObj.secondaryText += Office.Controls.Persona.Strings.Comma + aadUserObject.department;
             }
-        } else if (aadUserObject.department !== null) {
+        } else if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.department)) {
             personaObj.secondaryText = aadUserObject.department;
         }
 
@@ -584,7 +584,7 @@
         }
         
         // configurations of inline persona & cersonaCard
-        var displayConfig = ((personaType === Office.Controls.Persona.PersonaType.TypeEnum.NameImage) ? [ 26, 26, 40, 42 ] : [ 18, 30, 36, 32 ]);
+        var displayConfig = ((personaType === Office.Controls.Persona.PersonaType.TypeEnum.NameImage) ? [ 26, 26, 36, 42 ] : [ 18, 30, 32, 32 ]);
         
         var len = displayConfig[position];
         if (displayText.length > len) {

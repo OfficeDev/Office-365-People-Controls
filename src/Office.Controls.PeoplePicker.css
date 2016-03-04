@@ -86,7 +86,7 @@
   margin-bottom: -1px;
   max-width: 600px;
   min-width: 300px;
-  width: 95%;
+  width: 100%;
   position: absolute;
   z-index: 305;
 }
@@ -368,7 +368,7 @@
 .ms-Persona .ms-Persona-primaryText {
   color: #333333;
   font-family: 'Segoe UI Web Regular', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
-  font-size: 17px;
+  font-size: 14px;
   margin-top: -3px;
   white-space: nowrap;
 }
