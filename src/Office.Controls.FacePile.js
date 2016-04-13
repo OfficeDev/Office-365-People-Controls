@@ -168,7 +168,7 @@
 
         html += '<div class=\"ms-FacePile-members\">';
         for (var i = 0; i < (maxCount > personaObjectArray.length ? personaObjectArray.length : maxCount) ; i++) {
-            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\">';
+            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"'+'tabindex=\"0\"'+ 'aria-label=\"'+ personaObjectArray[i].displayName +'\">';
             html += '</div>';
         }
 
