@@ -54,7 +54,10 @@
         { this.fullDataLoader = fullDataLoader; }
 
         if (res !== null)
-        { this.resourceStrings = res; }
+        {
+            this.resourceStrings = res;           
+            Office.Controls.FacePile.FacePileHelper._resourceStrings = res;
+        }
         
         this.renderControl();
     };
@@ -155,13 +158,30 @@
         },
     };
 
+    Office.Controls.FacePile.FacePileHelper = function () { };
+
+    Office.Controls.FacePile.FacePileHelper.getResourceString = function (resName, res) {
+        if (!Office.Controls.Utils.isNullOrUndefined(res)) {
+            Office.Controls.FacePile.FacePileHelper._resourceStrings = res;
+        }
+
+        // Check if the resource strings exsit
+        if (Office.Controls.FacePile.FacePileHelper._resourceStrings.hasOwnProperty(resName)) {
+            return Office.Controls.FacePile.FacePileHelper._resourceStrings[resName];
+        }
+        return Office.Controls.Utils.getStringFromResource('FacePile', resName);
+    };
+
     Office.Controls.FacePile.Templates = function () {
-    }
+    };
 
     Office.Controls.FacePile.Templates.generateFacePileContainerTemplate = function (personaObjectArray, maxCount, showEdit) {
+        var addButtonTooltipString = Office.Controls.FacePile.FacePileHelper.getResourceString("EditButton");
+        var overflowButtonTooltipString = Office.Controls.FacePile.FacePileHelper.getResourceString("OverflowButton");
+
         var html = '<div class=\"ms-FacePile\">';
         if (showEdit) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\" aria-lable=\"' + addButtonTooltipString  +'\">';
             html += '<i class=\"ms-FacePile-addPersonIcon ms-Icon ms-Icon--personAdd\"></i>';
             html += '</button>';
         }
@@ -175,10 +195,10 @@
         html += '</div>';
 
         if (personaObjectArray.length > maxCount) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\" aria-lable=\"' + overflowButtonTooltipString + '\">';
         }
         else {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\" aria-lable=\"' + overflowButtonTooltipString + '\">';
         }
 
         var numberOfRemain = personaObjectArray.length - maxCount;
@@ -190,7 +210,14 @@
         return html;
     };
 
-    if (Office.Controls.FacePile.registerClass) { Office.Controls.FacePile.registerClass('Office.Controls.FacePile'); }
-    if (Office.Controls.FacePile.Templates.registerClass) { Office.Controls.FacePile.Templates.registerClass('Office.Controls.FacePile.Templates'); }   
+    Office.Controls.FacePileResourcesDefaults = function () {
+    };
 
+    if (Office.Controls.FacePile.registerClass) { Office.Controls.FacePile.registerClass('Office.Controls.FacePile'); }
+    if (Office.Controls.FacePile.FacePileHelper.registerClass) { Office.Controls.FacePile.FacePileHelper.registerClass('Office.Controls.FacePile.FacePileHelper'); }
+    if (Office.Controls.FacePile.Templates.registerClass) { Office.Controls.FacePile.Templates.registerClass('Office.Controls.FacePile.Templates'); }
+    if (Office.Controls.FacePileResourcesDefaults.registerClass) { Office.Controls.FacePileResourcesDefaults.registerClass('Office.Controls.FacePileResourcesDefaults'); }
+    Office.Controls.FacePile.FacePileHelper._resourceStrings = {};
+    Office.Controls.FacePileResourcesDefaults.EditButton = 'Add or remove people';
+    Office.Controls.FacePileResourcesDefaults.OverflowButton = 'See all';
 })();
