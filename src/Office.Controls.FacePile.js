@@ -72,7 +72,7 @@
         renderControl: function () {
             this.root.innerHTML = Office.Controls.FacePile.Templates.generateFacePileContainerTemplate(this.personObjectArray, this.numberOfDisplayedPerson, this.isShowEdit);
            
-            var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');           
+            var membersElements = this.root.querySelectorAll('div.ms-FacePile-itemBtn--member');          
 
             for (var i = 0; i < membersElements.length; i++) {
                 var ips = Office.Controls.Persona.PersonaHelper.createImageOnlyPersona(membersElements[i], this.personObjectArray[i], "click", this.resourceStrings, this.fullDataLoader);
@@ -168,7 +168,7 @@
 
         html += '<div class=\"ms-FacePile-members\">';
         for (var i = 0; i < (maxCount > personaObjectArray.length ? personaObjectArray.length : maxCount) ; i++) {
-            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"'+'tabindex=\"0\"'+ 'aria-label=\"'+ personaObjectArray[i].displayName +'\">';
+            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"'+ 'aria-label=\"'+ personaObjectArray[i].displayName + '\">';
             html += '</div>';
         }
 
