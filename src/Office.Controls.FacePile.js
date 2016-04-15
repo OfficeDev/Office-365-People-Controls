@@ -181,24 +181,24 @@
 
         var html = '<div class=\"ms-FacePile\">';
         if (showEdit) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\" aria-lable=\"' + addButtonTooltipString  +'\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\" aria-label=\"' + addButtonTooltipString  +'\">';
             html += '<i class=\"ms-FacePile-addPersonIcon ms-Icon ms-Icon--personAdd\"></i>';
             html += '</button>';
         }
 
         html += '<div class=\"ms-FacePile-members\">';
         for (var i = 0; i < (maxCount > personaObjectArray.length ? personaObjectArray.length : maxCount) ; i++) {
-            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"'+ 'aria-label=\"'+ personaObjectArray[i].displayName + '\">';
+            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"' + '\">';
             html += '</div>';
         }
 
         html += '</div>';
 
         if (personaObjectArray.length > maxCount) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\" aria-lable=\"' + overflowButtonTooltipString + '\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\" aria-label=\"' + overflowButtonTooltipString + '\">';
         }
         else {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\" aria-lable=\"' + overflowButtonTooltipString + '\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\" aria-label=\"' + overflowButtonTooltipString + '\">';
         }
 
         var numberOfRemain = personaObjectArray.length - maxCount;
