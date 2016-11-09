@@ -227,6 +227,12 @@
             this.constantObject.strings.label.workPhone = this.getResourceString("WorkPhone");
             this.constantObject.strings.label.mobile = this.getResourceString("Mobile");
             this.constantObject.strings.label.skype = this.getResourceString("Skype");
+            this.constantObject.strings.label.phone = this.getResourceString("Phone");
+            
+            this.constantObject.strings.label.emailAriaLabel = this.getResourceString("Email").replace(":","");
+            this.constantObject.strings.label.workPhoneAriaLabel = this.getResourceString("WorkPhone").replace(":","");
+            this.constantObject.strings.label.mobileAriaLabel = this.getResourceString("Mobile").replace(":","");
+            this.constantObject.strings.label.skypeAriaLabel = this.getResourceString("Skype").replace(":","");
             
             this.constantObject.strings.protocol = {};
             this.constantObject.strings.protocol.email = Office.Controls.Persona.Strings.Protocol_Mail;
@@ -366,6 +372,87 @@
         } 
         return personaInstance;
     };
+    
+    Office.Controls.Persona.PersonaHelper.closePersonaCard = function (showNodeQueue) {
+         if (showNodeQueue.length !== 0) {
+              var nodeItem = showNodeQueue.pop();
+              nodeItem.showNode(nodeItem.get_rootNode(), false);
+            }
+    };
+    
+     Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard = function (showNodeQueue, personObject, personaCard, dataLoader, res, root) {
+         if (personaCard == null) {
+             // Close other instances on the same page and keep one instance show at most
+              if (showNodeQueue.length !== 0) {
+                  var nodeItem = showNodeQueue.pop();
+                  nodeItem.showNode(nodeItem.get_rootNode(), false);
+                }
+                // If the data loader function defined, need to load the full data before rendering
+                 if (dataLoader != null) {
+                     dataLoader(personObject, function (personObjectFull) {
+                         personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObjectFull, res);
+                         showNodeQueue.push(personaCard);
+                         });
+                        }
+                        else {
+                            personaCard = Office.Controls.Persona.PersonaHelper.createPersonaCard(root, personObject, res);
+                            showNodeQueue.push(personaCard);
+                        }
+                        
+                    } else {
+                        if (showNodeQueue.length !== 0) {
+                            var nodeItem = showNodeQueue.pop();
+                            nodeItem.showNode(nodeItem.get_rootNode(), false);
+                            if (nodeItem !== personaCard) {
+                                personaCard.showNode(personaCard.get_rootNode(), true);
+                                showNodeQueue.push(personaCard);
+                            }
+                        } else {
+                            personaCard.showNode(personaCard.get_rootNode(), true);
+                            showNodeQueue.push(personaCard);
+                        }
+                    }
+    };
+    
+    Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res, dataLoader) {
+        var personaCard = null;
+        var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
+        var personaInstance = Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.ImageOnly, res);
+        if (eventType === "click") {
+            if (personaInstance.rootNode !== null) {
+                personaInstance.rootNode.setAttribute("tabindex","0");
+                personaInstance.rootNode.setAttribute("role","button");
+                personaInstance.rootNode.setAttribute("aria-label",personObject.displayName);
+                
+                Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
+                   Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
+                });
+                
+                  Office.Controls.Utils.addEventListener(personaInstance.rootNode, "keydown", function (e) {
+                      if(e.key == "Esc" || e.key == "Enter")
+                      {
+                         e.preventDefault();
+                         Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
+                      }                
+                });
+                
+                Office.Controls.Utils.addEventListener(document, eventType, function () {
+                    if (event.target.tagName.toLowerCase() === "html") {
+                       Office.Controls.Persona.PersonaHelper.closePersonaCard(showNodeQueue);
+                    }
+                });
+                
+                  Office.Controls.Utils.addEventListener(document, "keydown", function (e) {
+                       if(e.key == "Esc"){
+                         Office.Controls.Persona.PersonaHelper.closePersonaCard(showNodeQueue);
+                    }
+                });
+            } else {
+                Office.Controls.Utils.errorConsole('Wrong template path');
+            }
+        }
+        return personaInstance;
+    };
 
     Office.Controls.Persona.PersonaHelper.createPersonaCard = function (root, personObject, res) {
         return Office.Controls.Persona.PersonaHelper.createPersona(root, personObject, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, res);
@@ -428,12 +515,18 @@
         personaObj.id = aadUserObject.id;
         personaObj.imgSrc = (!aadUserObject.imgSrc) ? Office.Controls.Persona.PersonaHelper._defaultImage: aadUserObject.imgSrc;
         personaObj.primaryText = (displayName === "") ? Office.Controls.Persona.PersonaHelper.getResourceString("NoName", res) : displayName;
-        
-        if (aadUserObject.jobTitle !== null) {
-            personaObj.secondaryText = aadUserObject.jobTitle  + Office.Controls.Persona.Strings.Comma + aadUserObject.department;
-        } else {
-            personaObj.secondaryText = aadUserObject.department;   
+        personaObj.secondaryText = "";
+
+        if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.jobTitle)) {
+            personaObj.secondaryText = aadUserObject.jobTitle;
+            if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.department))
+            {
+               personaObj.secondaryText += Office.Controls.Persona.Strings.Comma + aadUserObject.department;
+            }
+        } else if (!Office.Controls.Utils.isNullOrEmptyString(aadUserObject.department)) {
+            personaObj.secondaryText = aadUserObject.department;
         }
+
         personaObj.secondaryTextShort = Office.Controls.Persona.StringUtils.getDisplayText(personaObj.SecondaryText, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
         personaObj.tertiaryText = Office.Controls.Persona.StringUtils.getDisplayText(aadUserObject.office, Office.Controls.Persona.PersonaType.TypeEnum.PersonaCard, 2);
 
@@ -500,12 +593,21 @@
         }
         return Office.Controls.Utils.getStringFromResource('Persona', resName);
     };
+    
+    Office.Controls.Persona.PersonaHelper.hideOpenedPersonaCard = function () {
+        var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
+        if (showNodeQueue.length !== 0) {
+            var nodeItem = showNodeQueue.pop();
+            nodeItem.showNode(nodeItem.get_rootNode(), false);
+        }
+    };
 
     // The Persona Type
     Office.Controls.Persona.PersonaType = function() {};
     Office.Controls.Persona.PersonaType.TypeEnum = {
         NameImage: "nameimage",
-        PersonaCard: "personacard"
+        PersonaCard: "personacard",
+        ImageOnly: "imageonly"
     };
 
     Office.Controls.Persona.StringUtils = function () { };
@@ -515,7 +617,7 @@
         }
         
         // configurations of inline persona & cersonaCard
-        var displayConfig = ((personaType === Office.Controls.Persona.PersonaType.TypeEnum.NameImage) ? [ 26, 26, 40, 42 ] : [ 18, 30, 36, 32 ]);
+        var displayConfig = ((personaType === Office.Controls.Persona.PersonaType.TypeEnum.NameImage) ? [ 26, 26, 36, 42 ] : [ 18, 30, 32, 32 ]);
         
         var len = displayConfig[position];
         if (displayText.length > len) {
@@ -553,11 +655,12 @@
     Office.Controls.PersonaResourcesDefaults.WorkPhone = 'Work: ';
     Office.Controls.PersonaResourcesDefaults.Mobile = 'Mobile: ';
     Office.Controls.PersonaResourcesDefaults.Skype = 'Skype: ';
+    Office.Controls.PersonaResourcesDefaults.Phone = 'Phone';
     Office.Controls.PersonaResourcesDefaults.NoName = 'No Name';
     Office.Controls.Persona.Strings.Protocol_Mail = 'mailto:';
     Office.Controls.Persona.Strings.Protocol_Phone = 'tel:';
     Office.Controls.Persona.Strings.Protocol_Skype = 'sip:';
-    Office.Controls.Persona.Strings.Comma = ',';
+    Office.Controls.Persona.Strings.Comma = ', ';
     Office.Controls.Persona.Strings.SuspensionPoints = '...';
     Office.Controls.Persona.PersonaHelper._resourceStrings = {};
     Office.Controls.Persona.PersonaHelper._localCache = {};
@@ -573,7 +676,11 @@
         },
         "personacard": 
         {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\"><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><img class=\"ms-Persona-image image\" style=\"background-image:url(${imgSrc})\"></img><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><Label class=\"defaultStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText\"><Label class=\"defaultStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\">${strings.label.mobile}</span><a href=\"${strings.protocol.phone}${actions.mobile}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\">${actions.skypeShort}</a></div></div></div>"
-        }
+            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\" role=\"dialog\" tabindex=\"0\" aria-labelledby=\"primaryTextId\" aria-describedby=\"secondaryTextId\" ><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><div class=\"ms-Persona-imageArea\"><img class=\"ms-Persona-image image\" style=\"background-image:url(${imgSrc})\"></img></div><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\" tabindex=\"0\" ><h4 class=\"defaultStyle\" id=\"primaryTextId\" title=\"${primaryText}\">${primaryTextShort}</h4></div><div class=\"ms-Persona-secondaryText\" tabindex=\"0\"><span class=\"defaultStyle\" id=\"secondaryTextId\" title=\"${secondaryText}\">${secondaryTextShort}</span></div><div class=\"ms-Persona-tertiaryText\" tabindex=\"0\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.emailAriaLabel}\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.phone}\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.skypeAriaLabel}\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\" aria-label=\"${strings.label.email}${actions.emailShort}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\" aria-label=\"${strings.label.workPhone}${actions.workPhoneShort}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\" >${strings.label.mobile} </span><a href=\"${strings.protocol.phone}${actions.mobile}\" aria-label=\"${strings.label.mobile}${actions.mobileShort}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\" aria-label=\"${strings.label.skype}${actions.skypeShort}\">${actions.skypeShort}</a></div></div></div>"
+        },
+        "imageonly":
+        {
+            value: "<div class=\"ms-Persona ms-Persona--xs\"><div class=\"ms-Persona-imageArea\"><img class=\"ms-Persona-image\" src=\"${imgSrc}\"></img></div></div>"
+        },
     };
 })();

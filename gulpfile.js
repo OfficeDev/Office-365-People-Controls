@@ -8,6 +8,7 @@
 gulp.task('minifycss', ['concatcss'], function () {
     return ['src/Office.Controls.PeoplePicker.css',
             'src/Office.Controls.Persona.css',
+            'src/Office.Controls.FacePile.css',
             'dist/Office.Controls.People.css'
            ].forEach(
                 function (file) {
@@ -23,6 +24,7 @@ gulp.task('minifyjs', ['concatjs'], function () {
             'src/Office.Controls.PeopleAadDataProvider.js',
             'src/Office.Controls.PeoplePicker.js',
             'src/Office.Controls.Persona.js',
+            'src/Office.Controls.FacePile.js',
             'dist/Office.Controls.People.js'
            ].forEach(
                 function (file) {
@@ -37,7 +39,8 @@ gulp.task('runjshint', function () {
     return ['src/Office.Controls.Base.js',
             'src/Office.Controls.PeopleAadDataProvider.js',
             'src/Office.Controls.PeoplePicker.js',
-            'src/Office.Controls.Persona.js'
+            'src/Office.Controls.Persona.js',
+            'src/Office.Controls.FacePile.js'
            ].forEach(
                 function (file) {
                     gulp.src(file)
