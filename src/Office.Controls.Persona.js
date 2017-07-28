@@ -49,7 +49,7 @@
         // Load template & bind data
         this.loadDefaultTemplate(this.templateID);
     };
-
+	
     Office.Controls.Persona.prototype = {
         onError: null,
         rootNode: null,
@@ -58,6 +58,8 @@
         actionDetailNodes: null,
         constantObject: {}, 
         oriID: "",
+		keydownEnter: false,
+		keydownShift: false,        
 
         get_rootNode: function() {
             return this.rootNode;
@@ -138,7 +140,51 @@
                             if (self.actionNodes[i] !== null) {
                                 node = self.actionNodes[i];
                                 Office.Controls.Utils.addEventListener(node, 'click', function (e) {
-                                    self.setActiveStyle(event);
+                                    self.setActiveStyle(e);
+                                });
+
+                            Office.Controls.Utils.addEventListener(node, 'keydown', function(e) {
+                                if(!self.keydownEnter && e.key == "Enter") {
+                                    self.setActiveStyle(e);
+                                    self.keydownEnter = true;
+                                    return;
+                                }
+
+                                if(e.key == "Shift") {
+                                    self.keydownShift = true;
+                                    return;
+                                }
+
+                                if (e.key == "Tab") {
+                                    var nextFocusNode = null;
+                                    if(self.keydownShift) { // shift+tab
+                                        if(e.target.previousElementSibling == null) { // on first element -> move to last one
+                                            var actionNodesCollection=e.target.parentElement.querySelectorAll("." + Office.Controls.PersonaConstants.SectionTag_Action);
+                                            if( actionNodesCollection ) {
+                                                nextFocusNode = actionNodesCollection[actionNodesCollection.length - 1];
+                                            }
+                                        }	
+                                    } else 
+                                    {   // tab and no shift
+                                        if(e.target.nextElementSibling == null) { // on last element -> move to first one
+                                            nextFocusNode=e.target.parentElement.querySelector("." + Office.Controls.PersonaConstants.SectionTag_Action);
+                                        }
+                                    }
+
+                                    if(nextFocusNode) {
+                                        e.preventDefault();
+                                        nextFocusNode.focus();
+                                    }
+                                }
+                            })                              
+                                // prevents keydown repeat
+                                Office.Controls.Utils.addEventListener(document, 'keyup', function(e) {
+                                    if(e.key == "Enter"){
+                                        self.keydownEnter = false;
+                                    }
+                                    if(e.key == "Shift"){								
+                                        self.keydownShift = false;
+                                    }                                    
                                 });
                             }
                         }
@@ -274,7 +320,7 @@
             {
                 node.style.visibility = "hidden";
                 node.style.display = "none";
-            }
+            }		
         },
 
         /**
@@ -358,8 +404,9 @@
                         }
                     }
                 });
-                Office.Controls.Utils.addEventListener(document, eventType, function () {
-                    if (event.target.tagName.toLowerCase() === "html") {
+			
+                Office.Controls.Utils.addEventListener(document, eventType, function (e) {
+                    if (e.target.tagName.toLowerCase() === "html") {
                         if (showNodeQueue.length !== 0) {
                             var nodeItem = showNodeQueue.pop();
                             nodeItem.showNode(nodeItem.get_rootNode(), false);
@@ -372,7 +419,61 @@
         } 
         return personaInstance;
     };
-    
+
+	// detects visible PersonaCard for given Persona and sets focus on its div ms-PersonaCard-action mail
+	// currently PersonaCards for a given Persona are dynamically generated HTML divs on every click but only one is visible at a time
+    Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText = function (ImageOnlyPersona) {
+		// save currently in focus ImagePersona element to focus back on it later on Escape
+		FocusBackOnCancel = ImageOnlyPersona;
+        if(!FocusBackOnCancel) {
+            return;
+        }
+            
+		// since PersonaCard is dynamically generated HTML we need to retry below code 
+        var retryCount = 12;
+		var delayInMilliseconds = 400;
+		// schedule calls 
+		var timerId = window.setInterval(
+            function () {
+                if(retryCount == 0) {
+                    window.clearTimeout(timerId);
+                    return;
+                }
+
+                retryCount--;
+                var startSearch = FocusBackOnCancel.parentElement;
+                // create collection of all PersonaCards for given Persona and detect one that is visible in browser independent fashion
+                var primaryTextCollection = startSearch.querySelectorAll("." + Office.Controls.PersonaConstants.SectionTag_Action);
+                if(!primaryTextCollection) {
+                    return;
+                }
+                
+                for (i = 0; i < primaryTextCollection.length; i++) {
+                    var elm = primaryTextCollection[i];
+                    // for each found ms-PersonaCard-action div traverse DOM tree buttom up to detect one that is visible
+                    var hiddenDialog = false;
+                    while (!(/body/i).test(elm)) {
+                        elm = elm.parentNode;
+                        var vis = elm.currentStyle ? elm.currentStyle.visibility : getComputedStyle(elm, null).visibility;
+                        var disp = elm.currentStyle ? elm.currentStyle.display : getComputedStyle(elm, null).display;
+                        if (vis === "hidden" || disp === "none") {
+                            hiddenDialog = true;
+                            break;
+                        }
+                    }
+
+                    // set focus on visible PersonaCard's ms-PersonaCard-action mail div
+                    if (hiddenDialog === false){
+                        primaryTextCollection[i].focus();
+                        // we done: get rid of remaining scheduled calls
+                        window.clearTimeout(timerId);
+                        return;
+                    }
+                }
+            }
+        , delayInMilliseconds); // wait delayInMilliseconds ms between retries
+    };
+
     Office.Controls.Persona.PersonaHelper.closePersonaCard = function (showNodeQueue) {
          if (showNodeQueue.length !== 0) {
               var nodeItem = showNodeQueue.pop();
@@ -413,7 +514,8 @@
                         }
                     }
     };
-    
+	
+    var FocusBackOnCancel = null;    
     Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res, dataLoader) {
         var personaCard = null;
         var showNodeQueue = Office.Controls.Persona.PersonaHelper._showNodeQueue;
@@ -426,25 +528,36 @@
                 
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
                    Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
+				   Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText(personaInstance.rootNode);
                 });
-                
-                  Office.Controls.Utils.addEventListener(personaInstance.rootNode, "keydown", function (e) {
-                      if(e.key == "Esc" || e.key == "Enter")
-                      {
-                         e.preventDefault();
-                         Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
-                      }                
+
+                Office.Controls.Utils.addEventListener(personaInstance.rootNode, "keydown", function (e) {
+                    if(e.key == "Esc" || e.key == "Escape" || e.key == "Enter") {
+                        e.preventDefault();
+                        Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
+
+                        if(e.key =="Enter") {
+                            Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText(personaInstance.rootNode);
+                        } else {
+                            if(FocusBackOnCancel) {
+                               FocusBackOnCancel.focus();
+                            }
+                        }
+                    }
                 });
-                
-                Office.Controls.Utils.addEventListener(document, eventType, function () {
-                    if (event.target.tagName.toLowerCase() === "html") {
+
+                Office.Controls.Utils.addEventListener(document, eventType, function (e) {
+                    if (e.target.tagName.toLowerCase() === "html") {
                        Office.Controls.Persona.PersonaHelper.closePersonaCard(showNodeQueue);
                     }
                 });
-                
-                  Office.Controls.Utils.addEventListener(document, "keydown", function (e) {
-                       if(e.key == "Esc"){
-                         Office.Controls.Persona.PersonaHelper.closePersonaCard(showNodeQueue);
+
+                Office.Controls.Utils.addEventListener(document, "keydown", function (e) {
+                    if(e.key == "Esc" || e.key == "Escape"){
+                        Office.Controls.Persona.PersonaHelper.closePersonaCard(showNodeQueue);
+                        if(FocusBackOnCancel) {
+                            FocusBackOnCancel.focus();
+                        }
                     }
                 });
             } else {
@@ -672,15 +785,15 @@
     Office.Controls.Persona.Templates.DefaultDefinition = {
         "nameimage": 
         {
-            value: "<div class=\"ms-Persona\"><div class=\"image\"><img class=\"imageOfNameImage\" style=\"background-image:url(${imgSrc})\"></img></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"clickStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
+            value: "<div class=\"ms-Persona\"><div class=\"image\"><img class=\"imageOfNameImage\" aria-label=\"${primaryText}\" style=\"background-image:url(${imgSrc})\"></img></div><div class=\"ms-Persona-details ms-Persona-details-nameImage\"><div class=\"ms-Persona-primaryText ms-Persona-primaryText-nameImage\"><Label class=\"clickStyle\" title=\"${primaryText}\">${primaryTextShort}</Label></div><div class=\"ms-Persona-secondaryText ms-Persona-secondaryText-nameImage\"><Label class=\"clickStyle\" title=\"${secondaryText}\">${secondaryTextShort}</Label></div></div></div>"
         },
         "personacard": 
         {
-            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\" role=\"dialog\" tabindex=\"0\" aria-labelledby=\"primaryTextId\" aria-describedby=\"secondaryTextId\" ><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><div class=\"ms-Persona-imageArea\"><img class=\"ms-Persona-image image\" style=\"background-image:url(${imgSrc})\"></img></div><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\" tabindex=\"0\" ><h4 class=\"defaultStyle\" id=\"primaryTextId\" title=\"${primaryText}\">${primaryTextShort}</h4></div><div class=\"ms-Persona-secondaryText\" tabindex=\"0\"><span class=\"defaultStyle\" id=\"secondaryTextId\" title=\"${secondaryText}\">${secondaryTextShort}</span></div><div class=\"ms-Persona-tertiaryText\" tabindex=\"0\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.emailAriaLabel}\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.phone}\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.skypeAriaLabel}\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\" aria-label=\"${strings.label.email}${actions.emailShort}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\" aria-label=\"${strings.label.workPhone}${actions.workPhoneShort}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\" >${strings.label.mobile} </span><a href=\"${strings.protocol.phone}${actions.mobile}\" aria-label=\"${strings.label.mobile}${actions.mobileShort}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\" aria-label=\"${strings.label.skype}${actions.skypeShort}\">${actions.skypeShort}</a></div></div></div>"
+            value: "<div class=\"ms-PersonaCard personaCard-customized detail displayMode\" role=\"dialog\" tabindex=\"-1\" aria-labelledby=\"primaryTextId\" aria-describedby=\"secondaryTextId\" ><div class=\"ms-PersonaCard-persona persona-section-tag-main\"><div class=\"ms-Persona ms-Persona--xl\"><div class=\"ms-Persona-imageArea\"><img class=\"ms-Persona-image image\" aria-label=\"${primaryText}\" style=\"background-image:url(${imgSrc})\"></img></div><div class=\"ms-Persona-details\"><div class=\"ms-Persona-primaryText\"><h4 class=\"defaultStyle\" id=\"primaryTextId\" title=\"${primaryText}\">${primaryTextShort}</h4></div><div class=\"ms-Persona-secondaryText\"><span class=\"defaultStyle\" id=\"secondaryTextId\" title=\"${secondaryText}\">${secondaryTextShort}</span></div><div class=\"ms-Persona-tertiaryText\"><Label class=\"defaultStyle\" title=\"${tertiaryText}\">${tertiaryTextShort}</Label></div></div></div></div><ul class=\"ms-PersonaCard-actions\"><li class=\"ms-PersonaCard-action\" child=\"action-detail-mail\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.emailAriaLabel}\"><i class=\"ms-Icon ms-Icon--mail icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-phone\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.phone}\"><i class=\"ms-Icon ms-Icon--phone icon\"><span></span></i></li><li class=\"ms-PersonaCard-action\" child=\"action-detail-chat\" tabindex=\"0\" role=\"button\" aria-label=\"${strings.label.skypeAriaLabel}\"><i class=\"ms-Icon ms-Icon--chat icon\"><span></span></i></li></ul><div class=\"ms-PersonaCard-actionDetails action-detail-mail\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.email}</span><a href=\"${strings.protocol.email}${actions.email}\" aria-label=\"${strings.label.email}${actions.emailShort}\">${actions.emailShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-phone\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.workPhone}</span><a href=\"${strings.protocol.phone}${actions.workPhone}\" aria-label=\"${strings.label.workPhone}${actions.workPhoneShort}\">${actions.workPhoneShort}</a><br/><span class=\"ms-PersonaCard-detailLabel\" >${strings.label.mobile} </span><a href=\"${strings.protocol.phone}${actions.mobile}\" aria-label=\"${strings.label.mobile}${actions.mobileShort}\">${actions.mobileShort}</a></div></div><div class=\"ms-PersonaCard-actionDetails action-detail-chat\"><div class=\"ms-PersonaCard-detailLine\"><span class=\"ms-PersonaCard-detailLabel\">${strings.label.skype}</span><a href=\"${strings.protocol.skype}${actions.skype}\" aria-label=\"${strings.label.skype}${actions.skypeShort}\">${actions.skypeShort}</a></div></div></div>"
         },
         "imageonly":
         {
-            value: "<div class=\"ms-Persona ms-Persona--xs\"><div class=\"ms-Persona-imageArea\"><img class=\"ms-Persona-image\" src=\"${imgSrc}\"></img></div></div>"
+            value: "<div class=\"ms-Persona ms-Persona--xs\"><div class=\"ms-Persona-imageArea\" aria-label=\"${primaryText}\"><img class=\"ms-Persona-image\" src=\"${imgSrc}\"></img></div></div>"
         },
     };
 })();
