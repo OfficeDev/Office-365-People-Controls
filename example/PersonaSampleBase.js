@@ -121,7 +121,7 @@ var sampleAADObj2 = {
     "id": "f567d710-09d8-458d-902f-d786234ed0d6",
     "displayName": '',
     "department": 'DepartmentA China',
-    "jobTitle": 'Software Engineer',
+    "jobTitle": "<a href='alert()'>click me</a>", // XSS test
     "office": 'BEIJING-Building1-1/12345', // Office
     "mail": "jerryanderson@companya.com",
     "workPhone": "+86(10) 12345678", 

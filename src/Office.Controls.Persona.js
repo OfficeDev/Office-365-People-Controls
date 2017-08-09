@@ -49,7 +49,7 @@
         // Load template & bind data
         this.loadDefaultTemplate(this.templateID);
     };
-	
+
     Office.Controls.Persona.prototype = {
         onError: null,
         rootNode: null,
@@ -58,8 +58,8 @@
         actionDetailNodes: null,
         constantObject: {}, 
         oriID: "",
-		keydownEnter: false,
-		keydownShift: false,        
+        keydownEnter: false,
+        keydownShift: false,        
 
         get_rootNode: function() {
             return this.rootNode;
@@ -242,7 +242,7 @@
                 for (var i = 0; i < properties.length; i++) { 
                     propertyName = properties[i].substring(2, properties[i].length - 1);
                     propertyValue = self.getValueFromJSONObject(dataObject, propertyName);
-                    resultStr = resultStr.replace(properties[i], propertyValue);
+                    resultStr = resultStr.replace(properties[i], Office.Controls.Utils.htmlEncode(propertyValue));
                 }
             }
 
@@ -320,7 +320,7 @@
             {
                 node.style.visibility = "hidden";
                 node.style.display = "none";
-            }		
+            }
         },
 
         /**
@@ -404,7 +404,7 @@
                         }
                     }
                 });
-			
+
                 Office.Controls.Utils.addEventListener(document, eventType, function (e) {
                     if (e.target.tagName.toLowerCase() === "html") {
                         if (showNodeQueue.length !== 0) {
@@ -420,20 +420,20 @@
         return personaInstance;
     };
 
-	// detects visible PersonaCard for given Persona and sets focus on its div ms-PersonaCard-action mail
-	// currently PersonaCards for a given Persona are dynamically generated HTML divs on every click but only one is visible at a time
+    // detects visible PersonaCard for given Persona and sets focus on its div ms-PersonaCard-action mail
+    // currently PersonaCards for a given Persona are dynamically generated HTML divs on every click but only one is visible at a time
     Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText = function (ImageOnlyPersona) {
-		// save currently in focus ImagePersona element to focus back on it later on Escape
-		FocusBackOnCancel = ImageOnlyPersona;
+        // save currently in focus ImagePersona element to focus back on it later on Escape
+        FocusBackOnCancel = ImageOnlyPersona;
         if(!FocusBackOnCancel) {
             return;
         }
             
-		// since PersonaCard is dynamically generated HTML we need to retry below code 
+        // since PersonaCard is dynamically generated HTML we need to retry below code 
         var retryCount = 12;
-		var delayInMilliseconds = 400;
-		// schedule calls 
-		var timerId = window.setInterval(
+        var delayInMilliseconds = 400;
+        // schedule calls 
+        var timerId = window.setInterval(
             function () {
                 if(retryCount == 0) {
                     window.clearTimeout(timerId);
@@ -470,8 +470,8 @@
                         return;
                     }
                 }
-            }
-        , delayInMilliseconds); // wait delayInMilliseconds ms between retries
+            },
+            delayInMilliseconds); // wait delayInMilliseconds ms between retries
     };
 
     Office.Controls.Persona.PersonaHelper.closePersonaCard = function (showNodeQueue) {
@@ -514,7 +514,7 @@
                         }
                     }
     };
-	
+
     var FocusBackOnCancel = null;    
     Office.Controls.Persona.PersonaHelper.createImageOnlyPersona = function (root, personObject, eventType, res, dataLoader) {
         var personaCard = null;
@@ -528,7 +528,7 @@
                 
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, eventType, function (e) {
                    Office.Controls.Persona.PersonaHelper.closeOpenPersonaCard(showNodeQueue, personObject, personaCard, dataLoader, res, root);
-				   Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText(personaInstance.rootNode);
+                   Office.Controls.Persona.PersonaHelper.setFocusOnPrimaryText(personaInstance.rootNode);
                 });
 
                 Office.Controls.Utils.addEventListener(personaInstance.rootNode, "keydown", function (e) {
