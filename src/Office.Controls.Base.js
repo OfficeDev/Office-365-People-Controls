@@ -308,7 +308,7 @@
 
     Office.Controls.Utils.htmlEncode = function (value) {
         value = value.replace(new RegExp('&', 'g'), '&amp;');
-        value = value.replace(new RegExp('\"', 'g'), '&quot;');
+        value = value.replace(new RegExp('"', 'g'), '&quot;');
         value = value.replace(new RegExp('\'', 'g'), '&#39;');
         value = value.replace(new RegExp('<', 'g'), '&lt;');
         value = value.replace(new RegExp('>', 'g'), '&gt;');
