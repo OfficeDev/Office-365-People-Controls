@@ -306,13 +306,8 @@
         return index;
     };
 
-    Office.Controls.Utils.htmlEncode = function (value) {
-        value = value.replace(new RegExp('&', 'g'), '&amp;');
-        value = value.replace(new RegExp('\"', 'g'), '&quot;');
-        value = value.replace(new RegExp('\'', 'g'), '&#39;');
-        value = value.replace(new RegExp('<', 'g'), '&lt;');
-        value = value.replace(new RegExp('>', 'g'), '&gt;');
-        return value;
+    Office.Controls.Utils.htmlEncode = function (value) {        
+        return $('<div/>').text(value).html();
     };
 
     Office.Controls.Utils.getLocalizedCountValue = function (locText, intervals, count) {

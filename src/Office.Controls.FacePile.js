@@ -152,7 +152,7 @@
                 this.root.querySelector(".ms-FacePile-itemBtn--overflow").className = "ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel";
             }
             else{
-                var facePileMember = this.root.querySelector("div.ms-FacePile-itemBtn--member,div[title=\"" + memberText + "\"]");
+                var facePileMember = this.root.querySelector("div.ms-FacePile-itemBtn--member,div[title=\"" + Office.Controls.Utils.htmlEncode(memberText) + "\"]");
                 facePileMember.parentNode.removeChild(facePileMember);
             }
         },
@@ -181,24 +181,24 @@
 
         var html = '<div class=\"ms-FacePile\">';
         if (showEdit) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\" aria-label=\"' + addButtonTooltipString  +'\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--addPerson js-addPerson\" aria-label=\"' + Office.Controls.Utils.htmlEncode(addButtonTooltipString)  +'\">';
             html += '<i class=\"ms-FacePile-addPersonIcon ms-Icon ms-Icon--personAdd\"></i>';
             html += '</button>';
         }
 
         html += '<div class=\"ms-FacePile-members\">';
         for (var i = 0; i < (maxCount > personaObjectArray.length ? personaObjectArray.length : maxCount) ; i++) {
-            html += '<div title=\"' + personaObjectArray[i].displayName + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"' + '\">';
+            html += '<div title=\"' + Office.Controls.Utils.htmlEncode(personaObjectArray[i].displayName) + '\" class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--member\"' + '\">';
             html += '</div>';
         }
 
         html += '</div>';
 
         if (personaObjectArray.length > maxCount) {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\" aria-label=\"' + overflowButtonTooltipString + '\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel is-active\" aria-label=\"' + Office.Controls.Utils.htmlEncode(overflowButtonTooltipString) + '\">';
         }
         else {
-            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\" aria-label=\"' + overflowButtonTooltipString + '\">';
+            html += '<button class=\"ms-FacePile-itemBtn ms-FacePile-itemBtn--overflow js-overflowPanel\" aria-label=\"' + Office.Controls.Utils.htmlEncode(overflowButtonTooltipString) + '\">';
         }
 
         var numberOfRemain = personaObjectArray.length - maxCount;
