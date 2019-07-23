@@ -1,3 +1,13 @@
+---
+page_type: sample
+products:
+- office-365
+languages:
+- javascript
+extensions:
+  contentType: samples
+  createdDate: 3/24/2015 4:03:43 PM
+---
 # Office 365 People Controls
 
 ========================
