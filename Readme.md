@@ -1,18 +1,16 @@
 ---
-page_type: sample
 products:
 - office-365
 languages:
 - javascript
 extensions:
-  contentType: samples
   createdDate: 3/24/2015 4:03:43 PM
 ---
-# Office 365 People Controls
+# [ARCHIVED] Office 365 People Controls
 
 ========================
 
-The Office 365 People Controls provide a simple but extensible way to add standard Office experience and access data from Office 365 service. All the controls are developed in JavaScript to provide universal compatibility without the additional overhead of other frameworks. We build the controls with two parts, Web UI and Data Provider, so that developers could customize the control easily based on the interface we defined.
+**Note:** This repo is archived and no longer actively maintained. Security vulnerabilities may exist in the project, or its dependencies. If you plan to reuse or run any code from this repo, be sure to perform appropriate security checks on the code or dependencies first. Do not use this project as the starting point of a production Office Add-in. Always start your production code by using the Office/SharePoint development workload in Visual Studio, or the [Yeoman generator for[Arch Office Add-ins](https://github.com/OfficeDev/generator-office), and follow security best practices as you develop the add-in." The Office 365 People Controls provide a simple but extensible way to add standard Office experience and access data from Office 365 service. All the controls are developed in JavaScript to provide universal compatibility without the additional overhead of other frameworks. We build the controls with two parts, Web UI and Data Provider, so that developers could customize the control easily based on the interface we defined.
 
 Currently, we provide two basic people controls
  - People Picker
