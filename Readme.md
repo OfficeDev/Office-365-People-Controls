@@ -1,11 +1,3 @@
----
-products:
-- office-365
-languages:
-- javascript
-extensions:
-  createdDate: 3/24/2015 4:03:43 PM
----
 # [ARCHIVED] Office 365 People Controls
 
 ========================
